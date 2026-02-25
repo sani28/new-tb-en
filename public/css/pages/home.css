@@ -1,0 +1,4278 @@
+/* Homepage-specific CSS overrides extracted from index.html inline styles */
+
+/* Add-on cards CTA: in the prototype, `.more-info.card-more-info-btn` is styled as a red Add to Cart button.
+   In the Next.js app, base styles make `.more-info` gray, so override to match the prototype intent. */
+.index-page .card-actions a.more-info,
+.index-page .card-actions a.card-more-info-btn {
+	    background: #E20021;
+	    color: #fff;
+}
+
+.index-page .card-actions a.more-info:hover,
+.index-page .card-actions a.card-more-info-btn:hover {
+	    background: #cc0000;
+}
+
+/* Fix for counter-info wrapper in booking widget */
+.index-page .counter-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Global page content constraint for golden ratio proportions */
+@media (min-width: 1200px) {
+	    .index-page .courses,
+	    .index-page .bus-features,
+	    .index-page .discounts,
+	    .index-page .footer {
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+
+	    .index-page .courses-inner,
+	    .index-page .bus-features-content,
+	    .index-page .discount-grid,
+	    .index-page .footer-content,
+	    .index-page .footer-bottom {
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 1600px) {
+	    .index-page .courses,
+	    .index-page .bus-features,
+	    .index-page .discounts,
+	    .index-page .footer {
+        padding-left: 15%;
+        padding-right: 15%;
+    }
+}
+
+@media (min-width: 2000px) {
+	    .index-page .courses,
+	    .index-page .bus-features,
+	    .index-page .discounts,
+	    .index-page .footer {
+        padding-left: 20%;
+        padding-right: 20%;
+    }
+}
+
+/* Homepage Carousel Content Styles (homepage only)
+   Keep all course-carousel layout rules here so we don't depend on global `styles.css`. */
+.index-page .homepage-carousel-content {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: calc(35% + 60px);
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: fit-content;
+    padding: 20px;
+    margin: 0;
+    background: rgba(0, 28, 44, 0.95);
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+ .index-page .homepage-carousel-content h2 {
+    font-size: 24px;
+    margin: 0;
+    line-height: 1.2;
+    color: #fff;
+}
+
+/* Tour Pricing Styles */
+.index-page .tour-pricing {
+    margin: 4px 0;
+    width: 100%;
+}
+
+.index-page .price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 8px;
+    font-size: 13px;
+    color: #fff;
+}
+
+.index-page .price-label {
+    flex-shrink: 0;
+}
+
+.index-page .price-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.index-page .price-amount {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.index-page .price-line {
+    display: none;
+}
+
+.index-page .original-price {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+}
+
+.index-page .original-price .price-from {
+	    text-decoration: none;
+}
+
+.index-page .original-price .price-strikethrough {
+	    text-decoration: line-through;
+}
+
+.index-page .sale-price {
+    font-size: 19px;
+    color: #fff;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.index-page .sale-price .price-prefix {
+    background-color: transparent;
+    padding: 0;
+}
+
+.index-page .sale-price .price-amount {
+    background-color: #E20021;
+    padding: 2px 6px;
+    border-radius: 3px;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.index-page .price-divider {
+    margin: 6px 0;
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Homepage Carousel Actions */
+.index-page .homepage-carousel-actions {
+    margin-top: auto;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.index-page .homepage-carousel-actions .book-ticket-btn {
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+    text-align: center !important;
+    background: #D13239 !important;
+    color: white !important;
+    text-decoration: none !important;
+    border-radius: 6px !important;
+    border: 1px solid #D13239 !important;
+    transition: background-color 0.2s ease !important;
+    flex: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    box-sizing: border-box !important;
+    width: 50% !important;
+    max-width: 50% !important;
+    white-space: nowrap !important;
+}
+
+.index-page .homepage-carousel-actions .more-info-btn {
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+    text-align: center !important;
+    background: transparent !important;
+    color: white !important;
+    text-decoration: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    border-radius: 6px !important;
+    transition: all 0.2s ease !important;
+    flex: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    box-sizing: border-box !important;
+    font-weight: 700 !important;
+    border-bottom: none !important;
+    padding-bottom: 8px !important;
+    width: 50% !important;
+    max-width: 50% !important;
+    white-space: nowrap !important;
+}
+
+.index-page .book-ticket-btn:hover {
+    background: #b82a31;
+}
+
+.index-page .homepage-carousel-actions .more-info-btn:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* CRITICAL: Homepage carousel slide visibility
+   - Hide all slides by default
+   - Only show the active slide
+   Using !important to override any conflicting rules in styles.css */
+.index-page .homepage-carousel-slides {
+    display: flex !important;
+    width: 100% !important;
+    transition: transform 0.5s ease;
+}
+
+.index-page .homepage-carousel-slide {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    position: relative !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: opacity 0.3s ease, visibility 0.3s ease !important;
+    display: none !important;
+}
+
+.index-page .homepage-carousel-slide.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+    /* Use flex so slide children (hero image block + card grid) stay centered
+       even when their intrinsic/max widths are smaller than the carousel wrapper. */
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Homepage carousel container */
+.index-page .homepage-carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    overflow: visible;
+    border-radius: 20px;
+    background-color: #001C2C;
+    transition: background-color 0.5s ease;
+}
+
+/* Homepage carousel wrapper */
+.index-page .homepage-carousel {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow: visible;
+    border-radius: 20px;
+    transition: background-color 0.5s ease;
+}
+
+/* Course carousel image */
+.index-page .homepage-carousel-image {
+    position: relative;
+    width: 100%;
+}
+
+.index-page .homepage-carousel-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+/* Desktop: course carousel prev/next arrows */
+@media (min-width: 769px) {
+	    .index-page .homepage-carousel button.carousel-nav {
+        position: absolute;
+        top: 200px;
+        transform: translateY(-50%);
+        width: 50px;
+        height: 50px;
+        background: rgba(58, 58, 58, 0.9);
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 24px;
+	        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        z-index: 10;
+    }
+
+	    .index-page .homepage-carousel button.carousel-nav i {
+        color: #fff;
+    }
+
+	    .index-page .homepage-carousel button.carousel-nav.prev {
+        left: 20px;
+    }
+
+	    .index-page .homepage-carousel button.carousel-nav.next {
+        right: 20px;
+    }
+
+	    .index-page .homepage-carousel button.carousel-nav:hover {
+        background: rgba(58, 58, 58, 1);
+        transform: translateY(-50%) scale(1.05);
+    }
+}
+
+/* Desktop: show dots for the homepage course carousel */
+.index-page .homepage-carousel .carousel-dots {
+    display: flex;
+}
+
+/* Mobile: homepage course carousel arrow styling/positioning (moved out of global styles.css) */
+@media (max-width: 768px) {
+    .index-page .homepage-carousel .carousel-nav {
+        position: absolute;
+        top: 25%;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 50%;
+	        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        border: none;
+        pointer-events: auto;
+        z-index: 100;
+    }
+
+    .index-page .homepage-carousel .carousel-nav.prev {
+        left: 10px;
+        right: auto;
+    }
+
+    .index-page .homepage-carousel .carousel-nav.next {
+        right: 10px;
+        left: auto;
+    }
+
+    .index-page .homepage-carousel .carousel-nav i {
+        font-size: 16px;
+        color: #333;
+    }
+}
+
+/* Tour 02 (3rd slide) - match prototype: red background behind the add-on cards */
+.index-page .homepage-carousel-slide:nth-child(3) .card-section {
+    background: #C41E3A !important;
+    padding-bottom: 20px !important;
+}
+
+/* Match prototype: slide content area uses solid red backdrop on slide 3 */
+.index-page .homepage-carousel-slide:nth-child(3) .slide-content {
+    background: #C41E3A !important;
+}
+
+/* Tour 04 (2nd slide) — mobile only: yellow background + black text */
+@media (max-width: 768px) {
+    .index-page .homepage-carousel-slide:nth-child(2) .slide-content {
+        background: #FCD700 !important;
+    }
+
+    .index-page .homepage-carousel-slide:nth-child(2) .homepage-carousel-content {
+        background: #FCD700 !important;
+        color: #000 !important;
+    }
+
+    .index-page .homepage-carousel-slide:nth-child(2) .homepage-carousel-content h2,
+    .index-page .homepage-carousel-slide:nth-child(2) .homepage-carousel-content span,
+    .index-page .homepage-carousel-slide:nth-child(2) .homepage-carousel-content .price-label,
+    .index-page .homepage-carousel-slide:nth-child(2) .homepage-carousel-content .price-from,
+    .index-page .homepage-carousel-slide:nth-child(2) .homepage-carousel-content .price-amount,
+    .index-page .homepage-carousel-slide:nth-child(2) .homepage-carousel-content .info-item,
+    .index-page .homepage-carousel-slide:nth-child(2) .homepage-carousel-content .info-item i,
+    .index-page .homepage-carousel-slide:nth-child(2) .homepage-carousel-content .price-strikethrough {
+        color: #000 !important;
+    }
+
+    .index-page .homepage-carousel-slide:nth-child(2) .homepage-carousel-content .price-line {
+        border-color: rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .index-page .homepage-carousel-slide:nth-child(2) .homepage-carousel-content .price-divider {
+        border-color: rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .index-page .homepage-carousel-slide:nth-child(2) .card-section {
+        background: #FCD700 !important;
+    }
+
+    .index-page .homepage-carousel-slide:nth-child(2) .card-section-title {
+        color: #000 !important;
+    }
+}
+
+/* Header: Customer Service label casing + bring it closer to the globe icon */
+.index-page .notification-bar .right-section {
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.index-page .notification-bar .language-selector {
+    margin-left: 0 !important;
+}
+
+.index-page .customer-service {
+    gap: 6px;
+}
+
+.index-page .customer-service .customer-service-label {
+    font-family: Helvetica, sans-serif;
+    font-size: 12px;
+    text-transform: capitalize;
+    opacity: 1;
+}
+
+/* Card carousel arrows: add breathing room so arrows don't sit on top of cards */
+.index-page .card-carousel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    grid-column: 1 / -1;
+    padding: 0 70px;
+    overflow: visible;
+}
+
+.index-page .card-carousel-container {
+    overflow: hidden;
+    width: 100%;
+}
+
+.index-page .card-carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(58, 58, 58, 0.9);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+}
+
+.index-page .card-carousel-nav i {
+    color: #fff;
+}
+
+.index-page .card-carousel-nav.card-prev {
+    left: 20px;
+}
+
+.index-page .card-carousel-nav.card-next {
+    right: 20px;
+}
+
+@media (max-width: 768px) {
+    .index-page .card-carousel-wrapper {
+        padding: 0 !important;
+    }
+
+    .index-page .card-carousel-nav {
+        width: 28px;
+        height: 28px;
+        background: rgba(0, 0, 0, 0.55);
+    }
+
+    .index-page .card-carousel-nav.card-prev {
+        left: 4px;
+    }
+
+    .index-page .card-carousel-nav.card-next {
+        right: 4px;
+    }
+}
+
+/* Override the generic absolute-positioned .slide-content from styles.css */
+.index-page .slide-content {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+}
+
+/* Large desktop (1600-1999px): match standard desktop sizing (centered, no overlap) */
+@media (min-width: 1600px) and (max-width: 1999px) {
+    .index-page .homepage-carousel .slide-content {
+        /* Match the standard desktop scale (no overlap/negative pull). */
+        width: 80%;
+        max-width: 900px;
+        margin: 0 auto 30px;
+    }
+
+    .index-page .card-section {
+        margin-top: 60px;
+    }
+}
+
+/* Wide screens (≥2000px): match the desktop/tablet visual scale.
+   Keep the slide content (and therefore the image) constrained so it doesn't
+   feel oversized on ultra-wide displays, while staying perfectly centered. */
+@media (min-width: 2000px) {
+    .index-page .homepage-carousel .slide-content {
+        /* Ultra-wide: scale the hero down so it feels like desktop/tablet */
+        width: 60%;
+        max-width: 720px;
+        margin: 0 auto 30px;
+    }
+}
+
+/* Medium desktop (MacBook 13" etc): centered, no overlap — just natural flow */
+@media (min-width: 1200px) and (max-width: 1599px) {
+    .index-page .homepage-carousel .slide-content {
+        width: 80%;
+        max-width: 900px;
+        margin: 0 auto 30px;
+    }
+}
+
+/* Tablet: keep slide content centered and within the viewport */
+@media (min-width: 769px) and (max-width: 1199px) {
+    .index-page .homepage-carousel .slide-content {
+        position: relative;
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto 24px;
+    }
+}
+
+/* Tablet/Mobile: add safe horizontal padding so the tour carousel doesn't touch the edges */
+@media (max-width: 1199px) {
+    .index-page .courses-inner {
+        padding-left: 16px;
+        padding-right: 16px;
+        box-sizing: border-box;
+    }
+}
+
+/* Tablet/Mobile: stack the content panel below the image (prevent overflow)
+   Extended to 1199px so the absolutely-positioned panel doesn't overflow below the
+   image on 993-1199px viewports (iPad / small laptop). */
+@media (max-width: 1199px) {
+    .index-page .homepage-carousel-content {
+        position: relative;
+        top: auto;
+        right: auto;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0 0 12px 12px;
+    }
+
+    .index-page .homepage-carousel-image img {
+        border-radius: 12px 12px 0 0;
+    }
+}
+
+/* Mobile: ensure slide content becomes a simple vertical stack */
+@media (max-width: 768px) {
+    .index-page .homepage-carousel {
+        border-radius: 12px;
+    }
+
+    .index-page .homepage-carousel-container {
+        border-radius: 12px;
+    }
+
+    .index-page .homepage-carousel .slide-content {
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        min-height: 0;
+        margin: 0 0 15px;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: visible;
+        transform: none;
+        top: auto;
+        left: auto;
+    }
+
+    .index-page .homepage-carousel-content {
+        padding: 20px;
+        background: rgba(16, 24, 64, 0.95);
+    }
+
+    /* Bump "Adult" / "Children" labels so they're easier to read on mobile */
+    .index-page .price-label {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    /* Mobile: Tour 04 (2nd slide) "More Info" button — black bold text on yellow bg */
+    .index-page .homepage-carousel-slide:nth-child(2) .homepage-carousel-actions .more-info-btn {
+        color: #000 !important;
+        border-color: rgba(0, 0, 0, 0.4) !important;
+    }
+
+    .index-page .homepage-carousel-slide:nth-child(2) .homepage-carousel-actions .more-info-btn:hover {
+        background: rgba(0, 0, 0, 0.06) !important;
+        border-color: rgba(0, 0, 0, 0.6) !important;
+    }
+
+    /* Mobile: Tour 02 (3rd slide) "Book Ticket" button — darker red on red bg */
+    .index-page .homepage-carousel-slide:nth-child(3) .homepage-carousel-actions .book-ticket-btn {
+        background: #8B0000 !important;
+        border-color: #8B0000 !important;
+    }
+
+    .index-page .homepage-carousel-slide:nth-child(3) .homepage-carousel-actions .book-ticket-btn:hover {
+        background: #6B0000 !important;
+        border-color: #6B0000 !important;
+    }
+
+    /* Mobile: give the course hero image breathing room and reduce its visual size */
+    .index-page .homepage-carousel-image {
+        padding: 0 12px;
+        margin-bottom: 12px;
+        box-sizing: border-box;
+    }
+
+    .index-page .homepage-carousel-image img {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .index-page .homepage-carousel-content {
+        padding: 16px;
+    }
+}
+
+/* Card section - horizontal 3-column grid */
+.index-page .card-section {
+    width: 70%;
+    max-width: 770px;
+    margin: 60px auto 0;
+    padding: 0 0 40px;
+    position: relative;
+    z-index: 5;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 20px;
+}
+
+/* Tour 04 (2nd slide)
+   Keep the overall slide background yellow via data-slide-colors on
+   .courses / .courses-inner / .homepage-carousel, but let the overlay
+   info box (.homepage-carousel-content) stay in the dark navy used for
+   other slides so the text remains highly readable. */
+
+/* Card carousel wrapper - spans full width */
+.index-page .card-carousel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    grid-column: 1 / -1;
+}
+
+.index-page .card-carousel-container {
+    overflow: hidden;
+    width: 100%;
+}
+
+.index-page .card-carousel-track {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.4s ease;
+}
+
+.index-page .card-carousel-track .card {
+    flex: 0 0 calc((100% - 40px) / 3);
+    min-width: calc((100% - 40px) / 3);
+}
+
+/* Card section title */
+.index-page .card-section-title {
+    position: relative;
+    grid-column: 1 / -1;
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    z-index: 6;
+    width: 100%;
+    margin: 0 0 8px;
+    white-space: nowrap;
+}
+
+/* Tour Label Styles */
+
+.index-page .tour-label-fixed {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 8px 16px;
+    background: #E20021;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 6px;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Tour Info List Styles */
+.index-page .tour-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 8px 0;
+}
+
+/* Info items in courses/carousel section - white text */
+.index-page .homepage-carousel-slide .info-item,
+.index-page .courses .info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: #fff;
+}
+
+.index-page .homepage-carousel-slide .info-item i,
+.index-page .courses .info-item i {
+    width: 16px;
+    text-align: center;
+    color: #FF6B6B;
+    flex-shrink: 0;
+}
+
+.index-page .homepage-carousel-slide .info-item span,
+.index-page .courses .info-item span {
+    flex: 1;
+    white-space: normal;
+    text-align: left;
+    line-height: 1.3;
+    color: #fff;
+}
+
+/* Course section styles
+   z-index 3 keeps .courses IN FRONT of .gradient-section (z-index 1) so the
+   carousel image overlaps the course-title tab — creating the "folder tab" effect. */
+.index-page .courses {
+    position: relative;
+    width: 100%;
+    padding: 0;
+    z-index: 3;
+    margin-top: -60px;
+    transition: background-color 0.5s ease;
+}
+
+/* Gradient Section
+   z-index 1 keeps .gradient-section BEHIND .courses (z-index 3).
+   The course-title tab peeks out above the courses-inner rounded top edge. */
+.index-page .gradient-section {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 250px;
+    background: linear-gradient(180deg, #C6F5FF 0%, #E1F7FF 30.56%, #E2601E 100%);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 30px;
+    transition: background 0.5s ease;
+    margin-top: -1px;
+}
+
+.index-page .gradient-section::after {
+    content: '';
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 120px;
+    background-image: url('/imgs/palacetour01.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 1;
+    transition: background-image 0.3s ease;
+}
+
+.index-page .gradient-section.slide-1::after {
+    background-image: url('/imgs/palacetour01.png');
+}
+
+.index-page .gradient-section.slide-2::after {
+    background-image: url('/imgs/nighttouricon.png');
+}
+
+.index-page .gradient-section.slide-3::after {
+    background-image: url('/imgs/sctbbusicon.png');
+}
+
+.index-page .gradient-section .course-title {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1100px;
+    margin: 0;
+    padding: 25px;
+    background: #001C2C;
+    color: white;
+    text-align: center;
+    border-radius: 20px 20px 0 0;
+    z-index: 3;
+    font-size: 36px;
+    font-weight: 600;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+    display: block !important;
+    transition: background-color 0.5s ease;
+}
+
+.index-page .courses-inner {
+    position: relative;
+    max-width: 100%;
+    margin: 0;
+    padding: 30px 0 40px;
+    background: #001C2C;
+    border-radius: 30px 30px 0 0;
+    z-index: 2;
+    transition: background-color 0.5s ease;
+}
+
+.index-page .courses-inner::before {
+    display: none;
+}
+
+/* Fix: Courses section sets `color: white`, but the add-on cards have white backgrounds.
+   Ensure card headings (e.g. <h4 class="card-title">) render dark so titles aren't invisible. */
+.index-page .courses .card {
+    color: #111;
+}
+
+/* Card image container – position relative so .card-number badge can overlay */
+.index-page .courses .card .card-image {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Card number badge – circle in top-left corner of card image */
+.index-page .courses .card .card-number {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 26px;
+    height: 26px;
+    background: #E20021;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    z-index: 2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    line-height: 1;
+}
+
+.index-page .courses .card .card-title {
+    color: #000;
+    font-family: 'GeneralSans-Semibold', 'GeneralSans-Medium', 'GeneralSans-Regular', Arial, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin: 0;
+    padding: 14px 15px 0;
+}
+
+/* Align the Add to Cart CTA with the card text block (left aligned under title/description). */
+.index-page .courses .card .card-actions {
+    justify-content: flex-start !important;
+    /* Ensure the button container starts at the same left edge as the title/description (15px desktop). */
+    padding: 0 15px 15px !important;
+}
+
+.index-page .courses .card .card-actions a {
+    /* Restore original CTA sizing (full row) while keeping it aligned to the text block. */
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* On mobile, match the paragraph padding so title + detail text align perfectly. */
+@media (max-width: 768px) {
+    .index-page .courses .card .card-title {
+        padding-left: 12px;
+        padding-right: 12px;
+        padding-top: 12px;
+    }
+
+    .index-page .courses .card .card-actions {
+        /* Match the mobile paragraph padding so left edges align. */
+        padding: 0 12px 12px !important;
+    }
+}
+
+/* Keep 3 cards visible on desktop, but allow the whole add-on card area to breathe a bit more. */
+@media (min-width: 769px) {
+    .index-page .courses .card-section {
+        max-width: 850px;
+    }
+
+    /* Reduce the large default top padding on the detail text so it sits nicely under the title. */
+    .index-page .courses .card p {
+        padding-top: 8px;
+    }
+}
+
+/* Tablet: content panel stacks below image, so no large margin needed. */
+@media (min-width: 769px) and (max-width: 1199px) {
+    .index-page .card-section {
+        width: 90%;
+        max-width: 900px;
+        margin-top: 30px;
+    }
+
+    .index-page .card-section-title {
+        font-size: 20px;
+    }
+}
+
+/* Medium desktop: no overlap, so just widen the card section */
+@media (min-width: 1200px) and (max-width: 1599px) {
+    .index-page .card-section {
+        width: 80%;
+        max-width: 900px;
+        margin-top: 40px;
+    }
+}
+
+/* =========================================================
+   Promo add-on modal + mini cart bar (homepage add-on cards)
+   ========================================================= */
+
+body.promo-product-modal-open {
+    overflow: hidden;
+}
+
+body.promo-tour-modal-open {
+    overflow: hidden;
+}
+
+/* =========================================================
+   Hero Promotion Detail Modal (from promo banners)
+   ========================================================= */
+
+body.promo-hero-modal-open {
+    overflow: hidden;
+}
+
+.index-page .promo-hero-modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10000004;
+    padding: 20px;
+}
+
+.index-page .promo-hero-modal-overlay.active {
+    display: flex;
+}
+
+.index-page .promo-hero-modal {
+    background: #fff;
+    width: min(720px, 92vw);
+    max-height: 90vh;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.index-page .promo-hero-modal .close-popup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 0;
+    background: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    font-size: 24px;
+    line-height: 1;
+    z-index: 2;
+}
+
+.index-page .promo-hero-modal-media img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.index-page .promo-hero-modal-body {
+    padding: 18px;
+}
+
+.index-page .promo-hero-modal-body h3 {
+    margin: 0 0 8px 0;
+    font-size: 20px;
+    color: #111;
+}
+
+.index-page .promo-hero-modal-body p {
+    margin: 0;
+    color: #333;
+    line-height: 1.4;
+}
+
+.index-page .promo-hero-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding: 14px 18px;
+    border-top: 1px solid #eee;
+}
+
+.index-page .promo-hero-secondary {
+    background: transparent;
+    border: 1px solid #cfcfcf;
+    color: #111;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.index-page .promo-hero-cta {
+    background: #E2601E;
+    border: 1px solid #E2601E;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.index-page .promo-product-modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.7);
+    /* Must be above the tour selection modal overlay when opened from within it (View Details) */
+    z-index: 10000001;
+}
+
+.index-page .promo-product-modal-overlay.active {
+    display: flex;
+}
+
+/* =========================================================
+   Promo Tour Selection Modal (shown on first add-on)
+   ========================================================= */
+
+.index-page .promo-modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+	    justify-content: center;
+	    align-items: flex-start;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10000000; /* below product modal (10000001) but above cart bar (9999998) */
+	    overflow-y: auto;
+	    -webkit-overflow-scrolling: touch;
+	    padding: 40px 20px 120px 20px; /* extra bottom padding for cart bar */
+}
+
+/* =========================================================
+   Promo Tour Map Popup (Step 2)
+   Must stack above the “Continue to Booking” modal overlay
+   ========================================================= */
+
+#promoTourMapPopup.tour-map-popup-overlay {
+    /* Global `.tour-map-popup-overlay` is 999999 in styles.css, but our promo modals use 10000000+. */
+    z-index: 10000002;
+}
+
+.index-page .promo-modal-overlay.active {
+    display: flex;
+}
+
+.index-page .promo-modal {
+    background: #fff;
+	    width: 90%;
+	    max-width: 600px;
+    max-height: 90vh;
+	    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+	/* Flex scrolling: allow the scrollable region to actually shrink and scroll */
+	.index-page .promo-modal .popup-content {
+	    display: flex;
+	    flex-direction: column;
+	    height: 100%;
+	    min-height: 0;
+	}
+
+	.index-page .promo-modal .popup-scrollable-content {
+	    flex: 1;
+	    overflow-y: auto;
+	    min-height: 0;
+	    -webkit-overflow-scrolling: touch;
+	}
+
+.index-page .promo-modal .close-popup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: none;
+    background: rgba(0, 0, 0, 0.06);
+    color: #333;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.index-page .promo-modal .close-popup:hover {
+    background: rgba(0, 0, 0, 0.10);
+}
+
+	.index-page .promo-tour-modal .popup-content {
+	    height: 100%;
+	    display: flex;
+	    flex-direction: column;
+	    min-height: 0;
+	}
+
+.index-page .promo-tour-modal .popup-scrollable-content {
+	    flex: 1;
+	    overflow-y: auto;
+	    min-height: 0;
+    padding: 18px;
+}
+
+/* Progress indicator */
+.index-page .promo-progress-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 18px;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+}
+
+.index-page .promo-progress-indicator .progress-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.index-page .promo-progress-indicator .step-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    border: 2px solid #ddd;
+    color: #666;
+    background: #fff;
+}
+
+.index-page .promo-progress-indicator .step-line {
+    width: 48px;
+    height: 2px;
+    background: #e5e5e5;
+}
+
+.index-page .promo-progress-indicator .progress-step.completed .step-circle {
+    border-color: #2e7d32;
+    color: #2e7d32;
+}
+
+.index-page .promo-progress-indicator .progress-step.active .step-circle {
+    border-color: #E20021;
+    color: #E20021;
+}
+
+/* Tour display */
+.index-page .promo-tour-display {
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    background: #f5f5f5;
+}
+
+.index-page .promo-tour-display img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    display: block;
+}
+
+.index-page .promo-tour-display .tour-label {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    color: #fff;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+.index-page .promo-tour-display .popular-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #000;
+    color: #fff;
+    font-weight: 800;
+    font-size: 12px;
+}
+
+.index-page .promo-tour-display .tour-title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 12px 14px;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 70%);
+    color: #fff;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.4px;
+}
+
+.index-page .promo-tour-modal .popup-details {
+    padding: 16px 2px 0;
+}
+
+.index-page .promo-tour-modal .popup-details h2 {
+    margin: 0 0 8px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+}
+
+.index-page .promo-tour-modal .popup-details p {
+    margin: 0 0 14px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.index-page .promo-tour-modal .tour-selector select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    background: #fff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.index-page .promo-tour-modal .tour-info-panel {
+    margin-top: 12px;
+    padding: 12px 14px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background: #fafafa;
+}
+
+.index-page .promo-tour-modal .tour-info-content {
+    display: none;
+}
+
+.index-page .promo-tour-modal .tour-info-content.active {
+    display: block;
+}
+
+.index-page .promo-tour-modal .tour-info-panel ul {
+    margin: 0;
+    padding-left: 18px;
+    color: #444;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Map button (prototype parity): white button with red border + icon */
+.index-page .promo-tour-modal .tour-map-btn-wrapper {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.index-page .promo-tour-modal .tour-map-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: #fff;
+    border: 1px solid #E20021;
+    color: #E20021;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.index-page .promo-tour-modal .tour-map-btn svg {
+    display: block;
+    flex: 0 0 auto;
+    stroke: #E20021;
+    transition: stroke 0.2s ease;
+}
+
+.index-page .promo-tour-modal .tour-map-btn:hover {
+    background: #E20021;
+    color: #fff;
+}
+
+.index-page .promo-tour-modal .tour-map-btn:hover svg {
+    stroke: #fff;
+}
+
+/* Cross-sell section at bottom of Step 2 modal */
+.index-page .promo-tour-modal .promo-cross-sell-section {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+    /* Make the add-on carousel section narrower and centered */
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Keep the section comfortably wide on small screens */
+@media (max-width: 520px) {
+    .index-page .promo-tour-modal .promo-cross-sell-section {
+        width: 92%;
+    }
+}
+
+/* Total summary (match booking.html prototype styling) */
+.index-page .promo-tour-modal .total-summary {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+}
+
+.index-page .promo-tour-modal .ticket-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.index-page .promo-tour-modal .total-label {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+}
+
+.index-page .promo-tour-modal .total-price {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.index-page .promo-tour-modal .current-total {
+    font-size: 24px;
+    font-weight: 800;
+    color: #E20021;
+}
+
+.index-page .promo-tour-modal .original-total {
+    font-size: 16px;
+    color: #888;
+    text-decoration: line-through;
+}
+
+.index-page .promo-tour-modal .promo-cross-sell-section h3 {
+    margin: 0 0 6px;
+    font-size: 18px;
+    font-weight: 900;
+    color: #111;
+    text-align: center;
+}
+
+.index-page .promo-tour-modal .promo-cross-sell-section .cross-sell-subtitle {
+    margin: 0 0 12px;
+    color: #666;
+    font-size: 13px;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.index-page .promo-tour-modal .promo-category-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.index-page .promo-tour-modal .promo-category-tab {
+    border: 1px solid #e1e1e1;
+    background: #fff;
+    color: #222;
+    border-radius: 999px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.index-page .promo-tour-modal .promo-category-tab.active {
+    border-color: #E20021;
+    background: rgba(226, 0, 33, 0.08);
+    color: #E20021;
+}
+
+.index-page .promo-tour-modal .promo-products-grid { display: none; }
+.index-page .promo-tour-modal .promo-products-grid.active { display: block; }
+
+.index-page .promo-tour-modal .promo-cross-sell-carousel {
+    position: relative;
+}
+
+.index-page .promo-tour-modal .promo-cross-sell-slide { display: none; }
+.index-page .promo-tour-modal .promo-cross-sell-slide.active { display: block; }
+
+.index-page .promo-tour-modal .promo-cross-sell-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    border: 1px solid #e1e1e1;
+    background: #fff;
+    cursor: pointer;
+    font-weight: 900;
+}
+
+.index-page .promo-tour-modal .promo-cross-sell-nav.prev { left: -6px; }
+.index-page .promo-tour-modal .promo-cross-sell-nav.next { right: -6px; }
+
+.index-page .promo-tour-modal .promo-cross-sell-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.index-page .promo-tour-modal .promo-cross-sell-dots .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: #d7d7d7;
+    cursor: pointer;
+}
+
+.index-page .promo-tour-modal .promo-cross-sell-dots .dot.active {
+    background: #111;
+}
+
+.index-page .promo-tour-modal .promo-product-card {
+    position: relative;
+    /* Match prototype card layout: image stacked above text (1 col / 2 rows) */
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #eee;
+    border-radius: 14px;
+    background: #fff;
+    overflow: hidden;
+}
+
+/* (No responsive column swap needed once image is stacked vertically) */
+
+.index-page .promo-tour-modal .promo-product-card.incompatible {
+    opacity: 0.45;
+}
+
+.index-page .promo-tour-modal .promo-incompatible-label {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 6px 8px;
+    border-radius: 999px;
+}
+
+.index-page .promo-tour-modal .promo-product-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #111;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 900;
+    padding: 6px 8px;
+    border-radius: 999px;
+}
+
+.index-page .promo-tour-modal .promo-product-image {
+    background: #f6f6f6;
+    /* Larger, consistent image area (prototype uses a fixed height image row) */
+    /* +~15% vs 170px */
+    height: 196px;
+    overflow: hidden;
+}
+
+.index-page .promo-tour-modal .promo-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.index-page .promo-tour-modal .promo-product-info {
+    padding: 12px 12px 14px;
+}
+
+.index-page .promo-tour-modal .promo-product-info h4 {
+    margin: 0 0 4px;
+    font-size: 14px;
+    font-weight: 900;
+    color: #111;
+}
+
+.index-page .promo-tour-modal .promo-product-info p {
+    margin: 0 0 10px;
+    font-size: 12px;
+    color: #666;
+    line-height: 1.4;
+}
+
+.index-page .promo-tour-modal .promo-upsell-pricing {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.index-page .promo-tour-modal .promo-upsell-price {
+    font-weight: 900;
+    color: #E20021;
+    font-size: 20px;
+    line-height: 1.15;
+}
+.index-page .promo-tour-modal .promo-upsell-original-price { color: #888; text-decoration: line-through; font-weight: 700; }
+
+.index-page .promo-tour-modal .promo-discount-badge {
+    background: rgba(226, 0, 33, 0.10);
+    color: #E20021;
+    font-weight: 900;
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 999px;
+}
+
+.index-page .promo-tour-modal .promo-type-indicator {
+    font-size: 11px;
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.index-page .promo-tour-modal .promo-view-btn {
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    background: #E20021;
+    color: #fff;
+    font-weight: 900;
+    padding: 10px 12px;
+    cursor: pointer;
+}
+
+.index-page .promo-tour-modal .promo-view-btn:hover {
+    filter: brightness(0.95);
+}
+
+/* Sticky bottom actions */
+.index-page .promo-tour-modal .sticky-bottom-section {
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    border-top: 1px solid #eee;
+    padding: 14px 18px;
+}
+
+.index-page .promo-tour-modal .popup-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.index-page .promo-tour-modal .skip-tour-btn,
+.index-page .promo-tour-modal .add-to-cart-btn {
+    border: none;
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    flex: 1;
+}
+
+.index-page .promo-tour-modal .skip-tour-btn {
+    background: #f2f2f2;
+    color: #333;
+}
+
+.index-page .promo-tour-modal .add-to-cart-btn {
+    background: #E20021;
+    color: #fff;
+}
+
+.index-page .promo-tour-modal .add-to-cart-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.index-page .promo-product-details-content {
+    background: white;
+    width: 90%;
+    max-width: 600px;
+    height: 90vh;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.index-page .promo-product-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+    background: white;
+}
+
+.index-page .promo-product-modal-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.index-page .promo-back-to-modal,
+.index-page .promo-close-product-details {
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 8px;
+    color: #333;
+}
+
+.index-page .promo-product-scrollable-content {
+    flex: 1;
+    overflow-y: auto;
+	    min-height: 0;
+	    -webkit-overflow-scrolling: touch;
+}
+
+.index-page .promo-product-main-image {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.index-page .promo-product-main-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.index-page .promo-image-placeholder {
+    font-size: 120px;
+    opacity: 0.7;
+    display: none;
+}
+
+.index-page .promo-product-main-image.placeholder-image {
+    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+}
+
+.index-page .promo-product-details-info {
+    padding: 20px;
+}
+
+.index-page .promo-product-details-info h2 {
+    margin: 0 0 12px;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #333;
+}
+
+.index-page .promo-product-details-info p {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 16px;
+    line-height: 1.6;
+}
+
+.index-page .promo-product-modal-pricing {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.index-page .promo-modal-current-price {
+    font-size: 24px;
+    font-weight: 700;
+    color: #E20021;
+}
+
+.index-page .promo-modal-original-price {
+    font-size: 16px;
+    color: #999;
+    text-decoration: line-through;
+}
+
+.index-page .promo-product-sticky-bottom {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    border-top: 1px solid #eee;
+    background: white;
+}
+
+.index-page .promo-add-to-cart-btn {
+    flex: 1;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 20px;
+    background: #E20021;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.index-page .promo-add-to-cart-btn:hover {
+    background: #cc0000;
+}
+
+/* Promo Floating Cart Summary Bar (prototype parity: expanded cart + view cart) */
+.index-page .promo-upsell-cart-bar {
+    position: fixed;
+    bottom: -150px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: none;
+    background: linear-gradient(135deg, #E20021 0%, #B8001A 100%);
+    border-radius: 0;
+    box-shadow: 0 -4px 30px rgba(226, 0, 33, 0.4), 0 -2px 15px rgba(0, 0, 0, 0.1);
+    z-index: 9999998;
+    transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.index-page .promo-upsell-cart-bar.visible {
+    bottom: 0;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Feedback pulse on add-to-cart (JS toggles .pulse on the cart bar) */
+@keyframes promoCartBarPulse {
+    0% { transform: translateY(0) scale(1); }
+    45% { transform: translateY(-2px) scale(1.01); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes promoCartBadgePop {
+    0% { transform: scale(1); }
+    45% { transform: scale(1.22); }
+    100% { transform: scale(1); }
+}
+
+@keyframes promoCartFeedbackInOut {
+    0% { opacity: 0; transform: translateY(6px); }
+    15% { opacity: 1; transform: translateY(0); }
+    75% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-3px); }
+}
+
+.index-page .promo-upsell-cart-bar.pulse {
+    animation: promoCartBarPulse 320ms ease-out;
+}
+
+.index-page .promo-upsell-cart-bar.pulse .cart-badge {
+    animation: promoCartBadgePop 320ms ease-out;
+}
+
+	/* Center toast (green check) for add-to-cart success */
+	@keyframes promoCartToastInOut {
+	    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.96); }
+	    12% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+	    86% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+	    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.98); }
+	}
+
+		/* Toast is used on the homepage promo flow, but it can be triggered while
+		   `.index-page` scoping is missing (e.g. other routes / differing body class).
+		   Scope it by ID so it is ALWAYS fixed + hidden unless `.show` is present.
+		   This prevents the toast DOM from rendering inline at the bottom of the page. */
+		#promoCartToast {
+		    position: fixed;
+		    top: 50%;
+		    left: 50%;
+		    transform: translate(-50%, -50%) scale(0.98);
+		    z-index: 10000003; /* above promo modals (10000000/10000001) and map popup (10000002) */
+		    pointer-events: none;
+		    display: none;
+		    opacity: 0;
+		}
+
+		#promoCartToast.show {
+		    display: block;
+		    animation: promoCartToastInOut 3000ms ease-out both;
+		}
+
+		#promoCartToast .promo-cart-toast-inner {
+	    display: inline-flex;
+	    align-items: center;
+	    gap: 10px;
+	    padding: 14px 18px;
+	    border-radius: 14px;
+	    background: rgba(255, 255, 255, 0.96);
+	    border: 1px solid rgba(0, 0, 0, 0.08);
+	    color: #0f172a;
+	    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+	    backdrop-filter: blur(10px);
+	}
+
+		#promoCartToast .promo-cart-toast-message {
+	    font-size: 15px;
+	    font-weight: 800;
+	    letter-spacing: 0.2px;
+	}
+
+@media (prefers-reduced-motion: reduce) {
+    .index-page .promo-upsell-cart-bar.pulse,
+    .index-page .promo-upsell-cart-bar.pulse .cart-badge {
+        animation: none;
+    }
+		#promoCartToast.show {
+		    animation: none;
+		    opacity: 1;
+		    transform: translate(-50%, -50%);
+		}
+}
+
+.index-page .promo-upsell-cart-bar .cart-bar-content {
+    color: #fff;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.index-page .promo-upsell-cart-bar .cart-bar-left {
+    display: flex;
+    flex-direction: column;
+	    align-items: flex-start;
+    gap: 4px;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+/* Make timer more obvious on the left side (requested) */
+.index-page .promo-upsell-cart-bar .cart-bar-left .promo-cart-timer {
+    margin-top: 0;
+    font-size: 16px;
+    font-weight: 800;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    letter-spacing: 0.2px;
+}
+
+.index-page .promo-upsell-cart-bar .cart-bar-left .promo-cart-timer.expiring {
+    color: #ffe082;
+}
+
+.index-page .promo-upsell-cart-bar .cart-bar-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+}
+
+.index-page .promo-upsell-cart-bar .cart-badge {
+    position: absolute;
+		    /* Push badge OUTSIDE the cart icon so it never covers the SVG */
+		    top: -18px;
+		    right: -22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+		    width: 22px;
+		    height: 22px;
+    border-radius: 999px;
+    background: #FFD700;
+    color: #333;
+    font-weight: 800;
+		    font-size: 11px;
+	    line-height: 1;
+	    /* visually separate from the cart icon on the red bar */
+	    border: 2px solid rgba(226, 0, 33, 0.95);
+	    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.22);
+}
+
+	.index-page .promo-upsell-cart-bar .cart-bar-icon {
+	    width: 30px;
+	    height: 30px;
+	    /* ensure badge has room to sit outside without crowding */
+	    margin-right: 2px;
+	}
+
+	.index-page .promo-upsell-cart-bar .cart-bar-icon svg {
+	    display: block;
+	}
+
+.index-page .promo-upsell-cart-bar .cart-bar-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.index-page .promo-upsell-cart-bar .cart-bar-items {
+    font-size: 13px;
+    opacity: 0.9;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.index-page .promo-upsell-cart-bar .cart-bar-total {
+    font-size: 16px;
+    color: #fff;
+}
+
+.index-page .promo-upsell-cart-bar .cart-bar-total strong {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+/* Cart session countdown (client-side sessionStorage) */
+.index-page .promo-upsell-cart-bar .promo-cart-timer {
+    display: none;
+    font-size: 12px;
+    opacity: 0.95;
+    margin-top: 2px;
+    white-space: nowrap;
+}
+
+.index-page .promo-upsell-cart-bar .promo-cart-timer.show {
+    display: inline-flex;
+    align-items: center;
+}
+
+.index-page .promo-upsell-cart-bar .promo-cart-timer.expiring {
+    color: #ffe082;
+    font-weight: 700;
+}
+
+.index-page .promo-upsell-cart-bar .cart-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 0 0 auto;
+}
+
+.index-page .promo-upsell-cart-bar .cart-bar-right-summary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+/* Right-side meta (total + item count + feedback) */
+.index-page .promo-upsell-cart-bar .cart-bar-right-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2px;
+    min-width: 0;
+    text-align: left;
+}
+
+.index-page .promo-upsell-cart-bar .cart-bar-right-meta .cart-bar-total {
+    font-size: 15px;
+    opacity: 0.98;
+    white-space: nowrap;
+}
+
+.index-page .promo-upsell-cart-bar .cart-bar-right-meta .cart-bar-total strong {
+    font-weight: 900;
+    font-size: 18px;
+}
+
+
+.index-page .promo-upsell-cart-bar .promo-cart-feedback {
+    display: none;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    color: #fff;
+    white-space: nowrap;
+}
+
+.index-page .promo-upsell-cart-bar .promo-cart-feedback.show {
+    display: inline-flex;
+    animation: promoCartFeedbackInOut 950ms ease-out;
+}
+
+.index-page .promo-upsell-cart-bar .cart-bar-right-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Responsive: keep cart bar usable on small screens */
+@media (max-width: 520px) {
+    .index-page .promo-upsell-cart-bar .cart-bar-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .index-page .promo-upsell-cart-bar .cart-bar-left {
+	        align-items: center;
+	        justify-content: center;
+    }
+
+    .index-page .promo-upsell-cart-bar .cart-bar-right {
+	        flex-direction: column;
+	        align-items: stretch;
+	        gap: 10px;
+    }
+
+	    .index-page .promo-upsell-cart-bar .cart-bar-right-summary {
+	        justify-content: center;
+	    }
+
+	    .index-page .promo-upsell-cart-bar .cart-bar-right-meta {
+	        align-items: center;
+	        text-align: center;
+	    }
+
+    .index-page .promo-upsell-cart-bar .cart-bar-right-actions {
+	        width: 100%;
+	        flex-direction: column;
+	        gap: 8px;
+    }
+
+    .index-page .promo-upsell-cart-bar .view-cart-btn {
+        padding: 10px 14px;
+        font-size: 13px;
+	        width: 100%;
+	        justify-content: center;
+    }
+}
+
+.index-page .promo-upsell-cart-bar .view-cart-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: white;
+    color: #E20021;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.index-page .promo-upsell-cart-bar .view-cart-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Expanded cart details */
+.index-page .promo-upsell-cart-bar .cart-bar-expanded {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    max-height: 0;
+    overflow: hidden;
+    background: white;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+.index-page .promo-upsell-cart-bar .cart-bar-expanded.show {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.index-page .promo-upsell-cart-bar .cart-expanded-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+    background: white;
+    flex-shrink: 0;
+}
+
+.index-page .promo-upsell-cart-bar .cart-expanded-header h4 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.index-page .promo-upsell-cart-bar .collapse-cart-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: #666;
+    transition: color 0.2s;
+}
+
+.index-page .promo-upsell-cart-bar .collapse-cart-btn:hover {
+    color: #E20021;
+}
+
+.index-page .promo-upsell-cart-bar .cart-items-list {
+    flex: 1;
+    padding: 0 20px;
+    overflow-y: auto;
+    max-height: calc(60vh - 180px);
+}
+
+.index-page .promo-upsell-cart-bar .cart-item {
+    display: flex;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #f0f0f0;
+    gap: 14px;
+}
+
+.index-page .promo-upsell-cart-bar .cart-item:last-child {
+    border-bottom: none;
+}
+
+.index-page .promo-upsell-cart-bar .cart-item-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.index-page .promo-upsell-cart-bar .cart-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.index-page .promo-upsell-cart-bar .cart-item-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    font-size: 20px;
+}
+
+.index-page .promo-upsell-cart-bar .cart-item-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.index-page .promo-upsell-cart-bar .cart-item-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 2px;
+}
+
+.index-page .promo-upsell-cart-bar .cart-item-meta {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 2px;
+}
+
+.index-page .promo-upsell-cart-bar .cart-item-meta-line {
+    line-height: 1.4;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.index-page .promo-upsell-cart-bar .cart-item-price {
+    font-size: 15px;
+    font-weight: 600;
+    color: #E20021;
+    white-space: nowrap;
+}
+
+.index-page .promo-upsell-cart-bar .cart-item-remove {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.2s;
+}
+
+.index-page .promo-upsell-cart-bar .cart-item-remove:hover {
+    color: #E20021;
+}
+
+.index-page .promo-upsell-cart-bar .cart-expanded-footer {
+    padding: 16px 20px;
+    border-top: 1px solid #eee;
+    background: #f9f9f9;
+}
+
+.index-page .promo-upsell-cart-bar .cart-savings {
+    display: flex;
+    justify-content: space-between;
+    color: #2e7d32;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.index-page .promo-upsell-cart-bar .cart-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    font-size: 16px;
+    color: #333;
+}
+
+/* ----- Promo modal: variant tabs + type-specific UI (prototype parity) ----- */
+
+.index-page .promo-product-variant-tabs:empty {
+    display: none;
+}
+
+.index-page .promo-product-variant-tabs {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    margin: 0;
+    overflow-x: auto;
+}
+
+.index-page .promo-variant-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    background: none;
+    flex: 0 0 auto;
+    min-width: 80px;
+}
+
+.index-page .promo-variant-tab.active {
+    border-color: #E20021;
+}
+
+.index-page .promo-variant-tab img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: #f0f0f0;
+}
+
+.index-page .promo-variant-tab .tab-placeholder {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.index-page .promo-variant-tab span {
+    font-size: 12px;
+    color: #666;
+    font-weight: 400;
+}
+
+.index-page .promo-type-ui {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+.index-page .promo-section-title {
+    margin: 0 0 10px;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.index-page .promo-operation-hours-box {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    background: #f5f5f5;
+    color: #333;
+}
+
+/* Physical: color qty list */
+.index-page .promo-color-qty-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.index-page .promo-color-qty-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background: #f9f9f9;
+    transition: all 0.2s;
+}
+
+.index-page .promo-color-qty-item.selected {
+    border-color: #E20021;
+    background: #fff5f7;
+}
+
+.index-page .promo-color-qty-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.index-page .promo-color-thumb {
+    width: 50px;
+    height: 50px;
+    border-radius: 6px;
+    object-fit: cover;
+    flex: 0 0 auto;
+    background: #f2f2f2;
+}
+
+.index-page .promo-color-meta {
+    min-width: 0;
+}
+
+.index-page .promo-color-name {
+    display: inline;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+}
+
+.index-page .promo-color-price {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 13px;
+    color: #666;
+}
+
+.index-page .promo-color-qty-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.index-page .promo-color-qty-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background: #fff;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.index-page .promo-color-qty-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.index-page .promo-color-qty-value {
+    min-width: 24px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.index-page .promo-color-totals {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+}
+
+.index-page .promo-color-total-items {
+    font-size: 14px;
+    color: #666;
+}
+
+.index-page .promo-color-total-price {
+    font-size: 18px;
+    font-weight: 600;
+    color: #E20021;
+}
+
+/* Date/time row */
+.index-page .promo-datetime-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+@media (min-width: 520px) {
+    .index-page .promo-datetime-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.index-page .promo-date-input,
+.index-page .promo-time-select {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 16px;
+    background: #fff;
+}
+
+/* Tickets */
+.index-page .promo-ticket-section {
+    margin-top: 16px;
+}
+
+.index-page .promo-ticket-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.index-page .promo-ticket-row:first-of-type {
+    border-top: none;
+}
+
+.index-page .promo-ticket-row:last-of-type {
+    border-bottom: none;
+}
+
+.index-page .promo-ticket-label {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.index-page .promo-ticket-price {
+    font-weight: 400;
+    color: #666;
+    font-size: 14px;
+    margin-left: 8px;
+}
+
+.index-page .promo-ticket-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.index-page .promo-addon-qty-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background: #fff;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.index-page .promo-addon-qty-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.index-page .promo-ticket-qty {
+    min-width: 24px;
+    text-align: center;
+    font-weight: 400;
+}
+
+/* Validity banner */
+.index-page .promo-validity-banner {
+    margin-top: 16px;
+    padding: 12px;
+    background: #f0f9ff;
+    border-radius: 8px;
+    border-left: 4px solid #0ea5e9;
+    color: #0369a1;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+.index-page .promo-validity-icon {
+    margin-right: 8px;
+}
+
+/* Cruise selector */
+.index-page .promo-cruise-type-selector {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.index-page .promo-cruise-type-option {
+    flex: 1;
+    min-width: 100px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    padding: 12px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.index-page .promo-cruise-type-option img {
+    width: 100%;
+    height: 60px;
+    border-radius: 4px;
+    object-fit: cover;
+    background: #f2f2f2;
+    margin-bottom: 8px;
+}
+
+.index-page .promo-cruise-type-option.selected {
+    border-color: #E20021;
+    background: #fff5f5;
+}
+
+.index-page .promo-cruise-name {
+    display: block;
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.index-page .promo-cruise-price {
+    display: block;
+    font-weight: 400;
+    font-size: 12px;
+    color: #E20021;
+}
+
+.index-page .promo-cruise-orig {
+    display: block;
+    font-size: 11px;
+    color: #999;
+    text-decoration: line-through;
+}
+
+.index-page .promo-time-slot-selector {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 0 0 12px;
+}
+
+.index-page .promo-time-slot-option {
+    flex: 1;
+    min-width: 140px;
+    border: 2px solid #ddd;
+    background: #fff;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.index-page .promo-time-slot-option.selected {
+    border-color: #E20021;
+    background: #fff5f5;
+}
+
+/* CTA disabled */
+.index-page .promo-add-to-cart-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    background: rgba(226,0,33,0.55);
+}
+
+/* ========== Step 2: Tour Modal – Date Picker ========== */
+
+.index-page .promo-datetime-row {
+    padding: 0 16px;
+}
+
+/* Left-align the date selector within the Step 2 tour modal */
+.index-page .promo-tour-modal .promo-datetime-row {
+    justify-items: start;
+}
+
+.index-page .promo-tour-modal .promo-date-picker-wrapper {
+    width: 100%;
+    justify-self: start;
+}
+
+.index-page .promo-tour-modal .promo-date-trigger {
+    text-align: left;
+}
+
+.index-page .promo-date-picker-wrapper {
+    position: relative;
+}
+
+.index-page .promo-date-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    color: #333;
+    transition: border-color 0.2s;
+}
+
+.index-page .promo-date-trigger:hover,
+.index-page .promo-date-trigger:focus {
+    border-color: #E20021;
+    outline: none;
+}
+
+.index-page .promo-date-trigger .calendar-icon {
+    width: 20px;
+    height: 20px;
+    opacity: 0.5;
+}
+
+.index-page .promo-calendar-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 350px;
+    box-sizing: border-box;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    z-index: 100;
+    padding: 16px;
+}
+
+.index-page .promo-calendar-dropdown.active {
+    display: block;
+}
+
+.index-page .promo-calendar-dropdown .calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.index-page .promo-calendar-dropdown .calendar-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    flex: 1;
+    text-align: center;
+}
+
+.index-page .promo-calendar-dropdown .promo-prev-month,
+.index-page .promo-calendar-dropdown .promo-next-month {
+    border: none;
+    background: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px 8px;
+    color: #333;
+    border-radius: 4px;
+}
+
+.index-page .promo-calendar-dropdown .promo-prev-month:hover,
+.index-page .promo-calendar-dropdown .promo-next-month:hover {
+    background: #f0f0f0;
+}
+
+.index-page .promo-calendar-dropdown .promo-close-calendar {
+    border: none;
+    background: none;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 4px 8px;
+    color: #999;
+    line-height: 1;
+}
+
+.index-page .promo-calendar-dropdown .weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #999;
+    margin-bottom: 4px;
+}
+
+.index-page .promo-calendar-dropdown .promo-calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.index-page .promo-calendar-dropdown .day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 0;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: default;
+    min-height: 36px;
+    position: relative;
+}
+
+.index-page .promo-calendar-dropdown .day.available {
+    cursor: pointer;
+    color: #333;
+}
+
+.index-page .promo-calendar-dropdown .day.available:hover {
+    background: #f0f0f0;
+}
+
+.index-page .promo-calendar-dropdown .day.selected {
+    background: #E20021;
+    color: #fff;
+}
+
+.index-page .promo-calendar-dropdown .day.disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.index-page .promo-calendar-dropdown .day .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    margin-top: 2px;
+}
+
+.index-page .promo-calendar-dropdown .day .dot.available {
+    background: #4CAF50;
+}
+
+.index-page .promo-calendar-dropdown .day .dot.sold-out {
+    background: #E20021;
+}
+
+/* ========== Step 2: Tour Modal – Ticket Counters ========== */
+
+.index-page .promo-tour-ticket-selection {
+    padding: 0 16px;
+}
+
+.index-page .promo-tour-ticket-selection .ticket-type {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.index-page .promo-tour-ticket-selection .ticket-type:last-child {
+    border-bottom: none;
+}
+
+.index-page .promo-tour-ticket-selection .ticket-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.index-page .promo-tour-ticket-selection .ticket-label {
+    font-weight: 600;
+    font-size: 15px;
+    color: #333;
+}
+
+.index-page .promo-tour-ticket-selection .age-range {
+    font-size: 12px;
+    color: #999;
+}
+
+.index-page .promo-tour-ticket-selection .price-counter {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.index-page .promo-tour-ticket-selection .price {
+    text-align: right;
+}
+
+.index-page .promo-tour-ticket-selection .current-price {
+    font-weight: 600;
+    font-size: 14px;
+    color: #E20021;
+    display: block;
+}
+
+.index-page .promo-tour-ticket-selection .original-price {
+    font-size: 12px;
+    color: #999;
+    text-decoration: line-through;
+    display: block;
+}
+
+.index-page .promo-tour-ticket-selection .counter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.index-page .promo-tour-ticket-selection .counter button {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.index-page .promo-tour-ticket-selection .counter button:hover {
+    border-color: #E20021;
+    color: #E20021;
+}
+
+.index-page .promo-tour-ticket-selection .promo-count {
+    min-width: 24px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+/* ========== Step 2: Tour Modal – Total ========== */
+
+.index-page .promo-tour-total {
+    padding: 12px 16px;
+    margin: 0 16px;
+    border-top: 2px solid #eee;
+}
+
+.index-page .promo-tour-total .tour-total-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+}
+
+.index-page .promo-tour-total .tour-total-row strong {
+    font-size: 18px;
+    color: #E20021;
+}
+
+.index-page .promo-tour-total .promo-original-total {
+    font-size: 14px;
+    color: #999;
+    text-decoration: line-through;
+    margin-left: 8px;
+}
+
+
+/* ────────────────────────────────────────────────────────
+   Steps 3 & 5: Booking Info + Payment modals
+   ──────────────────────────────────────────────────────── */
+
+/* Order modal sizing (do not rely on `.index-page` — promo order modals can open from cart flows) */
+.promo-order-modal {
+    max-width: 550px;
+}
+.promo-order-modal .popup-content {
+    display: flex;
+    flex-direction: column;
+	    height: 100%;
+	    min-height: 0;
+}
+.promo-order-modal .popup-scrollable-content {
+    flex: 1;
+    overflow-y: auto;
+	    min-height: 0;
+    padding: 18px;
+}
+
+/* Step 3 (Promo Booking Info) — match index.html source-of-truth
+   IMPORTANT: Do not rely on `.index-page` scoping here. Step 3 can be opened
+   from the add-on cart flow where the body class may differ. */
+#promoBookingInfoModal .step-title-section {
+    background: #FF2D55;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0 0 24px 0;
+    width: 100%;
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Order summary base styles (Step 3 uses .order-summary.step2-order-summary) */
+#promoBookingInfoModal .order-summary {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+#promoBookingInfoModal .order-summary h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+#promoBookingInfoModal .order-section {
+    margin-bottom: 16px;
+}
+
+#promoBookingInfoModal .order-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+#promoBookingInfoModal .order-tour-date {
+    color: #E20021;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background: rgba(226, 0, 33, 0.08);
+    border-radius: 6px;
+    display: inline-block;
+}
+
+#promoBookingInfoModal .order-tour-date:empty {
+    display: none;
+}
+
+#promoBookingInfoModal .step-title-section .step-number {
+    width: 48px;
+    height: 48px;
+    background: #8B0014;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#promoBookingInfoModal .step-title-section .step-title {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    padding-left: 70px;
+}
+
+@media (max-width: 768px) {
+    #promoBookingInfoModal .step-title-section {
+        height: 50px;
+        margin-bottom: 20px;
+        border-radius: 15px;
+    }
+
+    #promoBookingInfoModal .step-title-section .step-number {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+        left: 7px;
+    }
+
+    #promoBookingInfoModal .step-title-section .step-title {
+        font-size: 16px;
+        padding-left: 55px;
+    }
+}
+
+#promoBookingInfoModal .step2-order-summary {
+    margin-bottom: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+#promoBookingInfoModal .step2-order-summary .order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+#promoBookingInfoModal .step2-order-summary .order-item:last-child {
+    border-bottom: none;
+}
+
+#promoBookingInfoModal .step2-order-summary .order-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#promoBookingInfoModal .step2-order-summary .qty-display {
+    font-weight: 400;
+    min-width: 24px;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+}
+
+#promoBookingInfoModal .step2-order-summary .addon-item {
+    background-color: #fff;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #e0e0e0;
+}
+
+#promoBookingInfoModal .prominent-back-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: #fff;
+    border: 2px solid #E20021;
+    color: #E20021;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 20px;
+    margin-bottom: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#promoBookingInfoModal .prominent-back-btn:hover {
+    background: #E20021;
+    color: #fff;
+}
+
+#promoBookingInfoModal .prominent-back-btn:hover svg {
+    stroke: #fff;
+}
+
+#promoBookingInfoModal .prominent-back-btn svg {
+    flex-shrink: 0;
+}
+
+#promoBookingInfoModal .order-totals {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 2px solid #ddd;
+}
+
+#promoBookingInfoModal .order-totals > div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+#promoBookingInfoModal .order-totals .total {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+#promoBookingInfoModal .promo-step3-remove-addon-btn {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px 8px;
+    margin-left: 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+#promoBookingInfoModal .promo-step3-remove-addon-btn:hover {
+    color: #E20021;
+    background-color: rgba(226, 0, 33, 0.1);
+}
+
+#promoBookingInfoModal .sticky-bottom-section {
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    border-top: 1px solid #eee;
+    padding: 16px 24px;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+    border-radius: 0 0 12px 12px;
+    z-index: 2;
+}
+
+/* Step 3 CTA (Continue) — was unstyled in promo add-on cart flow */
+#promoBookingInfoModal .popup-actions.order-actions {
+    margin-top: 0;
+}
+
+#promoBookingInfoModal .popup-actions.order-actions .add-to-cart-btn {
+    background: #E20021;
+    color: #fff;
+    border: none;
+    padding: 12px 36px;
+    border-radius: 24px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    width: 100%;
+    transition: background 0.3s ease;
+}
+
+#promoBookingInfoModal .popup-actions.order-actions .add-to-cart-btn:hover {
+    background: #cc0000;
+}
+
+/* ────────────────────────────────────────────────────────
+   Step 4: Order Summary modal (match index.html + apply in cart flow)
+   ──────────────────────────────────────────────────────── */
+
+/* Step 4 header block (was previously gated behind `.index-page`) */
+#promoOrderSummaryModal .step-title-section {
+    text-align: center;
+    margin-bottom: 24px;
+    padding-top: 10px;
+}
+
+#promoOrderSummaryModal .step-title-section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+}
+
+#promoOrderSummaryModal .step-title-section p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+/* Step 4 body structure (apply in add-on cart flow even when `.index-page` is absent) */
+#promoOrderSummaryModal .promo-order-summary {
+    margin-bottom: 24px;
+}
+
+#promoOrderSummaryModal .promo-order-section {
+	margin-bottom: 16px;
+	background: #fafafa;
+	border: 1px solid #eef2f7;
+	border-radius: 14px;
+	padding: 14px;
+}
+
+#promoOrderSummaryModal .promo-order-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+#promoOrderSummaryModal .promo-order-section-header h4 {
+	font-size: 12px;
+	font-weight: 800;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #475569;
+    margin: 0;
+}
+
+#promoOrderSummaryModal .promo-order-section-meta {
+	font-size: 12px;
+	font-weight: 700;
+	color: #E20021;
+	font-variant-numeric: tabular-nums;
+}
+
+#promoOrderSummaryModal .order-summary-items {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	background: #fff;
+	border: 1px solid #e5e7eb;
+	border-radius: 12px;
+	overflow: hidden;
+}
+
+/* Individual order items (kept consistent with existing Next.js DOM output) */
+#promoOrderSummaryModal .promo-order-modal .order-item {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	align-items: center;
+	column-gap: 16px;
+	padding: 12px 14px;
+	border-bottom: 1px solid #f1f5f9;
+}
+
+#promoOrderSummaryModal .promo-order-modal .order-item:last-child {
+    border-bottom: none;
+}
+
+#promoOrderSummaryModal .order-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+#promoOrderSummaryModal .order-item-details h5 {
+	font-size: 14px;
+	font-weight: 900;
+	color: #0f172a;
+    margin: 0 0 2px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#promoOrderSummaryModal .order-item-meta {
+	font-size: 12px;
+	color: #64748b;
+	line-height: 1.3;
+}
+
+#promoOrderSummaryModal .order-item-controls {
+	display: grid;
+	grid-template-columns: 82px 104px;
+	align-items: center;
+	justify-items: end;
+	gap: 12px;
+	flex-shrink: 0;
+}
+
+#promoOrderSummaryModal .order-item-qty {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 6px;
+}
+
+#promoOrderSummaryModal .order-item-qty .qty-display {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 6px 10px;
+	border-radius: 999px;
+	background: #f1f5f9;
+	border: 1px solid #e2e8f0;
+	color: #0f172a;
+	font-weight: 900;
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+}
+
+#promoOrderSummaryModal .order-item-qty button {
+    width: 26px;
+    height: 26px;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+#promoOrderSummaryModal .order-item-qty button:hover {
+    border-color: #E20021;
+    color: #E20021;
+}
+
+#promoOrderSummaryModal .order-item-qty span {
+    font-weight: 600;
+    min-width: 18px;
+    text-align: center;
+    font-size: 14px;
+}
+
+#promoOrderSummaryModal .order-item-price {
+    text-align: right;
+	min-width: 104px;
+	padding-left: 12px;
+	border-left: 1px solid #eef2f7;
+}
+
+#promoOrderSummaryModal .order-item-current {
+	font-size: 15px;
+	font-weight: 900;
+	color: #E20021;
+	font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 520px) {
+	#promoOrderSummaryModal .promo-order-modal .order-item {
+		grid-template-columns: 1fr;
+		row-gap: 10px;
+	}
+
+	#promoOrderSummaryModal .order-item-controls {
+		width: 100%;
+		grid-template-columns: 1fr 1fr;
+		justify-items: stretch;
+	}
+
+	#promoOrderSummaryModal .order-item-qty {
+		justify-content: flex-start;
+	}
+
+	#promoOrderSummaryModal .order-item-price {
+		justify-self: end;
+		min-width: 0;
+		padding-left: 0;
+		border-left: none;
+	}
+}
+
+#promoOrderSummaryModal .sticky-bottom-section {
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    border-top: 1px solid #eee;
+    padding: 16px 24px;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+    border-radius: 0 0 12px 12px;
+    z-index: 2;
+}
+
+#promoOrderSummaryModal .popup-actions.order-actions {
+    display: flex;
+    gap: 12px;
+}
+
+#promoOrderSummaryModal .popup-actions.order-actions .back-btn {
+    flex: 0 0 auto;
+    padding: 14px 24px;
+    background: #fff;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#promoOrderSummaryModal .popup-actions.order-actions .back-btn:hover {
+    background: #f5f5f5;
+    border-color: #bbb;
+}
+
+#promoOrderSummaryModal .popup-actions.order-actions .add-to-cart-btn {
+    flex: 1;
+    background: #E20021;
+    color: #fff;
+    border: none;
+    padding: 12px 36px;
+    border-radius: 24px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    width: 100%;
+    transition: background 0.3s ease;
+}
+
+#promoOrderSummaryModal .popup-actions.order-actions .add-to-cart-btn:hover {
+    background: #cc0000;
+}
+
+/* Totals block in Step 4 (map our markup to index.html's order total styling) */
+#promoOrderSummaryModal .promo-order-totals {
+    background: #fff;
+    border: 2px solid #E20021;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 24px;
+}
+
+#promoOrderSummaryModal .promo-order-totals .total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+}
+
+#promoOrderSummaryModal #orderSavingsRow {
+    padding-top: 12px;
+    margin-top: 8px;
+    border-top: 1px dashed #ddd;
+}
+
+#promoOrderSummaryModal #orderSavingsRow span:first-child {
+    font-size: 14px;
+    color: #28a745;
+}
+
+#promoOrderSummaryModal #orderSavingsRow span:last-child {
+    font-size: 16px;
+    font-weight: 600;
+    color: #28a745;
+}
+
+#promoOrderSummaryModal .promo-order-totals .total-row.grand span:first-child {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+#promoOrderSummaryModal .promo-order-totals .total-row.grand span:last-child {
+    font-size: 24px;
+    font-weight: 700;
+    color: #E20021;
+}
+
+/* ────────────────────────────────────────────────────────
+   Step 5: Payment modal (Back + Make Payment buttons + sticky footer)
+   ──────────────────────────────────────────────────────── */
+
+/* Step 5 step title section can be opened outside `.index-page` as well */
+#promoPaymentModal .step-title-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: flex-start;
+    margin: 0 0 20px 0;
+}
+
+#promoPaymentModal .step-title-section .step-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #E20021;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+#promoPaymentModal .step-title-section .step-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111;
+}
+
+#promoPaymentModal .order-summary {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+#promoPaymentModal .order-summary h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+#promoPaymentModal .order-section {
+    margin-bottom: 16px;
+}
+
+#promoPaymentModal .order-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+#promoPaymentModal .order-tour-date {
+    color: #E20021;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background: rgba(226, 0, 33, 0.08);
+    border-radius: 6px;
+    display: inline-block;
+}
+
+#promoPaymentModal .order-tour-date:empty {
+    display: none;
+}
+
+#promoPaymentModal .order-totals {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 2px solid #ddd;
+}
+
+#promoPaymentModal .order-totals > div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+#promoPaymentModal .order-totals .total {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* Payment methods */
+#promoPaymentModal .payment-methods {
+    margin-bottom: 20px;
+}
+
+#promoPaymentModal .credit-card-section h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+}
+
+#promoPaymentModal .card-logos {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+#promoPaymentModal .card-logos img {
+    height: 30px;
+    width: auto;
+    display: block;
+}
+
+#promoPaymentModal .alternative-payments {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+#promoPaymentModal .payment-option {
+    flex: 1;
+    min-width: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background: #fff;
+}
+
+#promoPaymentModal .payment-option:hover {
+    border-color: #E20021;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+#promoPaymentModal .payment-option img {
+    height: 24px;
+    width: auto;
+    display: block;
+}
+
+#promoPaymentModal .footer-info {
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+    margin-top: 20px;
+}
+
+#promoPaymentModal .footer-info a {
+    color: #E20021;
+    text-decoration: none;
+}
+
+#promoPaymentModal .footer-info a:hover {
+    text-decoration: underline;
+}
+
+#promoPaymentModal .sticky-bottom-section {
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    border-top: 1px solid #eee;
+    padding: 16px 24px;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+    border-radius: 0 0 12px 12px;
+    z-index: 2;
+}
+
+#promoPaymentModal .popup-actions.order-actions {
+    display: flex;
+    gap: 12px;
+}
+
+#promoPaymentModal .popup-actions.order-actions .back-btn {
+    flex: 0 0 auto;
+    padding: 14px 24px;
+    background: #fff;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#promoPaymentModal .popup-actions.order-actions .back-btn:hover {
+    background: #f5f5f5;
+    border-color: #bbb;
+}
+
+#promoPaymentModal .popup-actions.order-actions .add-to-cart-btn {
+    flex: 1;
+    background: #E20021;
+    color: #fff;
+    border: none;
+    padding: 12px 36px;
+    border-radius: 24px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    width: 100%;
+    transition: background 0.3s ease;
+}
+
+#promoPaymentModal .popup-actions.order-actions .add-to-cart-btn:hover {
+    background: #cc0000;
+}
+
+@media (max-width: 768px) {
+    #promoBookingInfoModal .sticky-bottom-section {
+        padding: 16px;
+        border-radius: 0;
+    }
+}
+
+/* Step title */
+.index-page .step-title-section {
+    margin-bottom: 16px;
+}
+.index-page .step-title-section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+}
+.index-page .step-title-section p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+/* Prominent back button */
+.index-page .promo-prominent-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: all 0.2s;
+}
+.index-page .promo-prominent-back:hover {
+    border-color: #E20021;
+    color: #E20021;
+}
+
+/* Order summary block */
+.index-page .promo-order-summary {
+    margin-bottom: 24px;
+}
+.index-page .promo-order-summary h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+}
+
+/* Order sections (Tour Tickets, Add-ons) */
+.index-page .promo-order-section {
+    margin-bottom: 16px;
+}
+.index-page .promo-order-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.index-page .promo-order-section-header h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+.index-page .promo-order-section-meta {
+    font-size: 13px;
+    color: #666;
+}
+
+/* Order summary items container */
+.index-page .order-summary-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* Individual order items */
+.index-page .promo-order-modal .order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+.index-page .promo-order-modal .order-item:last-child {
+    border-bottom: none;
+}
+
+.index-page .order-item-info {
+    flex: 1;
+    min-width: 0;
+}
+.index-page .order-item-details h5 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 2px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.index-page .order-item-meta {
+    font-size: 12px;
+    color: #888;
+}
+
+/* Order item controls */
+.index-page .order-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+/* Editable quantity counter */
+.index-page .order-item-qty {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.index-page .order-item-qty button {
+    width: 26px;
+    height: 26px;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+.index-page .order-item-qty button:hover {
+    border-color: #E20021;
+    color: #E20021;
+}
+.index-page .order-item-qty span {
+    font-weight: 600;
+    min-width: 18px;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* Read-only quantity display (payment modal) */
+.index-page .qty-display {
+    font-weight: 400;
+    color: #666;
+    font-size: 14px;
+}
+
+/* Order item price */
+.index-page .order-item-price {
+    text-align: right;
+    min-width: 60px;
+}
+.index-page .order-item-current {
+    font-size: 14px;
+    font-weight: 600;
+    color: #E20021;
+}
+
+/* Remove add-on button */
+.index-page .promo-step3-remove-addon-btn {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+.index-page .promo-step3-remove-addon-btn:hover {
+    color: #E20021;
+    background: rgba(226, 0, 33, 0.08);
+}
+
+/* Order totals */
+.index-page .promo-order-totals {
+    border-top: 2px solid #eee;
+    padding-top: 12px;
+    margin-top: 8px;
+}
+.index-page .promo-order-totals .total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    font-size: 14px;
+    color: #555;
+}
+.index-page .promo-order-totals .total-row.grand {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    padding-top: 8px;
+    border-top: 1px solid #eee;
+    margin-top: 4px;
+}
+.index-page .promo-order-totals .total-row.grand span:last-child {
+    color: #E20021;
+}
+
+/* User info form */
+.index-page .promo-user-form {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.index-page .promo-user-form .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.index-page .promo-user-form label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+.index-page .promo-user-form input[type="text"],
+.index-page .promo-user-form input[type="email"],
+.index-page .promo-user-form input[type="tel"],
+.index-page .promo-user-form input[type="password"] {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+.index-page .promo-user-form input:focus {
+    outline: none;
+    border-color: #E20021;
+}
+.index-page .promo-user-form .form-row.checkbox {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+.index-page .promo-user-form .form-row.checkbox label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 400;
+    font-size: 13px;
+    color: #555;
+}
+
+/* Sticky bottom for order modals */
+.index-page .promo-order-modal .sticky-bottom-section {
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    border-top: 1px solid #eee;
+    padding: 12px 18px;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+    z-index: 2;
+}
+
+/* Payment method section */
+.index-page .promo-payment-methods {
+    margin-bottom: 24px;
+}
+.index-page .promo-payment-methods h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+}
+.index-page .payment-method-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+.index-page .payment-method-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 12px 8px;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 12px;
+    color: #555;
+}
+.index-page .payment-method-option:hover,
+.index-page .payment-method-option.selected {
+    border-color: #E20021;
+    color: #E20021;
+}
+
+@media (max-width: 768px) {
+	    #promoBookingInfoModal,
+	    #promoOrderSummaryModal,
+	    #promoPaymentModal {
+	        padding: 0 0 100px 0; /* bottom padding for cart bar on mobile */
+	    }
+
+	    #promoBookingInfoModal .promo-modal,
+	    #promoOrderSummaryModal .promo-modal,
+	    #promoPaymentModal .promo-modal {
+	        width: 100%;
+	        max-height: none;
+	        border-radius: 0;
+	    }
+
+	    .promo-order-modal {
+	        max-width: 100%;
+	    }
+
+	    #promoOrderSummaryModal .popup-actions.order-actions,
+	    #promoPaymentModal .popup-actions.order-actions {
+	        flex-direction: column;
+	    }
+
+	    #promoOrderSummaryModal .popup-actions.order-actions .back-btn,
+	    #promoPaymentModal .popup-actions.order-actions .back-btn {
+	        order: 2;
+	    }
+
+	    #promoOrderSummaryModal .popup-actions.order-actions .add-to-cart-btn,
+	    #promoPaymentModal .popup-actions.order-actions .add-to-cart-btn {
+	        order: 1;
+	    }
+}
+
+/* === Homepage (Next.js) mobile carousel fixes ===
+   Keep these overrides tightly scoped to the homepage to avoid impacting legacy pages.
+*/
+
+/* Discounts: allow long affiliate benefit copy to expand when "Read more" is toggled */
+.index-page .discount-card.is-expanded .discount-desc {
+    display: block;
+    -webkit-line-clamp: unset;
+    -webkit-box-orient: initial;
+    overflow: visible;
+}
+
+.index-page .discount-card .discount-read-more {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+    color: inherit;
+}
+
+.index-page .discount-card .discount-read-more:focus {
+    outline: 2px solid rgba(0, 28, 44, 0.6);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Discovery section: position mobile arrows over the gallery without a pill-shaped background */
+.index-page .discovery .discovery-content {
+    position: relative;
+}
+
+.index-page .discovery .carousel-nav.mobile-only {
+    /* This nav is intended for mobile only. Hide by default so it never shows on desktop. */
+    display: none !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: translateY(-50%) !important;
+    width: 100% !important;
+    padding: 0 10px !important;
+    z-index: 5 !important;
+    /* Override generic .carousel-nav styles so the container itself is invisible */
+    background: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Add-on cards: override desktop-only card-section sizing/grid that breaks mobile */
+@media (max-width: 768px) {
+    .index-page .discovery .carousel-nav.mobile-only {
+        display: flex !important;
+    }
+
+    .index-page .courses .card-section {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 20px auto 0 !important;
+        padding: 0 16px 24px !important;
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    .index-page .courses .card-section-title {
+        position: relative !important;
+        bottom: auto !important;
+        left: auto !important;
+        transform: none !important;
+        margin: 0 0 8px !important;
+        padding: 12px 0 0 !important;
+        font-size: 16px !important;
+        line-height: 1.2 !important;
+        white-space: normal !important;
+        text-align: center;
+    }
+
+    /* Card carousel geometry: 2 cards per slide on mobile, filling full width */
+    .index-page .courses .card-carousel-wrapper {
+        padding: 0 !important;
+    }
+
+    .index-page .courses .card-carousel-track {
+        gap: 12px !important;
+    }
+
+    .index-page .courses .card-carousel-track .card {
+        flex: 0 0 calc(50% - 6px) !important;
+        min-width: calc(50% - 6px) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .index-page .courses .card-section {
+        padding: 0 12px 20px !important;
+        gap: 10px !important;
+    }
+
+    .index-page .courses .card-carousel-wrapper {
+        padding: 0 !important;
+    }
+
+    .index-page .courses .card-carousel-track {
+        gap: 10px !important;
+    }
+
+    .index-page .courses .card-carousel-track .card {
+        flex: 0 0 calc(50% - 5px) !important;
+        min-width: calc(50% - 5px) !important;
+    }
+}
+
+/* ===  Booking-widget mobile compact — very small screens  === */
+@media (max-width: 400px) {
+    /* Side padding so selectors don't hug screen edges */
+    .index-page .booking-widget {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+    /* Tighter gap between tour & date */
+    .index-page .booking-widget .select-container {
+        gap: 6px !important;
+    }
+
+    /* Shrink tour, give date more room */
+    .index-page .booking-widget .tour-select {
+        width: 58% !important;
+    }
+
+    .index-page .booking-widget .date-select {
+        width: 42% !important;
+    }
+
+    /* Compact both controls */
+    .index-page .booking-widget .tour-select select,
+    .index-page .booking-widget .date-picker-trigger {
+        padding: 8px 8px !important;
+        font-size: 12px !important;
+        min-height: 40px !important;
+        border-width: 1.5px !important;
+        border-radius: 10px !important;
+    }
+
+    /* Tour dropdown arrow repositioned */
+    .index-page .booking-widget .tour-select select {
+        padding-right: 26px !important;
+        background-position: right 8px center !important;
+        background-size: 14px !important;
+    }
+
+    /* Close gap between "Select a date" text and calendar icon */
+    .index-page .booking-widget .date-picker-trigger {
+        justify-content: flex-start !important;
+        gap: 6px !important;
+    }
+
+    .index-page .booking-widget .selected-date {
+        font-size: 12px !important;
+    }
+
+    .index-page .booking-widget .calendar-icon {
+        width: 14px !important;
+        height: 14px !important;
+    }
+}

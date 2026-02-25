@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Bus Icon</title>
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g fill="#000000" fill-rule="nonzero">
+            <path d="M18,2H6C4.9,2 4,2.9 4,4v16c0,0.55 0.45,1 1,1h1c0.55,0 1,-0.45 1,-1v-1h10v1c0,0.55 0.45,1 1,1h1c0.55,0 1,-0.45 1,-1V4C20,2.9 19.1,2 18,2ZM7.5,16C6.67,16 6,15.33 6,14.5S6.67,13 7.5,13S9,13.67 9,14.5S8.33,16 7.5,16ZM16.5,16c-0.83,0 -1.5,-0.67 -1.5,-1.5s0.67,-1.5 1.5,-1.5s1.5,0.67 1.5,1.5S17.33,16 16.5,16ZM18,10H6V4h12v6Z"/>
+        </g>
+    </g>
+</svg> 

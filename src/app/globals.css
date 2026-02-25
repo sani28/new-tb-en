@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+/*
+  We keep this file minimal so the legacy CSS (styles.css/template.css)
+  controls the base look during migration.
+
+  Tailwind is still available for new components as we port the UI.
+*/

@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	    <base href="/" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discounts - Seoul City Tour Tiger Bus</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="template.css">
+    <link rel="stylesheet" href="discounts.css">
+    <script src="discounts.js" defer></script>
+    <style>
+        /* Modal Styles */
+        .location-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 1001;
+            width: 95%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .location-modal.active,
+        .modal-backdrop.active {
+            display: block;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .modal-content {
+            margin-top: 10px;
+        }
+
+	        /* Modal header (two-column: big image left, text right) */
+	        .affiliate-hero {
+	            margin-bottom: 16px;
+	        }
+
+	        .location-hero-img {
+	            width: 100%;
+	            height: 260px;
+	            border-radius: 16px;
+	            object-fit: cover;
+	            border: 1px solid #eee;
+	            background: #fafafa;
+	            display: block;
+	        }
+
+	        .partner-header {
+	            padding-right: 40px; /* keep clear of the top-right close button */
+	            margin-bottom: 18px;
+	        }
+
+	        .partner-header .location-name {
+	            margin: 0;
+	            font-size: 26px;
+	            line-height: 1.15;
+	            letter-spacing: -0.2px;
+	            color: #111;
+	        }
+
+	        .partner-header .location-desc {
+	            margin: 10px 0 0;
+	            color: #555;
+	            font-size: 14px;
+	            line-height: 1.5;
+	            display: -webkit-box;
+	            -webkit-line-clamp: 5;
+	            -webkit-box-orient: vertical;
+	            overflow: hidden;
+	        }
+
+	        .contact-box {
+	            background: #f8f8f8;
+	            border-radius: 8px;
+	            padding: 14px 16px;
+	            border: 1px solid #eee;
+	        }
+
+	        .contact-text {
+	            margin: 0;
+	            font-size: 14px;
+	            color: #444;
+	            line-height: 1.5;
+	        }
+
+	        @media (max-width: 768px) {
+	            .location-hero-img {
+	                height: 200px;
+	                border-radius: 14px;
+	            }
+	
+	            .partner-header .location-name {
+	                font-size: 22px;
+	            }
+	        }
+
+        .location-details {
+            display: flex;
+            gap: 20px;
+	            margin-bottom: 22px;
+        }
+
+        .details-left {
+            flex: 1;
+        }
+
+        .details-right {
+            flex: 1;
+        }
+
+	        .detail-section {
+	            margin-bottom: 18px;
+	        }
+
+        .detail-section h3 {
+	            font-size: 16px;
+            color: #333;
+	            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-section h3 i {
+            color: #E20021;
+        }
+
+        .address-info {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .address-info i {
+            color: #E20021;
+            margin-top: 4px;
+        }
+
+	        .benefit-box,
+	        .retrieve-box {
+	            background: #f8f8f8;
+	            border-radius: 8px;
+	            padding: 14px 16px;
+	            border: 1px solid #eee;
+	        }
+
+	        .benefit-text,
+	        .retrieve-text {
+	            margin: 0;
+	            font-size: 14px;
+	            color: #444;
+	            line-height: 1.5;
+	        }
+
+        .website-link {
+            color: #E20021;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .website-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .location-details {
+                flex-direction: column;
+            }
+        }
+
+        /* Info Button Styles */
+        .info-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #E20021;
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: none; /* Hidden by default on desktop */
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-family: serif;
+            font-style: italic;
+            position: absolute;
+            right: 15px;
+            bottom: 15px;
+            z-index: 2;
+        }
+
+        .info-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 8px rgba(226, 0, 33, 0.3);
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .affiliate-card {
+                cursor: default;
+            }
+
+            .affiliate-card:hover {
+                transform: none;
+                box-shadow: none;
+            }
+
+            .info-btn {
+                display: flex; /* Show only on mobile */
+            }
+        }
+
+        /* Card Styles Update */
+        .affiliate-card {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .affiliate-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Update mobile header styles */
+        .mobile-header {
+            background-color: white !important;
+        }
+
+        .mobile-header .logo img {
+            height: 40px;
+            width: auto;
+            filter: none !important;
+        }
+
+        .mobile-header.light-background .logo img {
+            filter: none !important;
+        }
+    </style>
+</head>
+<body class="template-page">
+    <!-- Promo notification bar -->
+    <div class="promo-notification-bar">
+        <div class="marquee-container">
+            <div class="marquee-content">
+	                <span>🚨 IMPORTANT NOTICE: Saturday, Dec 19, Service disruption. <a href="/notices">Please see full announcement details</a></span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Top notification bar -->
+    <div class="notification-bar">
+        <button class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+        <a href="#" class="directions">Directions to Gwanghwamun ticket office <img src="imgs/googleicon.png" style="width:25px; height:20px;"><img src="imgs/navericon.png" style="width:22px; height:20px;"></a>
+        <div class="right-section">
+            <div class="customer-service">
+                <span>CUSTOMER SERVICE:</span> <span class="phone-number">02 777 6090</span>
+            </div>
+            <div class="language-selector">
+                <button class="language-btn">
+                    <img src="imgs/globe.svg" alt="Language" class="globe-icon">
+                </button>
+                <div class="language-dropdown">
+                    <a href="#" data-lang="en">English</a>
+                    <a href="#" data-lang="kr">한국어</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <button class="mobile-menu-btn">☰</button>
+        <div class="logo">
+	            <a href="/"><img src="imgs/redlogo-tigerbus.png" alt="Seoul City Tour Tiger Bus"></a>
+        </div>
+        <div class="nav-buttons">
+	            <a href="/booking" class="booking-btn">
+                <img src="imgs/bookingicon.png" alt="Booking">
+                BOOKING
+            </a>
+	            <a href="/my-booking" class="login-btn">
+                <img src="imgs/myaccounticon.png" alt="My Account">
+                MY BOOKING
+            </a>
+        </div>
+    </div>
+
+    <!-- Navigation bar -->
+    <nav class="main-nav">
+        <ul class="nav-links">
+	            <li><a href="/" class="home-logo"><img src="imgs/smalllogo.png" alt="Home"></a></li>
+	            <li><a href="/tours">Tours</a></li>
+	            <li><a href="/map">Map</a></li>
+	            <li><a href="/notices">Notices</a></li>
+	            <li><a href="/blog">Discover</a></li>
+	            <li><a href="/discounts" class="active">Discounts</a></li>
+	            <li><a href="/help">Help</a></li>
+        </ul>
+        <div class="nav-buttons">
+	            <a href="/booking" class="booking-btn">
+                <img src="imgs/bookingicon.png" alt="Booking">
+                BOOKING
+            </a>
+	            <a href="/my-booking" class="login-btn">
+                <img src="imgs/myaccounticon.png" alt="My Account">
+                MY BOOKING
+            </a>
+        </div>
+    </nav>
+
+    <!-- Template Header Section -->
+    <header class="template-header">
+        <div class="logo">
+            <img src="imgs/logo.svg" alt="Seoul City Tour Tiger Bus">
+        </div>
+    </header>
+
+    <!-- Template Content Section -->
+    <main class="template-content">
+        <div class="content-container">
+            <!-- Discount Banner -->
+            <div class="discount-banner">
+                <img src="imgs/banner.png" alt="Discount Banner Background" class="banner-background">
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="tab-container">
+                <div class="tab-navigation">
+                    <button class="tab-button active" data-tab="affiliate">Affiliate Discounts</button>
+                    <button class="tab-button" data-tab="partner">Partner with Us</button>
+                    <button class="tab-button" data-tab="recommend">Recommend a Place</button>
+                </div>
+            </div>
+
+            <!-- Affiliate Discounts Tab Content -->
+            <div class="tab-content active" id="affiliate-tab">
+                <div class="affiliate-section">
+                    <h2>Affiliate Discounts</h2>
+                    <div class="affiliate-grid">
+                        <!-- Card 1 -->
+                        <div class="affiliate-card">
+                            <div class="discount-tag">15% OFF</div>
+                            <img src="imgs/discount-1.png" alt="DDP">
+                            <div class="card-info">
+                                <div class="info-text">
+                                    <h3>Bangtae Makguksu</h3>
+                                    <div class="description">
+                                        <p class="description-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo, provident ex temporibus eligendi eveniet dignissimos ipsam tenetur vel expedita eos sint quod quia molestias ad voluptates laboriosam ut corrupti cumque.</p>
+                                    </div>
+                                </div>
+	                                <button class="info-btn" data-location="Bangtae Makguksu" 
+	                                    data-address="157 Jongno, Jongno-gu, Seoul" 
+	                                    data-benefit="15% OFF for Tiger Bus ticket holders."
+	                                    data-retrieve="Show your Tiger Bus tour ticket at checkout to redeem."
+	                                    data-website="https://www.bangtaemakguksu.com">
+                                    i
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="affiliate-card">
+                            <div class="discount-tag">15% OFF</div>
+                            <img src="imgs/discount-2.png" alt="Ganga">
+                            <div class="card-info">
+                                <div class="info-text">
+                                    <h3>Ganga</h3>
+                                    <div class="description">
+                                        <p class="description-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem amet laudantium, quidem voluptatum perferendis voluptatem facilis facere repellendus, ratione illo eum sequi aut. Nulla sed, reprehenderit provident quod quas obcaecati!</p>
+                                    </div>
+                                </div>
+	                                <button class="info-btn" data-location="Ganga" 
+	                                    data-address="123 Ganga Street, Seoul" 
+	                                    data-benefit="15% OFF for Tiger Bus ticket holders."
+	                                    data-retrieve="Show your Tiger Bus tour ticket at checkout to redeem."
+	                                    data-website="https://www.ganga.com">
+                                    i
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="affiliate-card">
+                            <div class="discount-tag">15% OFF</div>
+                            <img src="imgs/discount-3.png" alt="Haus">
+                            <div class="card-info">
+                                <div class="info-text">
+                                    <h3>Haus</h3>
+                                    <div class="description">
+                                        <p class="description-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem amet laudantium, quidem voluptatum perferendis voluptatem facilis facere repellendus, ratione illo eum sequi aut. Nulla sed, reprehenderit provident quod quas obcaecati!</p>
+                                    </div>
+                                </div>
+	                                <button class="info-btn" data-location="Haus" 
+	                                    data-address="456 Haus Street, Seoul" 
+	                                    data-benefit="15% OFF for Tiger Bus ticket holders."
+	                                    data-retrieve="Show your Tiger Bus tour ticket at checkout to redeem."
+	                                    data-website="https://www.haus.com">
+                                    i
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Card 4 -->
+                        <div class="affiliate-card">
+                            <div class="discount-tag">15% OFF</div>
+                            <img src="imgs/discount-4.png" alt="Gwangho">
+                            <div class="card-info">
+                                <div class="info-text">
+                                    <h3>Gwangho</h3>
+                                    <div class="description">
+                                        <p class="description-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem amet laudantium, quidem voluptatum perferendis voluptatem facilis facere repellendus, ratione illo eum sequi aut. Nulla sed, reprehenderit provident quod quas obcaecati!</p>
+                                    </div>
+                                </div>
+	                                <button class="info-btn" data-location="Gwangho" 
+	                                    data-address="789 Gwangho Street, Seoul" 
+	                                    data-benefit="15% OFF for Tiger Bus ticket holders."
+	                                    data-retrieve="Show your Tiger Bus tour ticket at checkout to redeem."
+	                                    data-website="https://www.gwangho.com">
+                                    i
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Card 5 -->
+                        <div class="affiliate-card">
+                            <div class="discount-tag">15% OFF</div>
+                            <img src="imgs/discount-5.png" alt="Kansong Museum">
+                            <div class="card-info">
+                                <div class="info-text">
+                                    <h3>Kansong Museum</h3>
+                                    <div class="description">
+                                        <p class="description-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem amet laudantium, quidem voluptatum perferendis voluptatem facilis facere repellendus, ratione illo eum sequi aut. Nulla sed, reprehenderit provident quod quas obcaecati!</p>
+                                    </div>
+                                </div>
+	                                <button class="info-btn" data-location="Kansong Museum" 
+	                                    data-address="321 Museum Road, Seoul" 
+	                                    data-benefit="15% OFF for Tiger Bus ticket holders."
+	                                    data-retrieve="Show your Tiger Bus tour ticket at checkout to redeem."
+	                                    data-website="https://www.kansongmuseum.com">
+                                    i
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Card 6 -->
+                        <div class="affiliate-card">
+                            <div class="discount-tag">15% OFF</div>
+                            <img src="imgs/discount-6.png" alt="Mom's Touch">
+                            <div class="card-info">
+                                <div class="info-text">
+                                    <h3>Mom's Touch</h3>
+                                    <div class="description">
+                                        <p class="description-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem amet laudantium, quidem voluptatum perferendis voluptatem facilis facere repellendus, ratione illo eum sequi aut. Nulla sed, reprehenderit provident quod quas obcaecati!</p>
+                                    </div>
+                                </div>
+	                                <button class="info-btn" data-location="Mom's Touch" 
+	                                    data-address="654 Food Street, Seoul" 
+	                                    data-benefit="15% OFF for Tiger Bus ticket holders."
+	                                    data-retrieve="Show your Tiger Bus tour ticket at checkout to redeem."
+	                                    data-website="https://www.momstouch.com">
+                                    i
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Card 7 -->
+                        <div class="affiliate-card">
+                            <div class="discount-tag">15% OFF</div>
+                            <img src="imgs/discount-7.png" alt="ZAMSHH">
+                            <div class="card-info">
+                                <div class="info-text">
+                                    <h3>ZAMSHH (Massage Chair Cafe)</h3>
+                                    <div class="description">
+                                        <p class="description-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem amet laudantium, quidem voluptatum perferendis voluptatem facilis facere repellendus, ratione illo eum sequi aut. Nulla sed, reprehenderit provident quod quas obcaecati!</p>
+                                    </div>
+                                </div>
+	                                <button class="info-btn" data-location="ZAMSHH" 
+	                                    data-address="987 Cafe Street, Seoul" 
+	                                    data-benefit="15% OFF for Tiger Bus ticket holders."
+	                                    data-retrieve="Show your Tiger Bus tour ticket at checkout to redeem."
+	                                    data-website="https://www.zamshh.com">
+                                    i
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Card 8 -->
+                        <div class="affiliate-card">
+                            <div class="discount-tag">15% OFF</div>
+                            <img src="imgs/discount-8.png" alt="Gwanghwamun Hansang">
+                            <div class="card-info">
+                                <div class="info-text">
+                                    <h3>Gwanghwamun Hansang</h3>
+                                    <div class="description">
+                                        <p class="description-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem amet laudantium, quidem voluptatum perferendis voluptatem facilis facere repellendus, ratione illo eum sequi aut. Nulla sed, reprehenderit provident quod quas obcaecati!</p>
+                                    </div>
+                                </div>
+	                                <button class="info-btn" data-location="Gwanghwamun Hansang" 
+	                                    data-address="147 Gwanghwamun Street, Seoul" 
+	                                    data-benefit="15% OFF for Tiger Bus ticket holders."
+	                                    data-retrieve="Show your Tiger Bus tour ticket at checkout to redeem."
+	                                    data-website="https://www.gwanghwamunhansang.com">
+                                    i
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="notices-pagination">
+                        <button class="prev-page">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <div class="page-numbers">
+                            <a href="#" class="active">1</a>
+                            <a href="#">2</a>
+                            <a href="#">3</a>
+                            <a href="#">4</a>
+                            <a href="#">5</a>
+                        </div>
+                        <button class="next-page">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Partner with Us Tab Content -->
+            <div class="tab-content" id="partner-tab">
+                <div class="partner-section">
+                    <h2>Partner with Us</h2>
+                    <div class="partner-content">
+                        <div class="partner-info">
+                            <h3>Become a Seoul City Tour Partner</h3>
+                            <p>Join our network of trusted partners and reach thousands of tourists visiting Seoul every day. Partner businesses receive prominent placement in our discount program and benefit from increased foot traffic and visibility.</p>
+                            
+                            <h4>Benefits of Partnering</h4>
+                            <ul>
+                                <li>Exposure to international and local tourists</li>
+                                <li>Listing on our website and mobile app</li>
+                                <li>Featured in our printed materials</li>
+                                <li>Promotional opportunities at our ticket offices</li>
+                                <li>Cross-marketing opportunities</li>
+                            </ul>
+                            
+                            <h4>Requirements</h4>
+                            <ul>
+                                <li>Business must be located near one of our bus routes or attractions</li>
+                                <li>Offer a minimum discount of 10% or special promotion for Seoul City Tour passengers</li>
+                                <li>Maintain consistent business hours</li>
+                                <li>Display partner logo at your business location</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="partner-form">
+                            <h3>Apply to Become a Partner</h3>
+                            <form id="partner-application-form">
+                                <div class="form-group">
+                                    <label for="business-name">Business Name*</label>
+                                    <input type="text" id="business-name" name="business-name" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="business-type">Business Type*</label>
+                                    <select id="business-type" name="business-type" required>
+                                        <option value="">Select business type</option>
+                                        <option value="restaurant">Restaurant</option>
+                                        <option value="cafe">Café</option>
+                                        <option value="museum">Museum/Gallery</option>
+                                        <option value="shopping">Shopping</option>
+                                        <option value="entertainment">Entertainment</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="contact-name">Contact Name*</label>
+                                    <input type="text" id="contact-name" name="contact-name" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="contact-email">Email*</label>
+                                    <input type="email" id="contact-email" name="contact-email" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="contact-phone">Phone*</label>
+                                    <input type="tel" id="contact-phone" name="contact-phone" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="business-address">Business Address*</label>
+                                    <textarea id="business-address" name="business-address" required></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="proposed-discount">Proposed Discount/Promotion*</label>
+                                    <textarea id="proposed-discount" name="proposed-discount" placeholder="Describe the discount or special offer you can provide to Seoul City Tour passengers" required></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="business-description">Business Description*</label>
+                                    <textarea id="business-description" name="business-description" placeholder="Tell us about your business, services/products, and why you'd be a good partner" required></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <button type="submit" class="submit-btn">Submit Application</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommend a Place Tab Content -->
+            <div class="tab-content" id="recommend-tab">
+                <div class="recommend-section">
+                    <h2>Recommend a Place</h2>
+                    <div class="recommend-content">
+                        <div class="recommend-info">
+                            <h3>Help Us Discover Seoul's Best Spots</h3>
+                            <p>Do you know an amazing restaurant, café, museum, or attraction that should be part of our discount program? Let us know! We're always looking to expand our partner network and provide the best experiences for our passengers.</p>
+                            
+                            <p>Your recommendations help us create a more authentic and enjoyable experience for visitors to Seoul. If your recommendation becomes one of our partners, we'll send you a special discount code for your next Seoul City Tour journey!</p>
+                        </div>
+                        
+                        <div class="recommend-form">
+                            <h3>Recommend a Business</h3>
+                            <form id="recommend-form">
+                                <div class="form-group">
+                                    <label for="rec-business-name">Business Name*</label>
+                                    <input type="text" id="rec-business-name" name="rec-business-name" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="rec-business-type">Business Type*</label>
+                                    <select id="rec-business-type" name="rec-business-type" required>
+                                        <option value="">Select business type</option>
+                                        <option value="restaurant">Restaurant</option>
+                                        <option value="cafe">Café</option>
+                                        <option value="museum">Museum/Gallery</option>
+                                        <option value="shopping">Shopping</option>
+                                        <option value="entertainment">Entertainment</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="rec-location">Location/Address (if known)</label>
+                                    <textarea id="rec-location" name="rec-location"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="rec-why">Why do you recommend this place?*</label>
+                                    <textarea id="rec-why" name="rec-why" placeholder="Tell us what makes this place special and why it would be good for Seoul City Tour passengers" required></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="rec-your-name">Your Name*</label>
+                                    <input type="text" id="rec-your-name" name="rec-your-name" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="rec-your-email">Your Email*</label>
+                                    <input type="email" id="rec-your-email" name="rec-your-email" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <button type="submit" class="submit-btn">Submit Recommendation</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Partner Link Section -->
+    <div class="partner-link-section" style="text-align: center; padding: 20px 0;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; gap: 20px;">
+            <style>
+                @media (max-width: 768px) {
+                    .partner-link-container {
+                        flex-direction: column !important;
+                    }
+                    .partner-link-box {
+                        margin-bottom: 20px !important;
+                    }
+                }
+            </style>
+            <div class="partner-link-container" style="max-width: 1200px; margin: 0 auto; display: flex; gap: 20px; width: 100%;">
+                <!-- Partner Form Box -->
+                <div class="partner-link-box" style="flex: 1; background-color: #f9f9f9; padding: 30px 50px; border-radius: 10px; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                    <span style="font-size: 20px; text-align: center;">If you'd like to partner with us as a business, please visit the partner form below </span>
+                    <button onclick="openPartnerTab()" style="padding: 15px 30px; background-color: #e4002b; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 20px;">Partner Form</button>
+                </div>
+                
+                <!-- Recommend A Place Box -->
+                <div class="partner-link-box" style="flex: 1; background-color: #f9f9f9; padding: 30px 50px; border-radius: 10px; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                    <span style="font-size: 20px; text-align: center;">If you'd like to recommend a place, please fill out the reccommend a place form below </span>
+                    <button onclick="openRecommendTab()" style="padding: 15px 30px; background-color: #e4002b; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 20px;">Recommend A Place</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action Section -->
+    <section class="courses template-courses">
+        <!-- ... rest of the template content ... -->
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <!-- Left Section -->
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <img src="imgs/redlogo-tigerbus.png" alt="Tiger Bus Logo">
+                </div>
+                <div class="footer-info">
+                    <p>302, 135-7, Sejong-daero, Jung-gu, Seoul / Jinyong Kil, CEO of Seoul City Tour Bus Co., Ltd.</p>
+                    <p>Business registration number 104-81-27542</p>
+                    <p>Telecommunication sales report number 2005-Jung-gu, Seoul-03675</p>
+                </div>
+            </div>
+
+            <!-- Middle Section -->
+            <div class="footer-nav">
+                <ul>
+	                    <li><a href="/privacy-policy">Privacy Policy</a></li>
+	                    <li><a href="/about-us">About Us</a></li>
+	                    <li><a href="/business-inquiry">Business Inquiry</a></li>
+                </ul>
+            </div>
+
+            <!-- Right Section -->
+            <div class="footer-right">
+                <div class="social-links">
+                    <a href="#" class="social-icon">
+                        <img src="imgs/footericon-1.png" alt="Instagram">
+                    </a>
+                    <a href="#" class="social-icon">
+                        <img src="imgs/footericon-2.png" alt="Visit Seoul">
+                    </a>
+                    <a href="#" class="social-icon">
+                        <img src="imgs/footericon-3.png" alt="Blog">
+                    </a>
+                </div>
+                <div class="contact-info">
+                    <p class="footer-contact-label">Gwanghwamun Main Office Customer Inquiries</p>
+                    <p class="footer-phone-number">02-777-6090</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="footer-info">
+                <!-- Footer info is already in the left section -->
+            </div>
+            <div class="footer-illustration">
+                <img src="imgs/footerimg.png" alt="Seoul City Illustration">
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <button class="mobile-menu-close">×</button>
+        <ul class="mobile-menu-links">
+            <li><a href="#">Trips</a></li>
+	            <li><a href="/map">Map</a></li>
+	            <li><a href="/notices">Notice</a></li>
+	            <li><a href="/discounts">Discounts</a></li>
+	            <li><a href="/blog">Blog</a></li>
+	            <li><a href="/help">Help</a></li>
+        </ul>
+        <div class="logo">
+	            <a href="/">
+                <img src="imgs/logo.svg" alt="Seoul City Tour Tiger Bus">
+            </a>
+        </div>
+    </div>
+
+    <!-- Location Modal -->
+    <div class="modal-backdrop"></div>
+	    <div class="location-modal">
+        <button class="modal-close">&times;</button>
+        <div class="modal-content">
+            <div class="location-details">
+                <div class="details-left">
+	                    <div class="affiliate-hero">
+	                        <img class="location-hero-img" src="" alt="" style="display:none;" />
+	                    </div>
+                    <div class="detail-section">
+                        <h3><i class="fas fa-map-marker-alt"></i> Location</h3>
+                        <div class="address-info">
+                            <i class="fas fa-location-dot"></i>
+                            <div>
+                                <p class="location-address"></p>
+                                <a href="#" class="location-button" target="_blank">Get Directions</a>
+                            </div>
+                        </div>
+                    </div>
+
+	                    <div class="detail-section">
+	                        <h3><i class="fas fa-gift"></i> Benefit</h3>
+	                        <div class="benefit-box">
+	                            <p class="benefit-text"></p>
+	                        </div>
+	                    </div>
+
+                    <div class="detail-section">
+                        <h3><i class="fas fa-globe"></i> Website</h3>
+                        <a href="#" class="website-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i>
+                            <span class="website-url">Visit Website</span>
+                        </a>
+                    </div>
+                </div>
+
+	                <div class="details-right">
+	                    <div class="partner-header">
+	                        <h2 class="location-name"></h2>
+	                        <p class="location-desc" style="display:none;"></p>
+	                    </div>
+
+	                    <div class="detail-section">
+	                        <h3><i class="fas fa-ticket-alt"></i> How to Retrieve</h3>
+	                        <div class="retrieve-box">
+	                            <p class="retrieve-text"></p>
+	                        </div>
+	                    </div>
+
+	                    <div class="detail-section">
+	                        <h3><i class="fas fa-circle-info"></i> Contact Info</h3>
+	                        <div class="contact-box">
+	                            <p class="contact-text"></p>
+	                        </div>
+	                    </div>
+	                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Function to open partner tab
+    function openPartnerTab() {
+        // Remove active class from all tabs and contents
+        document.querySelectorAll('.tab-button').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        // Add active class to partner tab and content
+        document.querySelector('[data-tab="partner"]').classList.add('active');
+        document.getElementById('partner-tab').classList.add('active');
+        
+        // Scroll to the partner form
+        document.getElementById('partner-tab').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Function to open recommend tab
+    function openRecommendTab() {
+        // Remove active class from all tabs and contents
+        document.querySelectorAll('.tab-button').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        // Add active class to recommend tab and content
+        document.querySelector('[data-tab="recommend"]').classList.add('active');
+        document.getElementById('recommend-tab').classList.add('active');
+        
+        // Scroll to the recommend form
+        document.getElementById('recommend-tab').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.querySelector('.location-modal');
+        const backdrop = document.querySelector('.modal-backdrop');
+        const closeBtn = document.querySelector('.modal-close');
+        const affiliateCards = document.querySelectorAll('.affiliate-card');
+        const infoButtons = document.querySelectorAll('.info-btn');
+
+	        // Minimal mobile menu + language dropdown wiring (avoid depending on legacy script.js)
+	        const mobileMenu = document.querySelector('.mobile-menu');
+	        document.querySelectorAll('.mobile-menu-btn').forEach((btn) => {
+	            btn.addEventListener('click', () => mobileMenu?.classList.add('active'));
+	        });
+	        document.querySelectorAll('.mobile-menu-close').forEach((btn) => {
+	            btn.addEventListener('click', () => mobileMenu?.classList.remove('active'));
+	        });
+
+	        const languageBtn = document.querySelector('.language-btn');
+	        const languageDropdown = document.querySelector('.language-dropdown');
+	        if (languageBtn && languageDropdown) {
+	            languageBtn.addEventListener('click', (e) => {
+	                e.stopPropagation();
+	                languageDropdown.classList.toggle('active');
+	            });
+	            document.addEventListener('click', () => languageDropdown.classList.remove('active'));
+	            languageDropdown.addEventListener('click', (e) => e.stopPropagation());
+	        }
+
+	        // Safety: if modal markup isn't present, don't run modal wiring.
+	        if (!modal || !backdrop || !closeBtn) return;
+
+	        function slugifyAffiliateName(name) {
+	            return (name || '')
+	                .toLowerCase()
+	                .trim()
+	                .replace(/[\"\']/g, '')
+	                .replace(/[^a-z0-9]+/g, '-')
+	                .replace(/^-+|-+$/g, '');
+	        }
+
+	        function openModal(data) {
+            // Update basic info
+            modal.querySelector('.location-name').textContent = data.location;
+            modal.querySelector('.location-address').textContent = data.address;
+
+			    // Hero image (left column) + description (right column)
+			    // Note: keep a fallback to .location-thumb in case older markup is reintroduced.
+			    const heroImgEl = modal.querySelector('.location-hero-img') || modal.querySelector('.location-thumb');
+			    const descEl = modal.querySelector('.location-desc');
+			    if (heroImgEl) {
+			        const src = (data.thumbSrc || '').trim();
+			        if (src) {
+			            heroImgEl.src = src;
+			            heroImgEl.alt = (data.thumbAlt || data.location || 'Affiliate').trim();
+			            heroImgEl.style.display = 'block';
+			        } else {
+			            heroImgEl.style.display = 'none';
+			            heroImgEl.removeAttribute('src');
+			        }
+			    }
+			    if (descEl) {
+			        const desc = (data.description || '').trim();
+			        descEl.textContent = desc;
+			        descEl.style.display = desc ? 'block' : 'none';
+			    }
+
+	            // Update benefit + retrieval text
+	            const benefitText = modal.querySelector('.benefit-text');
+	            const retrieveText = modal.querySelector('.retrieve-text');
+	            const fallbackBenefit = data.discount
+	                ? `${data.discount} benefit for Tiger Bus ticket holders.`
+	                : 'Exclusive partner benefit for Tiger Bus ticket holders.';
+	            const fallbackRetrieve = 'Show your Tiger Bus tour ticket at checkout to redeem.';
+	            if (benefitText) benefitText.textContent = (data.benefit || '').trim() || fallbackBenefit;
+	            if (retrieveText) retrieveText.textContent = (data.retrieve || '').trim() || fallbackRetrieve;
+
+			    // Contact info (placeholder now; supports DB fields later)
+			    const contactText = modal.querySelector('.contact-text');
+			    const fallbackContact = 'Contact details coming soon.';
+			    if (contactText) contactText.textContent = (data.contact || '').trim() || fallbackContact;
+
+            // Update directions link
+            const locationButton = modal.querySelector('.location-button');
+            locationButton.href = `https://maps.google.com/?q=${encodeURIComponent(data.address)}`;
+
+            // Update website link
+            const websiteLink = modal.querySelector('.website-link');
+            const websiteUrl = modal.querySelector('.website-url');
+            if (data.website) {
+                websiteLink.href = data.website;
+                websiteUrl.textContent = new URL(data.website).hostname;
+                websiteLink.style.display = 'inline-flex';
+            } else {
+                websiteLink.style.display = 'none';
+            }
+
+            modal.classList.add('active');
+            backdrop.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            backdrop.classList.remove('active');
+        }
+
+	        // If we were redirected here with a query param, auto-open that affiliate
+	        // Example: discounts.html?affiliate=bangtae-makguksu
+	        (function maybeAutoOpenAffiliateFromURL() {
+	            const affiliateSlug = (new URLSearchParams(window.location.search).get('affiliate') || '').trim().toLowerCase();
+	            if (!affiliateSlug) return;
+	            if (!infoButtons || infoButtons.length === 0) return;
+
+	            const matchBtn = Array.from(infoButtons).find(btn => {
+	                const loc = (btn.dataset.location || '').trim();
+	                return slugifyAffiliateName(loc) === affiliateSlug;
+	            });
+	            if (!matchBtn) return;
+
+	            const card = matchBtn.closest('.affiliate-card');
+	            const cardImg = card ? card.querySelector('img') : null;
+	            const cardDesc = card ? card.querySelector('.description-text') : null;
+	            const discountEl = matchBtn.closest('.affiliate-card')?.querySelector('.discount-tag');
+	            const data = {
+	                location: matchBtn.dataset.location,
+	                address: matchBtn.dataset.address,
+	                thumbSrc: (matchBtn.dataset.thumb || (cardImg ? (cardImg.getAttribute('src') || cardImg.src) : '') || '').trim(),
+	                thumbAlt: (matchBtn.dataset.thumbAlt || (cardImg ? cardImg.alt : '') || matchBtn.dataset.location || '').trim(),
+	                description: (matchBtn.dataset.description || (cardDesc ? cardDesc.textContent : '') || '').trim(),
+	                contact: (matchBtn.dataset.contact || '').trim(),
+	                discount: (matchBtn.dataset.discount || (discountEl ? discountEl.textContent : '') || '').trim(),
+	                benefit: matchBtn.dataset.benefit,
+	                retrieve: matchBtn.dataset.retrieve,
+	                website: matchBtn.dataset.website,
+	            };
+
+	            openModal(data);
+	        })();
+
+        // Handle card clicks on desktop
+        affiliateCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                // Only trigger on desktop and if not clicking the info button
+                if (window.innerWidth > 768 && !e.target.closest('.info-btn')) {
+                    const infoBtn = card.querySelector('.info-btn');
+	                    const cardImg = card.querySelector('img');
+	                    const cardDesc = card.querySelector('.description-text');
+	                    const discountEl = infoBtn.closest('.affiliate-card')?.querySelector('.discount-tag');
+	                    const data = {
+	                        location: infoBtn.dataset.location,
+	                        address: infoBtn.dataset.address,
+	                        thumbSrc: (infoBtn.dataset.thumb || (cardImg ? (cardImg.getAttribute('src') || cardImg.src) : '') || '').trim(),
+	                        thumbAlt: (infoBtn.dataset.thumbAlt || (cardImg ? cardImg.alt : '') || infoBtn.dataset.location || '').trim(),
+	                        description: (infoBtn.dataset.description || (cardDesc ? cardDesc.textContent : '') || '').trim(),
+					        contact: (infoBtn.dataset.contact || '').trim(),
+	                        discount: (infoBtn.dataset.discount || (discountEl ? discountEl.textContent : '') || '').trim(),
+	                        benefit: infoBtn.dataset.benefit,
+	                        retrieve: infoBtn.dataset.retrieve,
+	                        website: infoBtn.dataset.website,
+	                    };
+                    openModal(data);
+                }
+            });
+        });
+
+        // Handle info button clicks on mobile
+        infoButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent card click
+	                const card = button.closest('.affiliate-card');
+	                const cardImg = card ? card.querySelector('img') : null;
+	                const cardDesc = card ? card.querySelector('.description-text') : null;
+	                const discountEl = button.closest('.affiliate-card')?.querySelector('.discount-tag');
+	                const data = {
+	                    location: button.dataset.location,
+	                    address: button.dataset.address,
+		                    thumbSrc: (button.dataset.thumb || (cardImg ? (cardImg.getAttribute('src') || cardImg.src) : '') || '').trim(),
+		                    thumbAlt: (button.dataset.thumbAlt || (cardImg ? cardImg.alt : '') || button.dataset.location || '').trim(),
+		                    description: (button.dataset.description || (cardDesc ? cardDesc.textContent : '') || '').trim(),
+					        contact: (button.dataset.contact || '').trim(),
+	                    discount: (button.dataset.discount || (discountEl ? discountEl.textContent : '') || '').trim(),
+	                    benefit: button.dataset.benefit,
+	                    retrieve: button.dataset.retrieve,
+	                    website: button.dataset.website,
+	                };
+                openModal(data);
+            });
+        });
+
+        closeBtn.addEventListener('click', closeModal);
+        backdrop.addEventListener('click', closeModal);
+    });
+    </script>
+</body>
+</html> 
