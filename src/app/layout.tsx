@@ -2,9 +2,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import Footer from "@/components/layout/Footer";
-import SiteHeader from "@/components/layout/SiteHeader";
-
 export const metadata: Metadata = {
   title: "Seoul City Tour Tiger Bus",
   description: "Seoul City Tour Tiger Bus.",
@@ -29,11 +26,7 @@ export default function RootLayout({
 			{/* Homepage-only styles are scoped to `body.index-page` */}
 			<link rel="stylesheet" href="/css/pages/home.css" />
       </head>
-      <body>
-        <SiteHeader />
-        {children}
-        <Footer />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
