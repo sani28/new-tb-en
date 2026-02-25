@@ -15,6 +15,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+	        {/* Legacy pages use lots of relative URLs like `imgs/...` (including in inline CSS/JS). */}
+	        <base href="/" />
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -22,7 +24,9 @@ export default function RootLayout({
         {/* Legacy prototype CSS — load order matters for cascade */}
         <link rel="stylesheet" href="/styles.css" />
 	        <link rel="stylesheet" href="/css/components/carousel.css" />
+		        <link rel="stylesheet" href="/css/components/promo-addons-carousel.css" />
         <link rel="stylesheet" href="/template.css" />
+        <link rel="stylesheet" href="/discounts.css" />
 			{/* Homepage-only styles are scoped to `body.index-page` */}
 			<link rel="stylesheet" href="/css/pages/home.css" />
       </head>

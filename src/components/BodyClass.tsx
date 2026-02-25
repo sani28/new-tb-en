@@ -8,9 +8,14 @@ interface BodyClassProps {
 
 export default function BodyClass({ className }: BodyClassProps) {
   useEffect(() => {
-    document.body.classList.add(className);
+    const tokens = className.split(/\s+/).filter(Boolean);
+    if (tokens.length > 0) {
+      document.body.classList.add(...tokens);
+    }
     return () => {
-      document.body.classList.remove(className);
+      if (tokens.length > 0) {
+        document.body.classList.remove(...tokens);
+      }
     };
   }, [className]);
   

@@ -1218,6 +1218,37 @@
             color: #E20021;
         }
 
+        .cart-item-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .cart-item-delete {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #999;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        .cart-item-delete:hover {
+            background: #E20021;
+            border-color: #E20021;
+            color: #fff;
+        }
+
         .cart-expanded-footer {
             margin-top: 16px;
             padding-top: 16px;
@@ -2547,7 +2578,7 @@
             <li><a href="map.html">Map</a></li>
             <li><a href="notices.html">Notices</a></li>
             <li><a href="blog.html">Discover</a></li>
-            <li><a href="discounts.html">Discounts</a></li>
+            <li><a href="/discounts">Discounts</a></li>
             <li><a href="inquiries.html">Inquiries</a></li>
         </ul>
         <div class="nav-buttons">
@@ -2764,149 +2795,8 @@
                         </div>
                     </div>
 
-                    <!-- Cross-sell Section -->
-                    <div class="cross-sell-section">
-                        <h2>Enhance your Seoul experience</h2>
-                        <p class="cross-sell-subtitle">Add these popular items to your booking</p>
-
-                        <!-- Category Tabs -->
-                        <div class="category-tabs">
-                            <button class="category-tab active" data-category="products">Products</button>
-                            <button class="category-tab" data-category="experiences">Experiences</button>
-                            <button class="category-tab" data-category="services">Services</button>
-                        </div>
-
-                        <!-- Products Category - Physical items -->
-                        <div class="products-grid active" data-category="products">
-                            <div class="cross-sell-carousel">
-                                <div class="cross-sell-slide active">
-                                    <div class="product-card upsell-card" data-product-id="kwangjuyo" data-type="physical" data-price="25" data-original-price="35" data-name="Kwangjuyo">
-                                        <div class="product-badge">Best Seller</div>
-                                        <div class="product-image">
-                                            <img src="imgs/kwangjuyo.webp" alt="Kwangjuyo">
-                                        </div>
-                                        <div class="product-info">
-                                            <h3>Kwangjuyo</h3>
-                                            <p>Experience the elegance of traditional Korean ceramics with Kwangjuyo's exquisite collection.</p>
-                                            <div class="upsell-pricing">
-                                                <span class="upsell-current-price">$25.00 USD</span>
-                                                <span class="upsell-original-price">$35.00 USD</span>
-                                                <span class="discount-badge">29% OFF</span>
-                                            </div>
-                                            <button class="view-btn">View Details</button>
-                                        </div>
-                                        <div class="product-incompatible-label">To book this, please create another booking with Tour 01, Tour 02 or Tour 04</div>
-                                    </div>
-                                </div>
-                                <button class="cross-sell-nav prev">‹</button>
-                                <button class="cross-sell-nav next">›</button>
-                            </div>
-                            <div class="cross-sell-dots">
-                                <span class="dot active" data-index="0"></span>
-                            </div>
-                        </div>
-
-                        <!-- Experiences Category - Scheduled and validity pass items -->
-                        <div class="products-grid" data-category="experiences">
-                            <div class="cross-sell-carousel">
-                                <div class="cross-sell-slide active">
-                                    <div class="product-card upsell-card" data-product-id="sejong-backstage" data-type="scheduled" data-price="8" data-original-price="12" data-adult-price="8" data-child-price="5" data-name="Backstage Pass Sejong Centre">
-                                        <div class="product-badge">Exclusive</div>
-                                        <div class="product-image">
-                                            <img src="./imgs/sejong-addon.png" alt="Backstage Pass Sejong Centre">
-                                        </div>
-                                        <div class="product-info">
-                                            <h3>Backstage Pass Sejong Centre</h3>
-                                            <p>Go behind the scenes at Korea's premier performing arts venue with exclusive backstage access.</p>
-                                            <div class="upsell-pricing">
-                                                <span class="upsell-current-price">$8.00 USD</span>
-                                            </div>
-                                            <div class="type-indicator scheduled">Scheduled Experience</div>
-                                            <button class="view-btn">View Details</button>
-                                        </div>
-                                        <div class="product-incompatible-label">To book this, please create another booking with Tour 01</div>
-                                    </div>
-                                </div>
-                                <div class="cross-sell-slide">
-                                    <div class="product-card upsell-card" data-product-id="museum-pass" data-type="validityPass" data-price="25" data-original-price="35" data-adult-price="25" data-child-price="15" data-valid-until="2025-06-30" data-name="Museum Pass">
-                                        <div class="product-badge">Popular</div>
-                                        <div class="product-image">
-                                            <img src="./imgs/monet-addon.png" alt="Museum Pass">
-                                        </div>
-                                        <div class="product-info">
-                                            <h3>Museum Pass</h3>
-                                            <p>Access to major museums in Seoul. Valid for multiple entries during the validity period.</p>
-                                            <div class="upsell-pricing">
-                                                <span class="upsell-current-price">$25.00 USD</span>
-                                                <span class="upsell-original-price">$35.00 USD</span>
-                                                <span class="discount-badge">29% OFF</span>
-                                            </div>
-                                            <div class="type-indicator validity">Valid until Jun 30, 2025</div>
-                                            <button class="view-btn">View Details</button>
-                                        </div>
-                                        <div class="product-incompatible-label">To book this, please create another booking with Tour 01</div>
-                                    </div>
-                                </div>
-                                <div class="cross-sell-slide">
-                                    <div class="product-card upsell-card" data-product-id="han-river-cruise" data-type="cruise" data-price="25" data-original-price="35" data-adult-price="25" data-child-price="18" data-name="Han River Cruise">
-                                        <div class="product-badge">Popular</div>
-                                        <div class="product-image">
-                                            <img src="imgs/daycruise.png" alt="Han River Cruise">
-                                        </div>
-                                        <div class="product-info">
-                                            <h3>Han River Cruise</h3>
-                                            <p>Scenic cruise along the Han River with stunning views of Seoul's skyline. Choose from Day, Sunset, or Night cruises.</p>
-                                            <div class="upsell-pricing">
-                                                <span class="upsell-current-price">From $25.00 USD</span>
-                                                <span class="upsell-original-price">$35.00 USD</span>
-                                                <span class="discount-badge">29% OFF</span>
-                                            </div>
-                                            <div class="type-indicator scheduled">Choose Cruise Type</div>
-                                            <button class="view-btn">View Details</button>
-                                        </div>
-                                        <div class="product-incompatible-label">To book this, please create another booking with Tour 02</div>
-                                    </div>
-                                </div>
-                                <button class="cross-sell-nav prev">‹</button>
-                                <button class="cross-sell-nav next">›</button>
-                            </div>
-                            <div class="cross-sell-dots">
-                                <span class="dot active" data-index="0"></span>
-                                <span class="dot" data-index="1"></span>
-                                <span class="dot" data-index="2"></span>
-                            </div>
-                        </div>
-
-                        <!-- Services Category -->
-                        <div class="products-grid" data-category="services">
-                            <div class="cross-sell-carousel">
-                                <div class="cross-sell-slide active">
-                                    <div class="product-card upsell-card" data-product-id="hanbok-rental" data-type="scheduled" data-price="20" data-original-price="30" data-adult-price="20" data-child-price="12" data-name="Hanbok Rental">
-                                        <div class="product-badge">Popular</div>
-                                        <div class="product-image">
-                                            <img src="./imgs/hanbok-addon.png" alt="Hanbok Rental">
-                                        </div>
-                                        <div class="product-info">
-                                            <h3>Hanbok Rental</h3>
-                                            <p>Traditional Korean dress rental. Includes accessories and photo opportunities at scenic locations.</p>
-                                            <div class="upsell-pricing">
-                                                <span class="upsell-current-price">$20.00 USD</span>
-                                                <span class="upsell-original-price">$30.00 USD</span>
-                                                <span class="discount-badge">33% OFF</span>
-                                            </div>
-                                            <button class="view-btn">View Details</button>
-                                        </div>
-                                        <div class="product-incompatible-label">To book this, please create another booking with a compatible tour</div>
-                                    </div>
-                                </div>
-                                <button class="cross-sell-nav prev">‹</button>
-                                <button class="cross-sell-nav next">›</button>
-                            </div>
-                            <div class="cross-sell-dots">
-                                <span class="dot active" data-index="0"></span>
-                            </div>
-                        </div>
-                    </div>
+	                    <!-- Cross-sell Section (React) -->
+	                    <div id="booking-addons-carousel-root"></div>
 
                     <!-- Cancellation Info -->
                     <div class="cancellation-info">
@@ -3283,7 +3173,7 @@
             <li><a href="#">Trips</a></li>
             <li><a href="map.html">Map</a></li>
             <li><a href="notices.html">Notice</a></li>
-            <li><a href="discounts.html">Discounts</a></li>
+            <li><a href="/discounts">Discounts</a></li>
             <li><a href="blog.html">Blog</a></li>
             <li><a href="inquiries.html">Inquiries</a></li>
 	            <li><a href="/booking">Booking</a></li>
@@ -3654,6 +3544,8 @@
                 const childPrice = product.childPrice || product.price;
                 return {
                     ...basePayload,
+	                    adultPrice: adultPrice,
+	                    childPrice: childPrice,
                     variant: selections.variant || 'Standard',
                     selectedDate: selections.date,
                     selectedTime: selections.time || null,
@@ -3671,6 +3563,8 @@
                 const childPrice = product.childPrice || product.price;
                 return {
                     ...basePayload,
+	                    adultPrice: adultPrice,
+	                    childPrice: childPrice,
                     variant: selections.variant || 'Standard',
                     selectedDate: null, // Explicitly null for validity pass
                     validUntil: product.validUntil,
@@ -3795,167 +3689,14 @@
             }
         };
 
-        // Upsell Cart with type-aware logic
-        const UpsellCart = {
-            items: [],
+	        // Expose product catalog + selection helpers for React bridges.
+	        // Note: `const productData` is not attached to window by default.
+	        window.__tbBookingProductData = productData;
+	        window.__tbBookingCanAddToCart = function(product, selections) { return canAddToCart(product, selections); };
+	        window.__tbBookingBuildCartPayload = function(product, selections) { return buildCartPayload(product, selections); };
 
-            /**
-             * Add item using buildCartPayload for type-aware payload construction
-             * @param {Object} item - Can be raw item or already-built payload
-             */
-            addItem(item) {
-                // Determine unique key based on type
-                const getItemKey = (i) => {
-                    if (i.type === 'physical') {
-                        return `${i.productId}-${i.variant}-${i.color || 'default'}`;
-                    }
-                    if (i.type === 'scheduled') {
-                        return `${i.productId}-${i.variant}-${i.selectedDate || 'no-date'}`;
-                    }
-                    if (i.type === 'validityPass') {
-                        return `${i.productId}-${i.variant}-validity`;
-                    }
-                    return `${i.productId}-${i.variant}-${i.color || 'default'}`;
-                };
-
-                const itemKey = getItemKey(item);
-                const existingIndex = this.items.findIndex(i => getItemKey(i) === itemKey);
-
-                if (existingIndex >= 0) {
-                    // Update quantities based on type
-                    const existing = this.items[existingIndex];
-                    if (item.type === 'physical') {
-                        existing.quantity += item.quantity;
-                        existing.computedLinePrice = existing.price * existing.quantity;
-                    } else {
-                        // For scheduled/validityPass, update adult/child quantities
-                        existing.adultQty = (existing.adultQty || 0) + (item.adultQty || 0);
-                        existing.childQty = (existing.childQty || 0) + (item.childQty || 0);
-                        existing.quantity = existing.adultQty + existing.childQty;
-                        existing.computedLinePrice = item.computedLinePrice || (existing.price * existing.quantity);
-                    }
-                } else {
-                    this.items.push(item);
-                }
-                this.updateCartUI();
-            },
-
-            removeItem(index) {
-                this.items.splice(index, 1);
-                this.updateCartUI();
-            },
-
-            updateItemQuantity(index, quantity) {
-                if (quantity <= 0) {
-                    this.removeItem(index);
-                } else {
-                    const item = this.items[index];
-                    item.quantity = quantity;
-                    item.computedLinePrice = item.price * quantity;
-                    this.updateCartUI();
-                }
-            },
-
-            getTotal() {
-                return this.items.reduce((sum, item) => {
-                    // Use computedLinePrice if available, otherwise calculate
-                    if (item.computedLinePrice !== undefined) {
-                        return sum + item.computedLinePrice;
-                    }
-                    return sum + (item.price * item.quantity);
-                }, 0);
-            },
-
-            getOriginalTotal() {
-                return this.items.reduce((sum, item) => sum + (item.originalPrice * item.quantity), 0);
-            },
-
-            getItemCount() {
-                return this.items.reduce((sum, item) => sum + item.quantity, 0);
-            },
-
-            /**
-             * Get cart summary for order payload
-             */
-            getOrderPayload() {
-                return this.items.map(item => ({
-                    addonId: item.productId,
-                    title: item.name,
-                    type: item.type,
-                    category: item.category,
-                    selectedDate: item.selectedDate || null,
-                    selectedTime: item.selectedTime || null,
-                    quantity: item.quantity,
-                    adultQty: item.adultQty || null,
-                    childQty: item.childQty || null,
-                    validUntil: item.validUntil || null,
-                    variant: item.variant,
-                    color: item.color || null,
-                    computedLinePrice: item.computedLinePrice || (item.price * item.quantity)
-                }));
-            },
-            updateCartUI() {
-                const cartBar = document.getElementById('upsell-cart-bar');
-                const cartCount = document.getElementById('cart-count');
-                const cartItemsText = document.getElementById('cart-items-text');
-                const cartTotal = document.getElementById('cart-total');
-                const cartTotalExpanded = document.getElementById('cart-total-expanded');
-                const cartItemsList = document.getElementById('cart-items-list');
-
-                const itemCount = this.getItemCount();
-                const total = this.getTotal();
-
-                if (itemCount > 0) {
-                    cartBar.classList.add('visible');
-                    document.body.classList.add('cart-visible');
-                    cartCount.textContent = itemCount;
-                    cartItemsText.textContent = `${itemCount} item${itemCount > 1 ? 's' : ''} added`;
-                    cartTotal.textContent = `$${total.toFixed(2)}`;
-                    cartTotalExpanded.textContent = `$${total.toFixed(2)}`;
-
-                    // Update cart items list with type-aware display
-                    cartItemsList.innerHTML = this.items.map((item, index) => {
-                        // Build description based on type
-                        let itemDesc = item.variant || '';
-                        if (item.type === 'physical') {
-                            itemDesc = `${item.variant}${item.color ? ` - ${item.color}` : ''} × ${item.quantity}`;
-                        } else if (item.type === 'scheduled') {
-                            const dateStr = item.selectedDate ? ` • ${item.selectedDate}` : '';
-                            const timeStr = item.selectedTime ? ` @ ${item.selectedTime}` : '';
-                            itemDesc = `${item.variant}${dateStr}${timeStr} • Adult: ${item.adultQty || 0}, Child: ${item.childQty || 0}`;
-                        } else if (item.type === 'validityPass') {
-                            const validStr = item.validUntil ? ` • Valid until ${item.validUntil}` : '';
-                            itemDesc = `${item.variant}${validStr} • Adult: ${item.adultQty || 0}, Child: ${item.childQty || 0}`;
-                        } else {
-                            itemDesc = `${item.variant}${item.color ? ` - ${item.color}` : ''} × ${item.quantity}`;
-                        }
-
-                        const displayPrice = item.computedLinePrice !== undefined
-                            ? item.computedLinePrice
-                            : (item.price * item.quantity);
-
-                        return `
-                            <div class="cart-item">
-                                <div class="cart-item-info">
-                                    ${item.image ?
-                                        `<img src="${item.image}" alt="${item.name}" class="cart-item-image">` :
-                                        `<div class="cart-item-image" style="background: #f5f5f5; display: flex; align-items: center; justify-content: center; font-size: 24px;">${item.placeholder || '📦'}</div>`
-                                    }
-                                    <div class="cart-item-details">
-                                        <h5>${item.name}</h5>
-                                        <span>${itemDesc}</span>
-                                    </div>
-                                </div>
-                                <span class="cart-item-price">$${displayPrice.toFixed(2)}</span>
-                            </div>
-                        `;
-                    }).join('');
-                } else {
-                    cartBar.classList.remove('visible');
-                    document.body.classList.remove('cart-visible');
-                }
-            }
-        };
+	        // UpsellCart is now implemented in React (src/app/booking/cart/store.ts)
+	        // and exposed on window. Legacy code below continues to call UpsellCart.*.
 
         // Current product state
         let currentProduct = null;
@@ -3974,6 +3715,11 @@
                 adult: { current: 20, original: 25 },
                 child: { current: 15, original: 20 }
             },
+	            // booking.html previously omitted Tour 02 pricing; keep it aligned with Tour 01 for now.
+	            tour02: {
+	                adult: { current: 20, original: 25 },
+	                child: { current: 15, original: 20 }
+	            },
             tour04: {
                 adult: { current: 18, original: 22 },
                 child: { current: 12, original: 15 }
@@ -4243,32 +3989,20 @@
                     if (!UpsellCart || !UpsellCart.items[index]) return;
 
                     const item = UpsellCart.items[index];
-
-                    if (qtyType === 'adult') {
-                        const newQty = isPlus ? (item.adultQty || 0) + 1 : Math.max(0, (item.adultQty || 0) - 1);
-                        item.adultQty = newQty;
-                        item.quantity = (item.adultQty || 0) + (item.childQty || 0);
-                        item.computedLinePrice = (item.adultQty * item.adultPrice) + (item.childQty * (item.childPrice || item.adultPrice));
-                    } else if (qtyType === 'child') {
-                        const newQty = isPlus ? (item.childQty || 0) + 1 : Math.max(0, (item.childQty || 0) - 1);
-                        item.childQty = newQty;
-                        item.quantity = (item.adultQty || 0) + (item.childQty || 0);
-                        item.computedLinePrice = (item.adultQty * item.adultPrice) + (item.childQty * (item.childPrice || item.adultPrice));
-                    } else {
-                        const newQty = isPlus ? item.quantity + 1 : Math.max(1, item.quantity - 1);
-                        item.quantity = newQty;
-                    }
-
-                    // Remove item if quantity is 0
-                    if (item.quantity <= 0) {
-                        UpsellCart.items.splice(index, 1);
-                    }
+	
+	                    if (qtyType === 'adult') {
+	                        const newAdult = isPlus ? (item.adultQty || 0) + 1 : Math.max(0, (item.adultQty || 0) - 1);
+	                        UpsellCart.setTicketQuantities(index, newAdult, item.childQty || 0);
+	                    } else if (qtyType === 'child') {
+	                        const newChild = isPlus ? (item.childQty || 0) + 1 : Math.max(0, (item.childQty || 0) - 1);
+	                        UpsellCart.setTicketQuantities(index, item.adultQty || 0, newChild);
+	                    } else {
+	                        const newQty = isPlus ? item.quantity + 1 : Math.max(1, item.quantity - 1);
+	                        UpsellCart.updateItemQuantity(index, newQty);
+	                    }
 
                     // Refresh order summary
                     populateHanbokOrderSummary(true);
-
-                    // Update cart bar
-                    UpsellCart.updateCartUI();
                 };
             });
         }
@@ -4347,18 +4081,9 @@
                     alert('Processing payment...');
                     closeHanbokInfoModal();
 
-                    // Hide cart bar
-                    const cartBar = document.getElementById('upsell-cart-bar');
-                    if (cartBar) {
-                        cartBar.classList.remove('visible');
-                        document.body.classList.remove('cart-visible');
-                    }
-
-                    // Clear cart
-                    if (UpsellCart) {
-                        UpsellCart.items = [];
-                        UpsellCart.updateCartUI();
-                    }
+	                    // Clear cart
+	                    UpsellCart?.clear?.();
+	                    document.body.classList.remove('cart-visible');
 
                     document.body.style.overflow = '';
                 });
@@ -4372,35 +4097,35 @@
             }
         }
 
-        // Initialize booking page
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Booking page JavaScript initializing...');
-            try {
-                initHanbokInfoModal();
-                console.log('✓ Hanbok info modal initialized');
-                initTourSelector();
-                console.log('✓ Tour selector initialized');
-                initCalendar();
-                console.log('✓ Calendar initialized');
-                initTicketCounters();
-                console.log('✓ Ticket counters initialized');
-                initCrossSellCarousels();
-                console.log('✓ Cross-sell carousels initialized');
-                initCategoryTabs();
-                console.log('✓ Category tabs initialized');
-                initProductDetailsModal();
-                console.log('✓ Product details modal initialized');
-                initStepNavigation();
-                console.log('✓ Step navigation initialized');
-                initCartBar();
-                console.log('✓ Cart bar initialized');
-                updatePricing();
-                console.log('✓ Pricing updated');
-                console.log('Booking page JavaScript fully initialized!');
-            } catch (error) {
-                console.error('Error initializing booking page:', error);
-            }
-        });
+	        // Initialize booking page
+	        function initBookingPage() {
+	            console.log('Booking page JavaScript initializing...');
+	            try {
+	                initHanbokInfoModal();
+	                console.log('✓ Hanbok info modal initialized');
+	                initTourSelector();
+	                console.log('✓ Tour selector initialized');
+		                // Calendar is initialized by React (src/app/booking/BookingCalendarBridge.tsx)
+		                // to avoid duplicate listeners and to make availability deterministic.
+		                // Step 1 counters/pricing are driven by React (src/app/booking/BookingStep1Bridge.tsx).
+	                initCrossSellCarousels();
+	                console.log('✓ Cross-sell carousels initialized');
+		                // Add-on carousel + product details modal are driven by React (BookingAddonsCarouselBridge)
+	                // Step navigation + cart bar are now initialized by React (src/app/booking/BookingBehaviors.tsx)
+	                // to avoid duplicate event bindings during incremental conversion.
+		                // Pricing update is driven by React (src/app/booking/BookingStep1Bridge.tsx).
+	                console.log('Booking page JavaScript fully initialized!');
+	            } catch (error) {
+	                console.error('Error initializing booking page:', error);
+	            }
+	        }
+
+	        // React/Next may inject this legacy script after DOMContentLoaded.
+	        if (document.readyState === 'loading') {
+	            document.addEventListener('DOMContentLoaded', initBookingPage);
+	        } else {
+	            initBookingPage();
+	        }
 
         // Function to update product card compatibility based on selected tour
         function updateProductCardCompatibility(tourId) {
@@ -4462,14 +4187,8 @@
             // Initial product card compatibility update
             updateProductCardCompatibility(tourSelect.value);
 
-            // Handle change
-            tourSelect.addEventListener('change', function() {
-                updateTourDisplay(this.value);
-                updatePricing();
-                updateTourInfoPanel(this.value);
-                // Update product card compatibility when tour changes
-                updateProductCardCompatibility(this.value);
-            });
+	            // Tour change is handled by React (src/app/booking/BookingStep1Bridge.tsx)
+	            // to consolidate ticket counters, pricing, and totals into a single store.
 
             // Tour Map Popup functionality
             const mapButtons = document.querySelectorAll('.tour-map-btn');
@@ -4528,6 +4247,30 @@
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
         let selectedDate = null;
+
+	        // Expose booking date state so React bridges can read/write it safely.
+	        (function() {
+	            try {
+	                window.__tbBookingState = window.__tbBookingState || {};
+	                // If React already set a value before this script ran, hydrate local state.
+	                if (window.__tbBookingState.selectedDate) {
+	                    const d = new Date(window.__tbBookingState.selectedDate);
+	                    if (!isNaN(d.getTime())) selectedDate = d;
+	                }
+	                Object.defineProperty(window.__tbBookingState, 'selectedDate', {
+	                    get: function() { return selectedDate; },
+	                    set: function(v) {
+	                        if (!v) { selectedDate = null; return; }
+	                        const d = v instanceof Date ? v : new Date(v);
+	                        selectedDate = isNaN(d.getTime()) ? null : d;
+	                    },
+	                    configurable: true,
+	                    enumerable: true,
+	                });
+	            } catch (e) {
+	                // ignore
+	            }
+	        })();
 
         function initCalendar() {
             const dateTrigger = document.getElementById('date-trigger');
@@ -4778,6 +4521,9 @@
 
         // Product details modal
         function initProductDetailsModal() {
+	        // The add-on details modal is now rendered by React (BookingAddonsCarouselBridge).
+	        // Keep legacy implementation for reference, but skip wiring to avoid duplicate UI.
+	        if (window.__tbBookingReactAddonModal) return;
             const modal = document.getElementById('product-details-modal');
             const closeBtn = document.getElementById('close-product-modal');
             const closeBtn2 = document.getElementById('close-product-details');
@@ -5316,9 +5062,13 @@
                 // Simulate payment
                 showStep('step4');
 
-                // Clear the cart and hide cart bar after payment completion
-                UpsellCart.items = [];
-                UpsellCart.updateCartUI();
+	                // Clear the cart after payment completion
+	                if (UpsellCart && typeof UpsellCart.clear === 'function') {
+	                    UpsellCart.clear();
+	                } else if (UpsellCart) {
+	                    UpsellCart.items = [];
+	                    UpsellCart.updateCartUI();
+	                }
             });
         }
 
@@ -5677,65 +5427,7 @@
             // Bind step2 ticket controls
             bindStep2TicketControls();
 
-            // Add add-ons with editable counters
-            if (UpsellCart.items.length > 0) {
-                addonsSection.style.display = 'block';
-                let addonsHtml = '';
-
-                UpsellCart.items.forEach((item, index) => {
-                    const itemTotal = item.computedLinePrice || (item.price * item.quantity);
-                    const itemOriginal = item.originalPrice * item.quantity;
-                    subtotal += itemTotal;
-                    originalSubtotal += itemOriginal;
-
-                    // Build meta description based on item type
-                    let metaDesc = item.variant || '';
-                    if (item.type === 'scheduled') {
-                        const dateStr = item.selectedDate ? item.selectedDate : '';
-                        const timeStr = item.selectedTime ? ` @ ${item.selectedTime}` : '';
-                        metaDesc = `${dateStr}${timeStr}`;
-                        if (item.adultQty || item.childQty) {
-                            metaDesc += ` • Adult: ${item.adultQty || 0}, Child: ${item.childQty || 0}`;
-                        }
-                    } else if (item.type === 'physical') {
-                        metaDesc = `${item.variant}${item.color ? ` - ${item.color}` : ''}`;
-                    } else if (item.type === 'validityPass') {
-                        metaDesc = `Adult: ${item.adultQty || 0}, Child: ${item.childQty || 0}`;
-                    }
-
-                    addonsHtml += `
-                        <div class="order-item addon-item" data-addon-index="${index}">
-                            <div class="order-item-info">
-                                ${item.image ?
-                                    `<img src="${item.image}" alt="${item.name}" class="order-item-image">` :
-                                    `<div class="order-item-image" style="background: #f5f5f5; display: flex; align-items: center; justify-content: center; font-size: 24px; border-radius: 8px;">${item.placeholder || '📦'}</div>`
-                                }
-                                <div class="order-item-details">
-                                    <h5>${item.name}</h5>
-                                    <span class="order-item-meta">${metaDesc}</span>
-                                </div>
-                            </div>
-                            <div class="order-item-controls">
-                                <div class="order-item-qty">
-                                    <button class="step2-addon-decrease" data-index="${index}">-</button>
-                                    <span>${item.quantity}</span>
-                                    <button class="step2-addon-increase" data-index="${index}">+</button>
-                                </div>
-                                <div class="order-item-price">
-                                    <span class="order-item-current">$${itemTotal.toFixed(2)}</span>
-                                </div>
-                                <button class="step2-remove-addon-btn" data-index="${index}" title="Remove add-on">×</button>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                addonsContainer.innerHTML = addonsHtml;
-                // Bind step2 addon controls
-                bindStep2AddonControls();
-            } else {
-                addonsSection.style.display = 'none';
-            }
+	            // Add-ons section is rendered + controlled by React (src/app/booking/cart/BookingStep2AddonsBridge.tsx)
 
             // Update totals
             updateStep2Totals();
@@ -5788,54 +5480,7 @@
             });
         }
 
-        // Bind step2 addon controls for booking.html
-        function bindStep2AddonControls() {
-            const step2 = document.getElementById('step2');
-            if (!step2) return;
-
-            // Remove buttons
-            step2.querySelectorAll('.step2-remove-addon-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    const index = parseInt(this.dataset.index);
-                    UpsellCart.removeItem(index);
-                    populateStep2OrderSummary();
-                    if (typeof updateCartBarUI === 'function') {
-                        updateCartBarUI();
-                    }
-                });
-            });
-
-            // Quantity controls
-            step2.querySelectorAll('.step2-addon-decrease, .step2-addon-increase').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    const index = parseInt(this.dataset.index);
-                    const isIncrease = this.classList.contains('step2-addon-increase');
-
-                    if (UpsellCart.items[index]) {
-                        if (isIncrease) {
-                            UpsellCart.items[index].quantity++;
-                        } else {
-                            UpsellCart.items[index].quantity = Math.max(1, UpsellCart.items[index].quantity - 1);
-                        }
-                        // Update computed price
-                        if (UpsellCart.items[index].computedLinePrice) {
-                            UpsellCart.items[index].computedLinePrice = UpsellCart.items[index].price * UpsellCart.items[index].quantity;
-                        }
-                        UpsellCart.save();
-                        populateStep2OrderSummary();
-                        if (typeof updateCartBarUI === 'function') {
-                            updateCartBarUI();
-                        }
-                    }
-                });
-            });
-        }
+	        // bindStep2AddonControls removed (now handled in React)
 
         // Update step2 totals for booking.html
         function updateStep2Totals() {

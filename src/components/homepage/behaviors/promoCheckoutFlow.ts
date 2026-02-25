@@ -1,10 +1,7 @@
 import type {
-  PromoCruiseType,
   PromoProduct,
-  PromoProductColor,
   PromoProductType,
   PromoProductVariant,
-  PromoTimeSlot,
 } from "@/types/promo";
 import { promoProductData } from "@/lib/data/promoProducts";
 import type { Cleanup } from "./types";
@@ -24,6 +21,8 @@ export function initPromoAddonProductModal(): Cleanup {
 	  const origPriceEl = document.getElementById("promoProductModalOrigPrice");
 	  const imgEl = document.getElementById("promoProductModalImg") as HTMLImageElement | null;
 	  const placeholderEl = document.getElementById("promoProductModalPlaceholder");
+
+		  const cleanupFns: Cleanup[] = [];
 
 	  const cartBar = document.getElementById("promoUpsellCartBar");
 	  const cartCount = document.getElementById("promoCartItemCount");
@@ -178,7 +177,9 @@ export function initPromoAddonProductModal(): Cleanup {
 		const paymentSubtotal = document.getElementById("promoPaymentSubtotal") as HTMLElement | null;
 		const paymentTotal = document.getElementById("promoPaymentTotal") as HTMLElement | null;
 
-	  if (!overlay || triggers.length === 0) return () => {};
+			// Promo add-on details modal markup is required for legacy flow.
+			// React now renders the add-on details modal UI, but we keep the legacy modal markup as an implementation fallback.
+			if (!overlay) return () => cleanupFns.forEach((fn) => fn());
 
 	  type PromoCartItem = {
 	    productId: string;
@@ -187,6 +188,8 @@ export function initPromoAddonProductModal(): Cleanup {
 	    category: string;
 	    price: number;
 	    originalPrice: number;
+		    adultPrice?: number;
+		    childPrice?: number;
 	    quantity: number;
 	    image?: string | null;
 	    placeholder?: string | null;
@@ -352,6 +355,104 @@ export function initPromoAddonProductModal(): Cleanup {
 		let tourSelectionSkipped = false;
 		let pendingAddItems: PromoCartItem[] = [];
 		let pendingAddonTourOptional = false;
+
+			type PromoWindow = Window & {
+			  __tbPromoOpenAddonModal?: (productId: string, sourceTour?: string | null) => void;
+			  __tbPromoAddAddonItemsToCart?: (opts: { productId: string; items: PromoCartItem[]; sourceTour?: string | null }) => void;
+			};
+
+			const addPromoItemsBatch = (itemsToAdd: PromoCartItem[]) => {
+			  if (itemsToAdd.length <= 0) return;
+
+			  const wasEmpty = PromoUpsellCart.items.length === 0;
+			  if (wasEmpty && !promoCartExpiresAt) {
+			    promoCartExpiresAt = Date.now() + PROMO_CART_SESSION_TTL_MS;
+			  }
+
+			  const existingKeys = new Set(PromoUpsellCart.items.map((i) => PromoUpsellCart.getItemKey(i)));
+			  let isUpdate = false;
+
+			  itemsToAdd.forEach((item) => {
+			    const key = PromoUpsellCart.getItemKey(item);
+			    if (existingKeys.has(key)) isUpdate = true;
+
+			    const existingIndex = PromoUpsellCart.items.findIndex((i) => PromoUpsellCart.getItemKey(i) === key);
+			    if (existingIndex >= 0) {
+			      const existing = PromoUpsellCart.items[existingIndex];
+			      if (!existing) return;
+
+			      if (item.type === "physical") {
+			        existing.quantity += item.quantity;
+			        existing.computedLinePrice = (existing.price || 0) * existing.quantity;
+			      } else {
+			        existing.adultQty = (existing.adultQty || 0) + (item.adultQty || 0);
+			        existing.childQty = (existing.childQty || 0) + (item.childQty || 0);
+			        existing.quantity = (existing.adultQty || 0) + (existing.childQty || 0);
+
+			        const existingLine = typeof existing.computedLinePrice === "number" ? existing.computedLinePrice : 0;
+			        const incomingLine =
+			          typeof item.computedLinePrice === "number" ? item.computedLinePrice : (item.price || 0) * (item.quantity || 0);
+			        existing.computedLinePrice = existingLine + incomingLine;
+			      }
+			    } else {
+			      PromoUpsellCart.items.push(item);
+			      existingKeys.add(key);
+			    }
+			  });
+
+			  PromoUpsellCart.updateUI();
+			  const msg = isUpdate ? "Cart updated" : "Added to cart";
+			  triggerPromoCartToast(msg);
+			  triggerPromoCartAddFeedback(msg);
+			};
+
+			// Bridge for React add-on details modal (AddonProductDetailsModal).
+			// React builds the add-on cart payloads; we enforce promo-tour compatibility and then add to PromoUpsellCart.
+			(window as PromoWindow).__tbPromoAddAddonItemsToCart = ({ productId, items, sourceTour }) => {
+			  if (!productId || !items || items.length === 0) return;
+
+			  if (typeof sourceTour === "string" && sourceTour) {
+			    lastTourContext = sourceTour;
+			  }
+
+			  const product = promoProductData[productId];
+			  const incomingTours = product?.compatibleTours ?? null;
+
+			  if (promoSelectedTour && !tourSelectionSkipped && incomingTours && incomingTours.length > 0) {
+			    if (!incomingTours.includes(promoSelectedTour)) {
+			      alert(
+			        `${product?.name ?? "This add-on"} is only available with ${incomingTours.join(", ")}. Please complete your current booking first, then start a new booking.`,
+			      );
+			      return;
+			    }
+			  }
+
+			  if ((!promoSelectedTour || tourSelectionSkipped) && incomingTours && incomingTours.length > 0 && PromoUpsellCart.items.length > 0) {
+			    let constrained: Set<string> | null = null;
+			    PromoUpsellCart.items.forEach((item) => {
+			      const p = promoProductData[item.productId];
+			      if (p?.compatibleTours && p.compatibleTours.length > 0) {
+			        if (!constrained) constrained = new Set(p.compatibleTours);
+			        else constrained = new Set(Array.from(constrained).filter((t) => new Set(p.compatibleTours!).has(t)));
+			      }
+			    });
+
+			    if (constrained) {
+			      const overlap = incomingTours.filter((t) => constrained!.has(t));
+			      if (overlap.length === 0) {
+			        alert(
+			          `${product?.name ?? "This add-on"} is only available with ${incomingTours.join(", ")}. Please complete your current booking first, then start a new booking.`,
+			        );
+			        return;
+			      }
+			    }
+			  }
+
+			  addPromoItemsBatch(items);
+			};
+			cleanupFns.push(() => {
+			  delete (window as PromoWindow).__tbPromoAddAddonItemsToCart;
+			});
 
 		// Step 2: tour-level date and ticket state
 		let promoTourSelectedDate: string | null = null;
@@ -718,140 +819,8 @@ export function initPromoAddonProductModal(): Cleanup {
 		  if (target) target.classList.add("active");
 		};
 
-			// Step 2: mark cross-sell cards incompatible based on selected tour (prototype behavior)
-			const updateProductCardCompatibility = (tourId: string) => {
-				if (!tourModalOverlay) return;
-				const cards = tourModalOverlay.querySelectorAll<HTMLElement>(
-					'.promo-product-card[data-product-id]',
-				);
-				cards.forEach((card) => {
-					const productId = card.dataset.productId || "";
-					const product = promoProductData[productId];
-					if (!product) return;
-					const compatibleTours = product.compatibleTours;
-					const isCompatible = !compatibleTours || compatibleTours.includes(tourId);
-					card.classList.toggle("incompatible", !isCompatible);
-
-					// Match prototype: only toggle label if present in markup.
-					const label = card.querySelector<HTMLElement>(".promo-incompatible-label");
-					if (label) label.style.display = isCompatible ? "none" : "block";
-				});
-			};
-
-			// Step 2: cross-sell carousel (tabs + slides + dots) (prototype behavior)
-			const initPromoCrossSellCarousel = (cleanupFns: Cleanup[]) => {
-				if (!tourModalOverlay) return;
-
-				const categoryTabs = Array.from(
-					tourModalOverlay.querySelectorAll<HTMLButtonElement>(".promo-category-tab"),
-				);
-				const grids = Array.from(tourModalOverlay.querySelectorAll<HTMLElement>(".promo-products-grid"));
-				if (categoryTabs.length === 0 || grids.length === 0) return;
-
-				const setActiveCategory = (category: string) => {
-					categoryTabs.forEach((t) => t.classList.toggle("active", t.dataset.category === category));
-					grids.forEach((g) => g.classList.toggle("active", g.dataset.category === category));
-				};
-
-				categoryTabs.forEach((tab) => {
-					const onTab = (e: MouseEvent) => {
-						e.preventDefault();
-						e.stopPropagation();
-						setActiveCategory(tab.dataset.category || "products");
-					};
-					tab.addEventListener("click", onTab);
-					cleanupFns.push(() => tab.removeEventListener("click", onTab));
-				});
-
-				// For each category grid, wire up its carousel controls
-				grids.forEach((grid) => {
-					const carousel = grid.querySelector<HTMLElement>(".promo-cross-sell-carousel");
-					if (!carousel) return;
-					const slides = Array.from(carousel.querySelectorAll<HTMLElement>(".promo-cross-sell-slide"));
-					const prevBtn = carousel.querySelector<HTMLButtonElement>(".promo-cross-sell-nav.prev");
-					const nextBtn = carousel.querySelector<HTMLButtonElement>(".promo-cross-sell-nav.next");
-					const dotsContainer = grid.querySelector<HTMLElement>(".promo-cross-sell-dots");
-					let currentSlide = 0;
-
-						// Match prototype expectation: hide arrows when there's only 1 product/slide in the category.
-						const hasMultipleSlides = slides.length > 1;
-						if (prevBtn) {
-							prevBtn.style.display = hasMultipleSlides ? "" : "none";
-							prevBtn.setAttribute("aria-hidden", hasMultipleSlides ? "false" : "true");
-							prevBtn.tabIndex = hasMultipleSlides ? 0 : -1;
-						}
-						if (nextBtn) {
-							nextBtn.style.display = hasMultipleSlides ? "" : "none";
-							nextBtn.setAttribute("aria-hidden", hasMultipleSlides ? "false" : "true");
-							nextBtn.tabIndex = hasMultipleSlides ? 0 : -1;
-						}
-
-					const showSlide = (idx: number) => {
-						if (slides.length === 0) return;
-						let i = idx;
-						if (i < 0) i = slides.length - 1;
-						if (i >= slides.length) i = 0;
-						currentSlide = i;
-						slides.forEach((s, si) => s.classList.toggle("active", si === i));
-						if (dotsContainer) {
-							Array.from(dotsContainer.querySelectorAll<HTMLElement>(".dot")).forEach((d, di) => {
-								d.classList.toggle("active", di === i);
-							});
-						}
-					};
-
-					if (dotsContainer) {
-						dotsContainer.innerHTML = "";
-						slides.forEach((_, i) => {
-							const dot = document.createElement("span");
-							dot.className = `dot${i === 0 ? " active" : ""}`;
-							dotsContainer.appendChild(dot);
-							const onDot = (e: MouseEvent) => {
-								e.preventDefault();
-								e.stopPropagation();
-								showSlide(i);
-							};
-							dot.addEventListener("click", onDot);
-							cleanupFns.push(() => dot.removeEventListener("click", onDot));
-						});
-					}
-
-					const onPrev = (e: MouseEvent) => {
-						e.preventDefault();
-						e.stopPropagation();
-						showSlide(currentSlide - 1);
-					};
-					const onNext = (e: MouseEvent) => {
-						e.preventDefault();
-						e.stopPropagation();
-						showSlide(currentSlide + 1);
-					};
-
-					prevBtn?.addEventListener("click", onPrev);
-					nextBtn?.addEventListener("click", onNext);
-					cleanupFns.push(() => {
-						prevBtn?.removeEventListener("click", onPrev);
-						nextBtn?.removeEventListener("click", onNext);
-					});
-
-					showSlide(0);
-				});
-
-				// View Details buttons (event delegation)
-				const onViewDetails = (e: MouseEvent) => {
-					const target = e.target as HTMLElement;
-					const btn = target.closest<HTMLButtonElement>(".promo-view-btn");
-					if (!btn) return;
-					e.preventDefault();
-					e.stopPropagation();
-					const card = btn.closest<HTMLElement>(".promo-product-card");
-					const productId = card?.dataset.productId;
-					if (!productId) return;
-					openModal(productId, tourSelect?.value || null);
-				};
-				tourModalOverlay.addEventListener("click", onViewDetails);
-				cleanupFns.push(() => tourModalOverlay.removeEventListener("click", onViewDetails));
-			};
+			// Step 2: cross-sell carousel is now implemented as a React client component
+			// (src/components/addons/EnhanceSeoulAddonsCarousel.tsx)
 
 				// Step 2: map popup open/close (placeholder: icon + title; image will be swapped in later)
 			const initPromoTourMapPopup = (cleanupFns: Cleanup[]) => {
@@ -1485,9 +1454,8 @@ export function initPromoAddonProductModal(): Cleanup {
 			      }
 			    }
 			  }
-		  const defaultTourId = tourSelect?.value || "tour01";
-		  updatePromoTourPrices(defaultTourId);
-				updateProductCardCompatibility(defaultTourId);
+			  const defaultTourId = tourSelect?.value || "tour01";
+			  updatePromoTourPrices(defaultTourId);
 		  // Continue starts disabled (no date selected yet)
 		  updateTourContinueButtonState();
 
@@ -1590,7 +1558,6 @@ export function initPromoAddonProductModal(): Cleanup {
 
 			  const defaultTourId = tourSelect?.value || "tour01";
 			  updatePromoTourPrices(defaultTourId);
-			  updateProductCardCompatibility(defaultTourId);
 			  updateTourContinueButtonState();
 
 			  tourModalOverlay.classList.add("active");
@@ -2376,7 +2343,6 @@ export function initPromoAddonProductModal(): Cleanup {
 	    promoProductSelectedTimeSlot = null;
 	  };
 
-			  const cleanupFns: Cleanup[] = [];
 				  initPromoCartBar(cleanupFns);
 				  loadPromoCartSession();
 				  cleanupFns.push(() => stopPromoCartTimer());
@@ -2416,15 +2382,39 @@ export function initPromoAddonProductModal(): Cleanup {
 			      updatePromoTourDisplay(selected);
 			      updateTourInfoPanel(selected);
 			      updatePromoTourPrices(selected);
-						updateProductCardCompatibility(selected);
 			    };
 			    tourSelect?.addEventListener("change", onTourSelectChange);
 			    cleanupFns.push(() => tourSelect?.removeEventListener("change", onTourSelectChange));
 
-						// Step 2: cross-sell carousel + map popup
-					initPromoCrossSellCarousel(cleanupFns);
+						// Step 2: map popup
 					initPromoTourMapPopup(cleanupFns);
-					updateProductCardCompatibility(tourSelect?.value || "tour01");
+
+					// Step 2: Add-on cards "View Details" (React carousel + legacy fallback)
+					// When the add-ons carousel is rendered by React, the click handler should be attached via React.
+					// In practice, the tour modal can be opened/closed by legacy DOM behaviors; this capture-phase
+					// delegation ensures the button still works even if the React boundary isn't hydrated yet.
+					const onAddonViewDetails = (e: MouseEvent) => {
+						const target = e.target as HTMLElement | null;
+						const btn = target?.closest<HTMLButtonElement>(".promo-view-btn");
+						if (!btn) return;
+						const card = btn.closest<HTMLElement>(".promo-product-card");
+						const productId = card?.dataset.productId;
+						if (!productId) return;
+
+						e.preventDefault();
+						e.stopPropagation();
+
+						const w = window as PromoWindow;
+						if (typeof w.__tbPromoOpenAddonModal === "function") {
+							w.__tbPromoOpenAddonModal(productId, tourSelect?.value || null);
+							return;
+						}
+
+						// Legacy fallback if the React bridge isn't available.
+						openModal(productId, tourSelect?.value || null);
+					};
+					tourModalOverlay.addEventListener("click", onAddonViewDetails, true);
+					cleanupFns.push(() => tourModalOverlay.removeEventListener("click", onAddonViewDetails, true));
 
 						// Allow the hero booking CTA to open this same modal (full UI parity).
 						const onOpenFromHero = (e: Event) => {
@@ -2778,7 +2768,7 @@ export function initPromoAddonProductModal(): Cleanup {
 			    cleanupFns.push(() => tourSkipBtn?.removeEventListener("click", onSkip));
 			  };
 			
-			  initPromoTourSelectionModal(cleanupFns);
+						initPromoTourSelectionModal(cleanupFns);
 
 		// ─── Step 3: Booking Information Modal ───────────────────────────
 		const initPromoBookingInfoModal = (cFns: (() => void)[]) => {
@@ -3048,7 +3038,14 @@ export function initPromoAddonProductModal(): Cleanup {
 	      const productId = card?.dataset.productId;
 	      if (!productId) return;
 
-	      openModal(productId, detectTourContext(btn));
+		      const w = window as PromoWindow;
+		      if (typeof w.__tbPromoOpenAddonModal === "function") {
+		        w.__tbPromoOpenAddonModal(productId, detectTourContext(btn));
+		        return;
+		      }
+
+		      // Fallback to legacy modal if React bridge isn't available.
+		      openModal(productId, detectTourContext(btn));
 	    };
 	    btn.addEventListener("click", onClick);
 	    cleanupFns.push(() => btn.removeEventListener("click", onClick));

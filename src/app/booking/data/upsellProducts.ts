@@ -1,10 +1,11 @@
-import { promoProductCatalogSchema } from "@/lib/schemas/promo";
 import type { PromoProduct } from "@/types/promo";
 
-// Prototype-faithful add-on data used by the homepage promo modal.
-// Centralized here so it can also be served by a backend later if needed.
-const promoProductDataRaw = {
+export type BookingUpsellProduct = PromoProduct & { id: string };
+
+// Booking page add-ons ported from public/booking.html
+export const bookingUpsellProducts: Record<string, BookingUpsellProduct> = {
   "kwangjuyo": {
+    id: "kwangjuyo",
     name: "Kwangjuyo",
     type: "physical",
     category: "products",
@@ -25,9 +26,9 @@ const promoProductDataRaw = {
       { name: "Pure White", image: "/imgs/kwangjuyo.webp" },
     ],
     compatibleTours: ["tour01", "tour02", "tour04"],
-    tourOptional: false,
   },
   "sejong-backstage": {
+    id: "sejong-backstage",
     name: "Backstage Pass Sejong Centre",
     type: "scheduled",
     category: "experiences",
@@ -37,12 +38,13 @@ const promoProductDataRaw = {
     originalPrice: 12,
     adultPrice: 8,
     childPrice: 5,
-    image: "/imgs/sejong-addon.png",
-    placeholder: null,
+    image: null,
+    placeholder: "🎭",
     variants: null,
     compatibleTours: ["tour01"],
   },
   "museum-pass": {
+    id: "museum-pass",
     name: "Museum Pass",
     type: "validityPass",
     category: "experiences",
@@ -53,12 +55,13 @@ const promoProductDataRaw = {
     adultPrice: 25,
     childPrice: 15,
     validUntil: "2025-06-30",
-    image: "/imgs/monet-addon.png",
-    placeholder: null,
+    image: null,
+    placeholder: "🏛️",
     variants: null,
     compatibleTours: ["tour01"],
   },
   "han-river-cruise": {
+    id: "han-river-cruise",
     name: "Han River Cruise",
     type: "cruise",
     category: "experiences",
@@ -107,6 +110,7 @@ const promoProductDataRaw = {
     compatibleTours: ["tour02"],
   },
   "hanbok-rental": {
+    id: "hanbok-rental",
     name: "Hanbok Rental",
     type: "scheduled",
     category: "services",
@@ -121,9 +125,5 @@ const promoProductDataRaw = {
     variants: null,
     operationHours: "10:00-18:00",
     compatibleTours: null,
-    tourOptional: true,
   },
-} satisfies Record<string, PromoProduct>;
-
-export const promoProductData = promoProductCatalogSchema.parse(promoProductDataRaw);
-
+};

@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
+import PromoEnhanceSeoulAddonsCarousel from "@/components/homepage/PromoEnhanceSeoulAddonsCarousel";
+
 export default function PromoTourSelectionModal() {
   return (
     <div className="promo-modal-overlay" id="promoTourSelectionModal" aria-hidden="true">
@@ -160,7 +162,7 @@ export default function PromoTourSelectionModal() {
               </div>
 
               {/* Upsell Carousel Section */}
-              <PromoUpsellCarousel />
+			  <PromoEnhanceSeoulAddonsCarousel />
             </div>
           </div>
 
@@ -175,150 +177,6 @@ export default function PromoTourSelectionModal() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Sub-component: Upsell cross-sell carousel with category tabs        */
-/* ------------------------------------------------------------------ */
-
-function PromoUpsellCarousel() {
-  return (
-    <div className="promo-cross-sell-section">
-      <h3>Enhance your Seoul experience</h3>
-      <p className="cross-sell-subtitle">Add these exclusive add-ons to make your tour even more memorable!</p>
-
-      <div className="promo-category-tabs">
-        <button className="promo-category-tab active" data-category="products" type="button">Products</button>
-        <button className="promo-category-tab" data-category="experiences" type="button">Experiences</button>
-        <button className="promo-category-tab" data-category="services" type="button">Services</button>
-      </div>
-
-      {/* Products */}
-      <div className="promo-products-grid active" data-category="products">
-        <div className="promo-cross-sell-carousel">
-          <div className="promo-cross-sell-slide active">
-            <div className="promo-product-card" data-product-id="kwangjuyo" data-type="physical" data-price="25" data-original-price="35">
-              <div className="promo-product-badge">Best Seller</div>
-              <div className="promo-product-image">
-                <img src="/imgs/kwangjuyo.webp" alt="Kwangjuyo" />
-              </div>
-              <div className="promo-product-info">
-                <h4>Kwangjuyo</h4>
-                <p>Experience the elegance of traditional Korean ceramics with Kwangjuyo&apos;s exquisite collection.</p>
-                <div className="promo-upsell-pricing">
-                  <span className="promo-upsell-price">$25.00 USD</span>
-                  <span className="promo-upsell-original-price">$35.00 USD</span>
-                  <span className="promo-discount-badge">29% OFF</span>
-                </div>
-                <button className="promo-view-btn" type="button">View Details</button>
-              </div>
-            </div>
-          </div>
-          <button className="promo-cross-sell-nav prev" type="button">←</button>
-          <button className="promo-cross-sell-nav next" type="button">→</button>
-        </div>
-        <div className="promo-cross-sell-dots" />
-      </div>
-
-      {/* Experiences */}
-      <div className="promo-products-grid" data-category="experiences">
-        <div className="promo-cross-sell-carousel">
-          <ExperienceSlide
-            productId="sejong-backstage"
-            type="scheduled"
-            price="8"
-            originalPrice="12"
-            adultPrice="8"
-            childPrice="5"
-            badge="Exclusive"
-            imgSrc="/imgs/sejong-addon.png"
-            imgAlt="Backstage Pass Sejong Centre"
-            title="Backstage Pass Sejong Centre"
-            description="Go behind the scenes at Korea&apos;s premier performing arts venue with exclusive backstage access."
-            priceLabel="$8.00 USD"
-            typeIndicator="Scheduled Experience"
-            typeClass="scheduled"
-          />
-          <ExperienceSlide
-            productId="museum-pass"
-            type="validityPass"
-            price="25"
-            originalPrice="35"
-            adultPrice="25"
-            childPrice="15"
-            validUntil="2025-06-30"
-            badge="Popular"
-            imgSrc="/imgs/monet-addon.png"
-            imgAlt="Museum Pass"
-            title="Museum Pass"
-            description="Access to major museums in Seoul. Valid for multiple entries during the validity period."
-            priceLabel="$25.00 USD"
-            originalPriceLabel="$35.00 USD"
-            discountLabel="29% OFF"
-            typeIndicator="Valid until Jun 30, 2025"
-            typeClass="validity"
-          />
-          <ExperienceSlide
-            productId="han-river-cruise"
-            type="cruise"
-            price="25"
-            originalPrice="35"
-            adultPrice="25"
-            childPrice="18"
-            badge="Popular"
-            imgSrc="/imgs/daycruise.png"
-            imgAlt="Han River Cruise"
-            title="Han River Cruise"
-            description="Scenic cruise along the Han River with stunning views of Seoul&apos;s skyline."
-            priceLabel="From $25.00 USD"
-            originalPriceLabel="$35.00 USD"
-            discountLabel="29% OFF"
-            typeIndicator="Choose Cruise Type"
-            typeClass="scheduled"
-            incompatibleLabel="To book this, please create another booking with Tour 02"
-          />
-          <button className="promo-cross-sell-nav prev" type="button">←</button>
-          <button className="promo-cross-sell-nav next" type="button">→</button>
-        </div>
-        <div className="promo-cross-sell-dots" />
-      </div>
-
-      {/* Services */}
-      <div className="promo-products-grid" data-category="services">
-        <div className="promo-cross-sell-carousel">
-          <div className="promo-cross-sell-slide active">
-            <div
-              className="promo-product-card"
-              data-product-id="hanbok-rental"
-              data-type="scheduled"
-              data-price="20"
-              data-original-price="30"
-              data-adult-price="20"
-              data-child-price="12"
-            >
-              <div className="promo-product-badge">Popular</div>
-              <div className="promo-product-image">
-                <img src="/imgs/hanbok-addon.png" alt="Hanbok Rental" />
-              </div>
-              <div className="promo-product-info">
-                <h4>Hanbok Rental</h4>
-                <p>Traditional Korean dress rental. Includes accessories and photo opportunities at scenic locations.</p>
-                <div className="promo-upsell-pricing">
-                  <span className="promo-upsell-price">$20.00 USD</span>
-                  <span className="promo-upsell-original-price">$30.00 USD</span>
-                  <span className="promo-discount-badge">33% OFF</span>
-                </div>
-                <button className="promo-view-btn" type="button">View Details</button>
-              </div>
-            </div>
-          </div>
-          <button className="promo-cross-sell-nav prev" type="button">←</button>
-          <button className="promo-cross-sell-nav next" type="button">→</button>
-        </div>
-        <div className="promo-cross-sell-dots" />
       </div>
     </div>
   );
@@ -355,85 +213,6 @@ function TourInfoContent({
             Map
           </button>
         </div>
-      </div>
-    </div>
-  );
-}
-
-
-/* ------------------------------------------------------------------ */
-/* Sub-component for experience / validity / cruise product slides     */
-/* ------------------------------------------------------------------ */
-
-function ExperienceSlide({
-  productId,
-  type,
-  price,
-  originalPrice,
-  adultPrice,
-  childPrice,
-  validUntil,
-  badge,
-  imgSrc,
-  imgAlt,
-  title,
-  description,
-  priceLabel,
-  originalPriceLabel,
-  discountLabel,
-  typeIndicator,
-  typeClass,
-  incompatibleLabel,
-}: {
-  productId: string;
-  type: string;
-  price: string;
-  originalPrice: string;
-  adultPrice: string;
-  childPrice: string;
-  validUntil?: string;
-  badge: string;
-  imgSrc: string;
-  imgAlt: string;
-  title: string;
-  description: string;
-  priceLabel: string;
-  originalPriceLabel?: string;
-  discountLabel?: string;
-  typeIndicator: string;
-  typeClass: string;
-  incompatibleLabel?: string;
-}) {
-  return (
-    <div className={`promo-cross-sell-slide${productId === "sejong-backstage" ? " active" : ""}`}>
-      <div
-        className="promo-product-card"
-        data-product-id={productId}
-        data-type={type}
-        data-price={price}
-        data-original-price={originalPrice}
-        data-adult-price={adultPrice}
-        data-child-price={childPrice}
-        {...(validUntil ? { "data-valid-until": validUntil } : {})}
-      >
-        <div className="promo-product-badge">{badge}</div>
-        <div className="promo-product-image">
-          <img src={imgSrc} alt={imgAlt} />
-        </div>
-        <div className="promo-product-info">
-          <h4>{title}</h4>
-          <p>{description}</p>
-          <div className="promo-upsell-pricing">
-            <span className="promo-upsell-price">{priceLabel}</span>
-            {originalPriceLabel && <span className="promo-upsell-original-price">{originalPriceLabel}</span>}
-            {discountLabel && <span className="promo-discount-badge">{discountLabel}</span>}
-          </div>
-          <div className={`promo-type-indicator ${typeClass}`}>{typeIndicator}</div>
-          <button className="promo-view-btn" type="button">View Details</button>
-        </div>
-        {incompatibleLabel && (
-          <div className="promo-incompatible-label">{incompatibleLabel}</div>
-        )}
       </div>
     </div>
   );

@@ -320,10 +320,10 @@
     display: none;
 }
 
+/* Legacy description wrappers (no longer used — React handles truncation) */
 .affiliate-card .description-wrapper,
 .affiliate-card .truncated-text,
 .affiliate-card .full-text,
-.affiliate-card .view-all-btn,
 .affiliate-card .truncated-text.expanded {
     display: none;
 }
@@ -343,29 +343,23 @@
     width: 100%;
 }
 
-.description-text.truncated {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
+/* React handles truncation at 150 chars — no CSS clamp needed */
 
 .view-all-btn {
     display: none;
     background: none;
     border: none;
     color: #E20021;
-    font-size: 14px;
+    font-size: 13px;
     padding: 0;
-    margin-top: 8px;
+    margin-top: 6px;
     cursor: pointer;
-    font-weight: 500;
-    width: 100%;
+    font-weight: 600;
     text-align: left;
 }
 
 .view-all-btn.visible {
-    display: block;
+    display: inline;
 }
 
 .view-all-btn:hover {
@@ -545,28 +539,266 @@
         align-items: center;
         gap: 5px;
     }
-    
+
     .tab-button {
         width: 100%;
         text-align: center;
     }
-    
+
     .tab-button.active::after {
         bottom: -5px;
     }
-    
+
     .partner-content,
     .recommend-content {
         grid-template-columns: 1fr;
     }
-    
+
     .partner-info,
     .recommend-info {
         order: 1;
     }
-    
+
     .partner-form,
     .recommend-form {
         order: 0;
     }
-} 
+}
+
+/* ================================================================== */
+/*  Location / Affiliate Detail Modal (migrated from inline HTML)     */
+/* ================================================================== */
+
+.location-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    z-index: 1001;
+    width: 95%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.location-modal.active,
+.modal-backdrop.active {
+    display: block;
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+}
+
+.modal-content {
+    margin-top: 10px;
+}
+
+.affiliate-hero {
+    margin-bottom: 16px;
+}
+
+.location-hero-img {
+    width: 100%;
+    height: 260px;
+    border-radius: 16px;
+    object-fit: cover;
+    border: 1px solid #eee;
+    background: #fafafa;
+    display: block;
+}
+
+.partner-header {
+    padding-right: 40px;
+    margin-bottom: 18px;
+}
+
+.partner-header .location-name {
+    margin: 0;
+    font-size: 26px;
+    line-height: 1.15;
+    letter-spacing: -0.2px;
+    color: #111;
+}
+
+.partner-header .location-desc {
+    margin: 10px 0 0;
+    color: #555;
+    font-size: 14px;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.contact-box {
+    background: #f8f8f8;
+    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid #eee;
+}
+
+.contact-text {
+    margin: 0;
+    font-size: 14px;
+    color: #444;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .location-hero-img {
+        height: 200px;
+        border-radius: 14px;
+    }
+    .partner-header .location-name {
+        font-size: 22px;
+    }
+}
+
+.location-details {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.details-left { flex: 1; }
+.details-right { flex: 1; }
+
+.detail-section {
+    margin-bottom: 18px;
+}
+
+.detail-section h3 {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.detail-section h3 i {
+    color: #E20021;
+}
+
+.address-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.address-info i {
+    color: #E20021;
+    margin-top: 4px;
+}
+
+.benefit-box,
+.retrieve-box {
+    background: #f8f8f8;
+    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid #eee;
+}
+
+.benefit-text,
+.retrieve-text {
+    margin: 0;
+    font-size: 14px;
+    color: #444;
+    line-height: 1.5;
+}
+
+.website-link {
+    color: #E20021;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.website-link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .location-details {
+        flex-direction: column;
+    }
+    .partner-link-container {
+        flex-direction: column;
+    }
+    .partner-link-box {
+        margin-bottom: 20px;
+    }
+}
+
+/* Info Button (mobile "i") */
+.info-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #E20021;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-family: serif;
+    font-style: italic;
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    z-index: 2;
+}
+
+.info-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(226, 0, 33, 0.3);
+}
+
+@media (max-width: 768px) {
+    .info-btn {
+        display: flex;
+    }
+}
+
+/* Card hover on desktop */
+.affiliate-card {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.affiliate-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
