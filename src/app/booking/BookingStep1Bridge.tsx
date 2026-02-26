@@ -22,6 +22,8 @@ export default function BookingStep1Bridge() {
   const prevTourIdRef = useRef<Step1TourId | null>(null);
 
   // Bind DOM -> store.
+  // Everyday language: Step 1 UI still lives in `public/booking.html`, so we listen to
+  // its DOM events and mirror the user's choices into our React store.
   useEffect(() => {
     const step1 = document.getElementById("step1");
     if (!step1) return;
@@ -67,6 +69,8 @@ export default function BookingStep1Bridge() {
   }, []);
 
   // Store -> DOM (prices + totals + selected tour side effects).
+  // Everyday language: whenever the counts change, we also update the legacy DOM so
+  // the page looks correct (prices/totals/tour info panels).
   useEffect(() => {
     const tourSelect = document.getElementById("tour-select") as HTMLSelectElement | null;
     if (tourSelect && tourSelect.value !== s.tourId) tourSelect.value = s.tourId;

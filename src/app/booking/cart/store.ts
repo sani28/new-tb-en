@@ -65,6 +65,10 @@ function coerceIncomingItem(raw: unknown): BookingCartItem | null {
   if (!r || typeof r !== "object") return null;
   if (!r.productId || !r.name || !r.type) return null;
 
+  // Everyday language:
+  // `productId` is the stable identifier we will send to the backend as `addonId`.
+  // Everything else here is "what the customer picked" (variant/color/date/time/adult/child split).
+
   const quantity = Number(r.quantity ?? 1) || 1;
   const price = Number(r.price ?? 0) || 0;
   const originalPrice = Number(r.originalPrice ?? price) || price;
@@ -268,10 +272,14 @@ export function ensureUpsellCartOnWindow() {
     getTotal: () => bookingCartStore.getTotal(),
     getOriginalTotal: () => bookingCartStore.getOriginalTotal(),
     getItemCount: () => bookingCartStore.getItemCount(),
-    getOrderPayload: () =>
+	    // NOTE:
+	    // - This shape is meant for legacy JS compatibility and debugging.
+	    // - It is intentionally close to what the backend should accept as `BookingRequest.addons`.
+	    // - The backend should treat these as "line items" and validate required fields based on add-on type.
+	    getOrderPayload: () =>
       bookingCartStore.getSnapshot().items.map((item) => ({
         addonId: item.productId,
-        title: item.name,
+	        title: item.name,
         type: item.type,
         category: item.category,
         selectedDate: item.selectedDate || null,

@@ -35,7 +35,14 @@ export default async function BookingPage() {
 
       <div dangerouslySetInnerHTML={{ __html: legacy.bodyHtmlWithoutScripts }} />
 
-	      {/* Provide a safe stub ASAP so legacy handlers never crash before React bundles load */}
+		      {/*
+		        Provide a safe stub ASAP so legacy handlers never crash before React bundles load.
+		
+		        Everyday language:
+		        - booking.html legacy JS still calls `window.UpsellCart.*` when the user adds add-ons.
+		        - React later replaces this stub with the real implementation (see `ensureUpsellCartOnWindow`).
+		        - while we are in-between, we queue actions into `window.__tbUpsellCartQueue`.
+		      */}
 	      <Script
 	        id="booking-upsellcart-stub"
 	        strategy="beforeInteractive"
@@ -74,7 +81,13 @@ export default async function BookingPage() {
 	      <BookingStep1Bridge />
 		      <BookingAddonsCarouselBridge />
 
-	      {/* React-based step navigation + cart interactions (incremental conversion) */}
+		      {/*
+		        React-based step navigation + cart interactions (incremental conversion).
+		
+		        Backend handoff note:
+		        The actual `POST /bookings` call is not wired yet. The intended hook point is
+		        the "Make payment" click handler in `BookingBehaviors.tsx`.
+		      */}
 	      <BookingBehaviors />
 
 

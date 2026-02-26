@@ -76,6 +76,8 @@ export default function BookingCartBridge() {
     if (!cartBar || !cartCount || !cartItemsText || !cartTotal || !cartTotalExpanded || !cartItemsList) return;
 
     const itemCount = getBookingCartItemCount(cart.items);
+	    // Note: this cart is for *add-ons* (upsells). Step 1 tour tickets are tracked separately
+	    // in `bookingStep1Store`.
     const total = getBookingCartTotal(cart.items);
     const originalTotal = getBookingCartOriginalTotal(cart.items);
     const savings = originalTotal - total;

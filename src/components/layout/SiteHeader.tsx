@@ -63,7 +63,7 @@ export default function SiteHeader() {
 
         <div className="right-section">
           <div className="customer-service">
-	            <p>customer service:</p> <span className="phone-number">02 777 6090</span>
+		            <p>T:</p> <span className="phone-number">02 777 6090</span>
           </div>
 
           <div className="language-selector" ref={languageRef}>
@@ -98,6 +98,28 @@ export default function SiteHeader() {
               >
                 한국어
               </a>
+	              <a
+	                href="#"
+	                data-lang="ja"
+	                aria-disabled="true"
+	                onClick={(e) => {
+	                  e.preventDefault();
+	                  setIsLanguageOpen(false);
+	                }}
+	              >
+	                日本語
+	              </a>
+	              <a
+	                href="#"
+	                data-lang="zh"
+	                aria-disabled="true"
+	                onClick={(e) => {
+	                  e.preventDefault();
+	                  setIsLanguageOpen(false);
+	                }}
+	              >
+	                中文
+	              </a>
             </div>
           </div>
         </div>
@@ -115,7 +137,7 @@ export default function SiteHeader() {
         </button>
         <div className="logo">
           <a href="/">
-            <img src="/imgs/redlogo-tigerbus.png" alt="Seoul City Tour Tiger Bus" />
+            <img src="/imgs/smalllogo.png" alt="Seoul City Tour Tiger Bus" />
           </a>
         </div>
 	        <div className="nav-buttons">
@@ -131,8 +153,19 @@ export default function SiteHeader() {
       </div>
 
       {/* Navigation bar */}
-	      <nav className="main-nav">
-        <ul className="nav-links">
+		      <nav className="main-nav" aria-label="Primary">
+	        <ul className="nav-links">
+	          <li>
+	            <a href="/" className="home-logo" aria-label="Home">
+	              <img
+	                src="/imgs/smalllogo.png"
+	                alt="Seoul City Tour Bus"
+	                onError={(e) => {
+	                  (e.currentTarget as HTMLImageElement).src = "/imgs/smalllogo.png";
+	                }}
+	              />
+	            </a>
+	          </li>
           <li>
 	            <a href="/tours">Tours</a>
           </li>

@@ -10,6 +10,13 @@ export type Step1State = {
   childCount: number;
 };
 
+// Backend handoff note (everyday language):
+// These two numbers are the "how many seats are you buying" for the tour itself.
+// One booking purchase will send them as 2 ticket lines:
+// - { kind: "adult", quantity: adultCount, unitPrice: ... }
+// - { kind: "child", quantity: childCount, unitPrice: ... }
+// Total seats = adultCount + childCount.
+
 type TourPricing = {
   adult: { current: number; original: number };
   child: { current: number; original: number };

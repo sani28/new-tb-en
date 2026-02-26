@@ -45,6 +45,10 @@ export type BookingCartAction =
   | { type: "CLEAR" };
 
 export const getBookingCartItemKey = (i: BookingCartItem) => {
+  // Everyday language:
+  // This key controls *when two add-on selections should merge into one line item*.
+  // Example: if someone adds the same physical product + same variant/color twice,
+  // we want one cart row with quantity=2 (not two separate rows).
   if (i.type === "physical") return `${i.productId}-${i.variant}-${i.color || "default"}`;
   if (i.type === "scheduled")
     return `${i.productId}-${i.variant}-${i.selectedDate || "no-date"}-${i.selectedTime || "no-time"}`;

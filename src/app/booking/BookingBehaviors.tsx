@@ -130,6 +130,16 @@ export default function BookingBehaviors() {
     if (makePayment) {
       const onClick = (e: Event) => {
         e.preventDefault();
+
+	        // Backend handoff note (everyday language):
+	        // This is the moment the customer is "checking out".
+	        // In the real implementation we will:
+	        // 1) read Step 1 tour + ticket counts
+	        // 2) read selected date (see BookingCalendarBridge -> window.__tbBookingState.selectedDate)
+	        // 3) read add-ons from the React cart store (see bookingCartStore / window.UpsellCart.getOrderPayload())
+	        // 4) read contact info from the Step 3 form fields
+	        // 5) call `createBooking(payload)` (POST /bookings)
+	        // 6) redirect to payment provider or show confirmation
         w.showStep?.("step4");
 
         // Mirror legacy behavior: clear add-ons after payment completion.

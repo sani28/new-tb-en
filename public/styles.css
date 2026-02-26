@@ -215,6 +215,30 @@ body:not(.promo-closed) .notification-bar {
     transition: top 0.3s ease;
 }
 
+/* Inline home logo button (first item in desktop main nav) */
+.main-nav .home-logo {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+}
+
+.main-nav .home-logo img {
+    height: 1.15em;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    vertical-align: middle;
+}
+
+.main-nav .home-logo:hover {
+    background: none;
+}
+
+.main-nav .home-logo:focus-visible {
+    outline: 2px solid rgba(165, 0, 0, 0.55);
+    outline-offset: 2px;
+}
+
 /* When promo bar is visible (default state before closing) */
 body:not(.promo-closed) .main-nav {
     top: 90px;
@@ -228,33 +252,40 @@ body.promo-closed .main-nav {
 .nav-links {
     display: flex;
     list-style: none;
-    gap: 30px;
-    padding-left: 80px;
+    gap: clamp(12px, 2.2vw, 30px);
+    padding-left: clamp(20px, 5vw, 80px);
+    align-items: center;
 }
 
 .nav-links a {
     color: #A50000;
     text-decoration: none;
     font-weight: 600;
-    font-size: 20px; /* Restore original font size */
+    font-size: clamp(14px, 1.4vw, 20px);
+    white-space: nowrap;
 }
 
 /* Desktop nav buttons */
 .main-nav .nav-buttons {
     display: flex;
-    gap: 15px; /* Restore original gap */
+    gap: clamp(8px, 1.2vw, 15px);
+    padding-right: clamp(16px, 2.5vw, 40px);
 }
 
 .booking-btn, .login-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    padding: 10px 10px; /* Restore original padding */
-    border-radius: 10px; /* Restore original border radius */
-    font-family: 'Copperplate', 'GeneralSans-Medium', sans-serif;
-    font-weight: bold;
-    font-size: 16px; /* Restore original font size */
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	text-decoration: none;
+	/* Scale padding with text so buttons feel fluid as the nav scales */
+	padding: 0.55em 1.1em;
+	border-radius: 10px;
+	font-family: 'Copperplate', 'GeneralSans-Medium', sans-serif;
+	font-weight: bold;
+	/* Match nav link scaling so buttons shrink/grow with the rest of the menu */
+	font-size: clamp(14px, 1.4vw, 20px);
+	/* Prevent "MY BOOKING" from ever wrapping to a second line */
+	white-space: nowrap;
 }
 
 .booking-btn {
@@ -851,6 +882,27 @@ body.promo-closed .main-nav {
 
     .promo-nav-arrow i {
         font-size: 14px;
+    }
+}
+
+/* iPad / tablet: scale down nav buttons so they don't overflow at 769px–1024px */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .main-nav .nav-buttons {
+        gap: clamp(6px, 0.8vw, 12px);
+    }
+
+    .main-nav .booking-btn,
+    .main-nav .login-btn {
+        font-size: clamp(11px, 1.1vw, 14px);
+        padding: 0.4em 0.7em;
+        gap: 5px;
+        border-radius: 8px;
+    }
+
+    .main-nav .booking-btn img,
+    .main-nav .login-btn img {
+        width: 15px;
+        height: 15px;
     }
 }
 
@@ -1768,9 +1820,9 @@ select {
         left: 0;
         right: 0;
         padding: 12px 15px;
-        background: rgba(255, 255, 255, 0.8); /* Increase opacity for better visibility on Android */
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px); /* For Safari */
+        background: #FFFEED;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -1799,8 +1851,8 @@ select {
     }
     
     .mobile-header .logo img {
-        height: auto; /* Restore auto height */
-        width: 160px; /* Restore original width */
+        height: auto;
+        width: 200px;
     }
     
     .mobile-header .nav-buttons {
@@ -1823,7 +1875,7 @@ select {
 
     /* Logo in sticky nav */
     .mobile-header .logo {
-        width: 140px; /* Smaller logo */
+        width: 200px;
         height: auto;
     }
 
@@ -2946,13 +2998,14 @@ select {
     }
 
     .nav-links {
-        gap: 20px;
+        gap: clamp(10px, 1.8vw, 20px);
     }
 
-    .booking-btn, .login-btn {
-        padding: 8px 12px;
-        font-size: 14px;
-    }
+	    /* Slightly tighten button padding on tablets but keep font-size fluid
+	       (base clamp() continues to control text size). */
+	    .booking-btn, .login-btn {
+	        padding: 0.5em 1em;
+	    }
 
     /* Course cards adjustments */
     .course-cards {
@@ -7230,8 +7283,8 @@ select,
         left: 0;
         right: 0;
         z-index: 999;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
+        background: #FFFEED;
+        backdrop-filter: none;
         -webkit-backdrop-filter: blur(10px);
     }
 }
@@ -7344,9 +7397,9 @@ select,
         left: 0;
         right: 0;
         z-index: 999;
-        background: rgba(255, 255, 255, 0.95); /* White background for better visibility */
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
+        background: #FFFEED;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
     }
 }
 
@@ -7374,7 +7427,7 @@ select,
     
     /* Make logo smaller to ensure space for buttons */
     .mobile-header .logo {
-        width: 120px;
+        width: 140px;
     }
 }
 
@@ -7402,7 +7455,7 @@ html, body {
     /* ... existing code ... */
     
     .mobile-header .logo img {
-        max-width: 90px;
+        max-width: 140px;
         height: auto;
     }
 }
@@ -7413,7 +7466,7 @@ html, body {
     
     /* Make logo smaller to ensure space for buttons */
     .mobile-header .logo {
-        width: 90px; /* Changed from 120px */
+        width: 120px;
     }
 }
 
@@ -7737,7 +7790,7 @@ html, body {
     top: 0;
     left: 0;
     right: 0;
-    background-color: rgba(255, 255, 237, 0.95);
+    background-color: #FFFEED;
     z-index: 1000;
     padding: 10px 15px;
     align-items: center;
@@ -7758,9 +7811,9 @@ body:not(.promo-closed) .mobile-header {
         left: 0;
         right: 0;
         padding: 12px 15px;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
+        background: #FFFEED;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
         display: flex;
         justify-content: space-between;
         z-index: 999 !important;

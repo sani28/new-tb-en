@@ -24,6 +24,10 @@ export default function BookingAddonsCarouselBridge() {
   const onAddItems = useCallback(
     (items: AddonCartItemPayload[]) => {
       const w = window as LegacyBookingWindow;
+
+	    // Everyday language:
+	    // The details modal returns 1+ cart line items representing exactly what the user selected
+	    // (variant/color/date/time/adult/child split). We persist them in the React cart store.
       items.forEach((i) => bookingCartStore.addItem(i));
       w.updateStep2Totals?.();
 
@@ -33,6 +37,7 @@ export default function BookingAddonsCarouselBridge() {
   );
 
   useEffect(() => {
+	  // booking.html provides this placeholder element; we portal our React carousel into it.
     setRoot(document.getElementById("booking-addons-carousel-root") as HTMLElement | null);
   }, []);
 

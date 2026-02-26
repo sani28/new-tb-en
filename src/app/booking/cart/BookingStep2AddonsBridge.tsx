@@ -77,6 +77,10 @@ export default function BookingStep2AddonsBridge() {
     const container = document.getElementById("step2-order-addons") as HTMLElement | null;
     if (!section || !container) return;
 
+	    // Everyday language:
+	    // Step 2's add-ons list is still legacy HTML. We re-render the list from the React cart store
+	    // so the user always sees the same add-ons that will eventually be sent to the backend.
+
     if (cart.items.length === 0) {
       section.style.display = "none";
       container.innerHTML = "";
@@ -104,7 +108,8 @@ export default function BookingStep2AddonsBridge() {
       e.preventDefault();
       e.stopPropagation();
 
-      const index = parseInt(btn.dataset.index || "-1", 10);
+	      // Legacy DOM uses array indexes. For backend payloads we use stable IDs (`addonId`).
+	      const index = parseInt(btn.dataset.index || "-1", 10);
       if (Number.isNaN(index) || index < 0) return;
 
       const snapshot = bookingCartStore.getSnapshot();

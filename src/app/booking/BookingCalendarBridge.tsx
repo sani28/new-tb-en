@@ -32,6 +32,12 @@ export default function BookingCalendarBridge() {
     }
 
     const w = window as BookingWindow;
+
+	    // Everyday language:
+	    // We store the selected date on `window.__tbBookingState.selectedDate` so BOTH worlds can read it:
+	    // - legacy booking.html JS (still running)
+	    // - React bridges / future `createBooking()` payload builder
+	    // When we submit the booking to the backend, we should convert this to ISO `yyyy-mm-dd`.
     w.__tbBookingState = w.__tbBookingState || {};
 
     let currentMonth = new Date().getMonth();
@@ -92,11 +98,16 @@ export default function BookingCalendarBridge() {
         const isMonday = dateToCheck.getDay() === 1;
         const isPast = dateToCheck < todayStart;
 
-        if (isMonday || isPast) {
+	        if (isMonday || isPast) {
           dayEl.classList.add("disabled");
           if (isMonday) dayEl.title = "Closed on Mondays";
         } else {
-          // Deterministic availability (avoid Math.random changing every render)
+	          // Prototype-only availability.
+	          // Everyday language: this is where we will replace the fake rule with a real API call:
+	          // `GET /tours/{tourId}/availability?date=YYYY-MM-DD`
+	          // so the backend can decide which dates are sold out.
+	          //
+	          // Deterministic availability (avoid Math.random changing every render)
           const isAvailable = (day + currentMonth + currentYear) % 5 !== 0;
           const dot = document.createElement("span");
           dot.className = `dot ${isAvailable ? "available" : "sold-out"}`;

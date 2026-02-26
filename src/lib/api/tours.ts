@@ -11,9 +11,15 @@ export async function fetchTourAvailability(
   tourId: TourId,
   date: string,
 ): Promise<TourAvailability[]> {
-  return jsonFetch<TourAvailability[]>(`/tours/${tourId}/availability`, {
+  // Backend contract note:
+  // Availability is expected to be date-aware. We pass `date` as a query param
+  // so the Python service can return a simple list of time/seat availability.
+  return jsonFetch<TourAvailability[]>(
+    `/tours/${tourId}/availability?date=${encodeURIComponent(date)}`,
+    {
     method: "GET",
     cache: "no-store",
-  });
+    },
+  );
 }
 
