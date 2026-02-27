@@ -7,8 +7,6 @@ export function initHomepageCourseCarousel(): Cleanup {
   const dots = Array.from(document.querySelectorAll<HTMLElement>(".carousel-dots .dot"));
   const prevButton = document.querySelector<HTMLElement>(".carousel-nav.prev");
   const nextButton = document.querySelector<HTMLElement>(".carousel-nav.next");
-  const gradientTitle = document.querySelector<HTMLElement>(".gradient-section .course-title");
-
   if (!carousel || slides.length === 0 || !prevButton || !nextButton) return () => {};
 
   let currentIndex = 0;
@@ -27,21 +25,13 @@ export function initHomepageCourseCarousel(): Cleanup {
       slide.classList.toggle("active", i === currentIndex);
     });
 
-    const gradientSection = document.querySelector<HTMLElement>(".gradient-section");
-    if (gradientSection) {
-      gradientSection.classList.remove("slide-1", "slide-2", "slide-3");
-      gradientSection.classList.add(`slide-${currentIndex + 1}`);
-    }
-
-    // Apply data-slide-colors styles (same as prototype)
+    // Apply data-slide-colors styles to non-React elements (courses section etc.)
+    // The gradient-section is now owned by React and updated via tb:courseSlideChange event
     slideColorsByEl.forEach((colors, el) => {
+      if (el.closest(".gradient-section")) return; // skip React-owned elements
       const color = colors[currentIndex];
       if (!color) return;
-      if (el.classList.contains("gradient-section")) {
-        el.style.background = color;
-      } else {
-        el.style.backgroundColor = color;
-      }
+      el.style.backgroundColor = color;
     });
 
     dots.forEach((dot, i) => {
@@ -51,22 +41,10 @@ export function initHomepageCourseCarousel(): Cleanup {
     prevButton.style.visibility = currentIndex === 0 ? "hidden" : "visible";
     nextButton.style.visibility = currentIndex === slides.length - 1 ? "hidden" : "visible";
 
-    // Prototype-specific title changes
-    if (gradientTitle) {
-      if (currentIndex === 0) {
-        gradientTitle.textContent = "Downtown Namsan Palace Course";
-        gradientTitle.style.color = "white";
-        gradientTitle.style.background = "#001C2C";
-      } else if (currentIndex === 1) {
-        gradientTitle.textContent = "Nightview Course(Non Stop)";
-        gradientTitle.style.color = "black";
-        gradientTitle.style.background = "#FCD700";
-      } else {
-        gradientTitle.textContent = "Panorama Course";
-        gradientTitle.style.color = "white";
-        gradientTitle.style.background = "#C41E3A";
-      }
-    }
+    // Dispatch event so React-owned gradient section can update title/colors
+    document.dispatchEvent(new CustomEvent("tb:courseSlideChange", {
+      detail: { index: currentIndex },
+    }));
   };
 
   const onPrev = () => {

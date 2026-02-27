@@ -1,5 +1,4 @@
-/* Shared add-ons carousel styling (used on homepage + booking page).
-   Scoped to `.promo-addons-carousel` to avoid affecting legacy booking prototype CSS. */
+/* Shared add-ons carousel styling (used on homepage + booking page). */
 
 .promo-addons-carousel {
   margin-top: 18px;

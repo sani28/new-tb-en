@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import type { AffiliateDiscount } from "@/lib/schemas/discounts";
 
@@ -10,6 +10,9 @@ interface Props {
 }
 
 export default function AffiliateDetailModal({ affiliate, onClose }: Props) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
   useEffect(() => {
     if (!affiliate) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -83,6 +86,7 @@ export default function AffiliateDetailModal({ affiliate, onClose }: Props) {
     </>
   );
 
+  if (!mounted) return null;
   return createPortal(modal, document.body);
 }
 

@@ -8,6 +8,7 @@ export type Step1State = {
   tourId: Step1TourId;
   adultCount: number;
   childCount: number;
+  selectedDate: Date | null;
 };
 
 // Backend handoff note (everyday language):
@@ -30,7 +31,7 @@ const TOUR_PRICING: Record<Step1TourId, TourPricing> = {
   tour04: { adult: { current: 18, original: 22 }, child: { current: 12, original: 15 } },
 };
 
-let state: Step1State = { tourId: "tour01", adultCount: 0, childCount: 0 };
+let state: Step1State = { tourId: "tour01", adultCount: 0, childCount: 0, selectedDate: null };
 const listeners = new Set<() => void>();
 
 function emit() {
@@ -82,6 +83,11 @@ export const bookingStep1Store = {
   dec(type: "adult" | "child") {
     if (type === "adult") this.setCounts(state.adultCount - 1, state.childCount);
     else this.setCounts(state.adultCount, state.childCount - 1);
+  },
+
+  setSelectedDate(d: Date | null) {
+    state = { ...state, selectedDate: d };
+    emit();
   },
 };
 

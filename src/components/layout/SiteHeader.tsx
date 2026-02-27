@@ -5,6 +5,21 @@
 
 import { useEffect, useRef, useState } from "react";
 
+function NavButtons() {
+  return (
+    <div className="nav-buttons">
+      <a href="/booking" className="booking-btn">
+        <img src="/imgs/bookingicon.png" alt="Booking" />
+        BOOKING
+      </a>
+      <a href="/my-booking" className="login-btn">
+        <img src="/imgs/myaccounticon.png" alt="My Account" />
+        MY BOOKING
+      </a>
+    </div>
+  );
+}
+
 export default function SiteHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
@@ -140,16 +155,7 @@ export default function SiteHeader() {
             <img src="/imgs/smalllogo.png" alt="Seoul City Tour Tiger Bus" />
           </a>
         </div>
-	        <div className="nav-buttons">
-	          <a href="/booking" className="booking-btn">
-	            <img src="/imgs/bookingicon.png" alt="Booking" />
-	            BOOKING
-	          </a>
-	          <a href="/my-booking" className="login-btn">
-	            <img src="/imgs/myaccounticon.png" alt="My Account" />
-	            MY BOOKING
-	          </a>
-	        </div>
+        <NavButtons />
       </div>
 
       {/* Navigation bar */}
@@ -185,16 +191,7 @@ export default function SiteHeader() {
 	            <a href="/help">Help</a>
           </li>
         </ul>
-        <div className="nav-buttons">
-	          <a href="/booking" className="booking-btn">
-	            <img src="/imgs/bookingicon.png" alt="Booking" />
-	            BOOKING
-	          </a>
-	          <a href="/my-booking" className="login-btn">
-	            <img src="/imgs/myaccounticon.png" alt="My Account" />
-	            MY BOOKING
-	          </a>
-        </div>
+        <NavButtons />
       </nav>
 
       {/* Mobile menu */}

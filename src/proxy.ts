@@ -23,7 +23,7 @@ const KEEP_REAL_RASTER_PATHS = new Set([
   "/imgs/hero-slider-image-5.jpg",
 ]);
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Never touch API routes.

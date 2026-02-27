@@ -10,32 +10,6 @@ import {
   type BookingCartState,
 } from "../lib/cart";
 
-export type LegacyUpsellCartApi = {
-  addItem: (item: unknown) => void;
-  removeItem: (index: number) => void;
-  updateItemQuantity: (index: number, qty: number) => void;
-  setTicketQuantities: (index: number, adultQty: number, childQty: number) => void;
-  clear: () => void;
-  getTotal: () => number;
-  getOriginalTotal: () => number;
-  getItemCount: () => number;
-  getOrderPayload: () => Array<Record<string, unknown>>;
-  updateCartUI: () => void;
-  save: () => void;
-  items: BookingCartItem[];
-};
-
-type UpsellCartQueuedEvent =
-  | { type: "addItem"; item: unknown }
-  | { type: "removeItem"; index: number }
-  | { type: "updateItemQuantity"; index: number; qty: number }
-  | { type: "setTicketQuantities"; index: number; adultQty: number; childQty: number }
-  | { type: "clear" };
-
-type WindowWithUpsellCartQueue = Window & {
-  __tbUpsellCartQueue?: UpsellCartQueuedEvent[];
-};
-
 const STORAGE_KEY = "tb_booking_upsell_cart_v1";
 
 let state: BookingCartState = { items: [] };
@@ -64,10 +38,6 @@ function coerceIncomingItem(raw: unknown): BookingCartItem | null {
   const r = raw as Partial<BookingCartItem> | null;
   if (!r || typeof r !== "object") return null;
   if (!r.productId || !r.name || !r.type) return null;
-
-  // Everyday language:
-  // `productId` is the stable identifier we will send to the backend as `addonId`.
-  // Everything else here is "what the customer picked" (variant/color/date/time/adult/child split).
 
   const quantity = Number(r.quantity ?? 1) || 1;
   const price = Number(r.price ?? 0) || 0;
@@ -120,7 +90,6 @@ function coerceIncomingItem(raw: unknown): BookingCartItem | null {
 }
 
 export const bookingCartStore = {
-  // React subscription API
   subscribe(listener: () => void) {
     listeners.add(listener);
     return () => listeners.delete(listener);
@@ -129,7 +98,6 @@ export const bookingCartStore = {
     return state;
   },
 
-  // Actions
   addItem(rawItem: unknown) {
     const item = coerceIncomingItem(rawItem);
     if (!item) return;
@@ -144,10 +112,6 @@ export const bookingCartStore = {
     dispatch({ type: "CLEAR" });
   },
 
-  /**
-   * Legacy API compatibility.
-   * For ticket-based items, this adjusts adult/child quantities proportionally.
-   */
   updateItemQuantity(index: number, quantity: number) {
     const item = state.items[index];
     if (!item) return;
@@ -159,7 +123,6 @@ export const bookingCartStore = {
 
     const nextQty = Math.max(1, Math.floor(quantity));
 
-    // Ticket-based: preserve adult/child split if present.
     const oldAdult = item.adultQty ?? 0;
     const oldChild = item.childQty ?? 0;
     const oldTotal = oldAdult + oldChild;
@@ -188,7 +151,6 @@ export const bookingCartStore = {
       return;
     }
 
-    // Simple quantity.
     const nextItem: BookingCartItem = {
       ...item,
       quantity: nextQty,
@@ -223,7 +185,6 @@ export const bookingCartStore = {
     dispatch({ type: "SET_INDEX", index, item: nextItem });
   },
 
-  // Derived helpers
   getTotal() {
     return getBookingCartTotal(state.items);
   },
@@ -253,81 +214,3 @@ function tryHydrateFromStorage() {
 }
 
 tryHydrateFromStorage();
-
-export function ensureUpsellCartOnWindow() {
-  if (typeof window === "undefined") return;
-  const w = window as Window & { UpsellCart?: LegacyUpsellCartApi };
-
-  const existing = w.UpsellCart as (LegacyUpsellCartApi & { __tbIsStub?: boolean }) | undefined;
-  const isStub = Boolean(existing?.__tbIsStub);
-  if (existing && !isStub) return;
-
-  const api: Omit<LegacyUpsellCartApi, "items"> = {
-    addItem: (item: unknown) => bookingCartStore.addItem(item),
-    removeItem: (index: number) => bookingCartStore.removeIndex(index),
-    updateItemQuantity: (index: number, qty: number) => bookingCartStore.updateItemQuantity(index, qty),
-    setTicketQuantities: (index: number, adultQty: number, childQty: number) =>
-      bookingCartStore.setTicketQuantities(index, adultQty, childQty),
-    clear: () => bookingCartStore.clear(),
-    getTotal: () => bookingCartStore.getTotal(),
-    getOriginalTotal: () => bookingCartStore.getOriginalTotal(),
-    getItemCount: () => bookingCartStore.getItemCount(),
-	    // NOTE:
-	    // - This shape is meant for legacy JS compatibility and debugging.
-	    // - It is intentionally close to what the backend should accept as `BookingRequest.addons`.
-	    // - The backend should treat these as "line items" and validate required fields based on add-on type.
-	    getOrderPayload: () =>
-      bookingCartStore.getSnapshot().items.map((item) => ({
-        addonId: item.productId,
-	        title: item.name,
-        type: item.type,
-        category: item.category,
-        selectedDate: item.selectedDate || null,
-        selectedTime: item.selectedTime || null,
-        quantity: item.quantity,
-        adultQty: item.adultQty ?? null,
-        childQty: item.childQty ?? null,
-        validUntil: item.validUntil || null,
-        variant: item.variant,
-        color: item.color || null,
-        computedLinePrice: item.computedLinePrice ?? item.price * item.quantity,
-      })),
-    // Legacy no-ops
-    updateCartUI: () => {},
-    save: () => {},
-  };
-
-  Object.defineProperty(api, "items", {
-    get() {
-      return bookingCartStore.getSnapshot().items;
-    },
-    set(next: unknown) {
-      // Legacy code sometimes assigns UpsellCart.items = []
-      if (Array.isArray(next) && next.length === 0) {
-        bookingCartStore.clear();
-      }
-    },
-    enumerable: true,
-  });
-
-
-  // Replace any stub and replay queued actions if present.
-  w.UpsellCart = api as unknown as LegacyUpsellCartApi;
-  try {
-    const ww = window as WindowWithUpsellCartQueue;
-    const q = ww.__tbUpsellCartQueue;
-    if (Array.isArray(q) && q.length > 0) {
-      q.forEach((e) => {
-        if (e.type === "addItem") bookingCartStore.addItem(e.item);
-        if (e.type === "removeItem") bookingCartStore.removeIndex(Number(e.index));
-        if (e.type === "updateItemQuantity") bookingCartStore.updateItemQuantity(Number(e.index), Number(e.qty));
-        if (e.type === "setTicketQuantities")
-          bookingCartStore.setTicketQuantities(Number(e.index), Number(e.adultQty), Number(e.childQty));
-        if (e.type === "clear") bookingCartStore.clear();
-      });
-      ww.__tbUpsellCartQueue = [];
-    }
-  } catch {
-    // ignore
-  }
-}
