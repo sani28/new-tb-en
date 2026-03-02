@@ -195,48 +195,40 @@ export default function SiteHeader() {
       </nav>
 
       {/* Mobile menu */}
-      <div className={`mobile-menu${isMobileMenuOpen ? " active" : ""}`}>
+      <div
+        className={`fixed inset-0 w-full h-dvh bg-brand-cream z-[2000] p-5 ${
+          isMobileMenuOpen ? "block" : "hidden"
+        }`}
+      >
         <button
-          className="mobile-menu-close"
+          className="absolute top-5 right-5 text-2xl bg-transparent border-none cursor-pointer"
           type="button"
           aria-label="Close menu"
           onClick={() => setIsMobileMenuOpen(false)}
         >
-          ×
+          &times;
         </button>
-        <ul className="mobile-menu-links">
-          <li>
-	            <a href="/tours" onClick={() => setIsMobileMenuOpen(false)}>
-              Tours
-            </a>
-          </li>
-          <li>
-	            <a href="/map" onClick={() => setIsMobileMenuOpen(false)}>
-              Map
-            </a>
-          </li>
-          <li>
-	            <a href="/notices" onClick={() => setIsMobileMenuOpen(false)}>
-              Notices
-            </a>
-          </li>
-          <li>
-	            <a href="/blog" onClick={() => setIsMobileMenuOpen(false)}>
-              Discover
-            </a>
-          </li>
-          <li>
-	            <a href="/discounts" onClick={() => setIsMobileMenuOpen(false)}>
-              Discounts
-            </a>
-          </li>
-          <li>
-	            <a href="/help" onClick={() => setIsMobileMenuOpen(false)}>
-              Help
-            </a>
-          </li>
+        <ul className="list-none p-0 m-0 mt-15">
+          {[
+            { href: "/tours", label: "Tours" },
+            { href: "/map", label: "Map" },
+            { href: "/notices", label: "Notices" },
+            { href: "/blog", label: "Discover" },
+            { href: "/discounts", label: "Discounts" },
+            { href: "/help", label: "Help" },
+          ].map((link) => (
+            <li key={link.href} className="py-[5px] text-center">
+              <a
+                href={link.href}
+                className="text-[#A50000] no-underline text-2xl block py-[3px] transition-colors duration-300 font-semibold max-md:text-lg max-md:py-3"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
         </ul>
-        <div className="logo">
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[150px]">
           <a href="/">
             <img src="/imgs/redlogo-tigerbus.png" alt="Seoul City Tour Tiger Bus" />
           </a>
