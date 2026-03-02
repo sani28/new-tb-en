@@ -6,3 +6,19 @@
 
   Tailwind is still available for new components as we port the UI.
 */
+
+@theme {
+  /* Brand colors */
+  --color-brand-red: #E20021;
+  --color-brand-dark-red: #cc0000;
+  --color-brand-cream: #FFFEED;
+  --color-brand-maroon: #6A1E1E;
+  --color-text-dark: #333333;
+  --color-text-gray: #666666;
+  --color-text-light-gray: #888888;
+
+  /* Custom font families */
+  --font-sans-semibold: 'GeneralSans-Semibold', sans-serif;
+  --font-sans-medium: 'GeneralSans-Medium', sans-serif;
+  --font-sans-regular: 'GeneralSans-Regular', sans-serif;
+}

@@ -23,22 +23,29 @@ export default function HomepageDiscountsSection() {
 
   return (
     <>
-      <section className="discounts">
-        <h2>Discounts</h2>
-        <div className="discounts-grid">
-
+      <section className="py-20 px-10 max-md:py-10 max-md:px-5 bg-brand-cream">
+        <h2 className="font-sans-semibold text-[32px] mb-10 text-text-dark">
+          Discounts
+        </h2>
+        <div className="grid grid-cols-4 gap-5 max-md:grid-cols-2 max-md:gap-[15px]">
           {cards.map((card) => {
             const affiliate = slugifyAffiliateName(card.name);
             return (
               <a
                 key={card.name}
-                className="discount-card"
+                className="relative rounded-xl overflow-hidden bg-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] cursor-pointer transition-all duration-200 ease-in-out hover:-translate-y-1 hover:shadow-[0_6px_16px_rgba(0,0,0,0.15)] block"
                 href={`/discounts?affiliate=${encodeURIComponent(affiliate)}`}
               >
-                <img src={card.img} alt={card.name} />
-                <div className="card-content">
-                  <div className="card-text">
-                    <h3>{card.name}</h3>
+                <img
+                  src={card.img}
+                  alt={card.name}
+                  className="w-full aspect-square object-cover"
+                />
+                <div className="p-[15px] flex justify-between items-start gap-2.5 max-md:p-3">
+                  <div className="min-w-0 flex flex-col gap-1">
+                    <h3 className="text-base text-text-dark m-0 max-md:text-sm">
+                      {card.name}
+                    </h3>
                   </div>
                 </div>
               </a>
