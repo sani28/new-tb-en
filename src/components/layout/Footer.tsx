@@ -2,8 +2,8 @@
 
 export default function Footer() {
   return (
-    <footer className="bg-brand-cream pt-15 max-md:pt-10 relative overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-10 grid grid-cols-[1fr_auto_1fr] gap-15 items-start max-md:grid-cols-1 max-md:gap-[30px] max-md:px-5 max-md:text-center">
+    <footer className="bg-brand-cream pt-[60px] max-md:pt-10 relative overflow-hidden">
+      <div className="max-w-[1400px] mx-auto px-10 grid grid-cols-[1fr_auto_1fr] gap-[60px] items-start max-md:grid-cols-1 max-md:gap-[30px] max-md:px-5 max-md:text-center">
         {/* Left Footer Section */}
         <div className="max-w-[460px] max-md:text-center max-md:mx-auto">
           <div className="mb-[30px] max-md:flex max-md:justify-center max-md:mb-5">
@@ -13,7 +13,7 @@ export default function Footer() {
               className="h-[50px] w-auto"
             />
           </div>
-          <div className="text-white/70 text-sm leading-relaxed text-left max-md:text-center">
+          <div className="text-[#666] text-sm leading-relaxed text-left max-md:text-center">
             <p>
               302, 135-7, Sejong-daero, Jung-gu, Seoul
               <br />
@@ -109,7 +109,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="flex justify-between items-end max-w-[1400px] mx-auto mt-10 px-10 max-md:text-center max-md:p-5">
+      <div className="flex justify-between items-end max-w-[1400px] mx-auto mt-[40px] px-10 max-md:text-center max-md:p-5">
         <div className="footer-info">{/* Empty in current version */}</div>
         <div className="flex-[0_0_50%] text-right ml-auto max-md:w-full max-md:mt-5 max-md:mx-auto">
           <img

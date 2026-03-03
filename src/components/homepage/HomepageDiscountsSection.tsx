@@ -23,7 +23,8 @@ export default function HomepageDiscountsSection() {
 
   return (
     <>
-      <section className="py-20 px-10 max-md:py-10 max-md:px-5 bg-brand-cream">
+      <section className="discounts py-20 px-10 max-md:py-10 max-md:px-5 xl:px-[10%] 2xl:px-[15%] min-[2000px]:px-[20%] bg-brand-cream">
+        <div className="max-w-[1200px] mx-auto">
         <h2 className="font-sans-semibold text-[32px] mb-10 text-text-dark">
           Discounts
         </h2>
@@ -51,6 +52,7 @@ export default function HomepageDiscountsSection() {
               </a>
             );
           })}
+        </div>
         </div>
       </section>
     </>

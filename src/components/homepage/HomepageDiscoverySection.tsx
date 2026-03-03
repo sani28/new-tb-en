@@ -2,7 +2,7 @@
 
 export default function HomepageDiscoverySection() {
   return (
-    <section className="discovery relative py-10 px-5 md:py-20 md:px-10 bg-brand-red text-white">
+    <section className="discovery relative py-10 px-5 md:py-20 md:px-10 xl:px-[10%] 2xl:px-[15%] min-[2000px]:px-[20%] bg-brand-red text-white">
       <div className="discovery-content relative max-w-[1200px] mx-auto px-5">
         <h2 className="font-sans-semibold text-[32px] mb-10 text-white">
           Discovery
@@ -76,8 +76,8 @@ export default function HomepageDiscoverySection() {
           </div>
         </div>
 
-        {/* Mobile Carousel Navigation */}
-        <div className="carousel-nav mobile-only hidden max-md:!flex absolute top-1/2 left-0 right-0 -translate-y-1/2 w-full px-2.5 z-5 justify-between pointer-events-none bg-transparent">
+        {/* Mobile Carousel Navigation — hidden on desktop, flex on mobile */}
+        <div className="!hidden max-md:!flex absolute top-1/2 left-0 right-0 -translate-y-1/2 w-full px-2.5 z-5 justify-between pointer-events-none bg-transparent">
           <button className="carousel-arrow prev pointer-events-auto w-8 h-8 bg-white border-none rounded-full flex items-center justify-center text-base text-brand-red cursor-pointer shadow-md">
             &larr;
           </button>
@@ -88,7 +88,7 @@ export default function HomepageDiscoverySection() {
         <div className="text-center mt-10">
           <a
             href="#"
-            className="font-sans-medium text-white no-underline text-lg py-3 px-6 border border-white/30 rounded-full transition-all duration-300 ease-in-out hover:bg-white/10 inline-block"
+            className="font-sans-medium text-white no-underline text-lg py-4 px-10 border border-white/30 rounded-full transition-all duration-300 ease-in-out hover:bg-white/10 inline-block"
           >
             View All
           </a>

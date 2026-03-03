@@ -1,6 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 
 export default function HomepageCoursesSection() {
+  const addonAddToCartClass =
+    "more-info card-more-info-btn ml-0 inline-flex w-full items-center justify-center rounded-lg bg-[var(--color-brand-red)] px-6 py-3 font-bold text-white no-underline transition-colors hover:bg-[var(--color-brand-dark-red)] hover:text-white visited:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-red)] focus-visible:ring-offset-2";
+
+  // Tour 01 add-on cards sit on a dark background in the courses carousel, so enforce
+  // left-aligned white text for readability (without affecting other tours).
+  const tour01AddonCardClass = "card text-left";
+  const tour01AddonTitleClass = "card-title text-left text-white";
+  const tour01AddonDescClass = "text-left text-white/80";
+
   return (
     <>
       {/* Course Section */}
@@ -97,45 +106,45 @@ export default function HomepageCoursesSection() {
                         id="tour01-cards"
                       >
                         <div className="card-carousel-track">
-                          <div className="card" data-product-id="kwangjuyo">
+						  <div className={tour01AddonCardClass} data-product-id="kwangjuyo">
                             <div className="card-image">
                               <div className="card-number">1</div>
                               <img src="/imgs/kwangjuyo.png" alt="Kwangjuyo" />
                             </div>
-                            <h4 className="card-title">Kwangjuyo</h4>
-                            <p>
+						    <h4 className={tour01AddonTitleClass}>Kwangjuyo</h4>
+						    <p className={tour01AddonDescClass}>
                               Experience traditional Korean ceramics at the renowned
                               Kwangjuyo pottery studio.
                             </p>
                             <div className="card-actions">
                               <a
                                 href="#"
-                                className="more-info card-more-info-btn"
+                                className={addonAddToCartClass}
                               >
                                 Add to Cart
                               </a>
                             </div>
                           </div>
-                          <div className="card" data-product-id="museum-pass">
+						  <div className={tour01AddonCardClass} data-product-id="museum-pass">
                             <div className="card-image">
                               <div className="card-number">2</div>
                               <img src="/imgs/monet-addon.png" alt="Museum Pass" />
                             </div>
-                            <h4 className="card-title">Museum Pass</h4>
-                            <p>
+						    <h4 className={tour01AddonTitleClass}>Museum Pass</h4>
+						    <p className={tour01AddonDescClass}>
                               Get access to multiple museums with our exclusive museum
                               pass package.
                             </p>
                             <div className="card-actions">
                               <a
                                 href="#"
-                                className="more-info card-more-info-btn"
+                                className={addonAddToCartClass}
                               >
                                 Add to Cart
                               </a>
                             </div>
                           </div>
-                          <div className="card" data-product-id="sejong-backstage">
+						  <div className={tour01AddonCardClass} data-product-id="sejong-backstage">
                             <div className="card-image">
                               <div className="card-number">3</div>
                               <img
@@ -143,34 +152,34 @@ export default function HomepageCoursesSection() {
                                 alt="Sejong Centre Backstage Pass"
                               />
                             </div>
-                            <h4 className="card-title">Sejong Centre Backstage Pass</h4>
-                            <p>
+						    <h4 className={tour01AddonTitleClass}>Sejong Centre Backstage Pass</h4>
+						    <p className={tour01AddonDescClass}>
                               Go behind the scenes at the prestigious Sejong Center for
                               the Performing Arts.
                             </p>
                             <div className="card-actions">
                               <a
                                 href="#"
-                                className="more-info card-more-info-btn"
+                                className={addonAddToCartClass}
                               >
                                 Add to Cart
                               </a>
                             </div>
                           </div>
-                          <div className="card" data-product-id="hanbok-rental">
+						  <div className={tour01AddonCardClass} data-product-id="hanbok-rental">
                             <div className="card-image">
                               <div className="card-number">4</div>
                               <img src="/imgs/hanbok-addon.png" alt="Hanbok Rental" />
                             </div>
-                            <h4 className="card-title">Hanbok Rental</h4>
-                            <p>
+						    <h4 className={tour01AddonTitleClass}>Hanbok Rental</h4>
+						    <p className={tour01AddonDescClass}>
                               Dress up in beautiful traditional Korean attire and explore
                               the palaces in style.
                             </p>
                             <div className="card-actions">
                               <a
                                 href="#"
-                                className="more-info card-more-info-btn"
+                                className={addonAddToCartClass}
                               >
                                 Add to Cart
                               </a>
@@ -281,7 +290,7 @@ export default function HomepageCoursesSection() {
                             <div className="card-actions">
                               <a
                                 href="#"
-                                className="more-info card-more-info-btn"
+                                className={addonAddToCartClass}
                               >
                                 Add to Cart
                               </a>
@@ -300,7 +309,7 @@ export default function HomepageCoursesSection() {
                             <div className="card-actions">
                               <a
                                 href="#"
-                                className="more-info card-more-info-btn"
+                                className={addonAddToCartClass}
                               >
                                 Add to Cart
                               </a>
@@ -410,7 +419,7 @@ export default function HomepageCoursesSection() {
                             <div className="card-actions">
                               <a
                                 href="#"
-                                className="more-info card-more-info-btn"
+                                className={addonAddToCartClass}
                               >
                                 Add to Cart
                               </a>
@@ -429,7 +438,7 @@ export default function HomepageCoursesSection() {
                             <div className="card-actions">
                               <a
                                 href="#"
-                                className="more-info card-more-info-btn"
+                                className={addonAddToCartClass}
                               >
                                 Add to Cart
                               </a>
@@ -448,7 +457,7 @@ export default function HomepageCoursesSection() {
                             <div className="card-actions">
                               <a
                                 href="#"
-                                className="more-info card-more-info-btn"
+                                className={addonAddToCartClass}
                               >
                                 Add to Cart
                               </a>

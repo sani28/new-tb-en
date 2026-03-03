@@ -21,14 +21,6 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         />
-        {/* Legacy prototype CSS — load order matters for cascade */}
-        <link rel="stylesheet" href="/styles.css" />
-	        <link rel="stylesheet" href="/css/components/carousel.css" />
-		        <link rel="stylesheet" href="/css/components/promo-addons-carousel.css" />
-        <link rel="stylesheet" href="/template.css" />
-        <link rel="stylesheet" href="/discounts.css" />
-			{/* Homepage-only styles are scoped to `body.index-page` */}
-			<link rel="stylesheet" href="/css/pages/home.css" />
       </head>
       <body>{children}</body>
     </html>

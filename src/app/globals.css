@@ -1,3 +1,19 @@
+@layer theme, base, components, legacy, utilities;
+
+/*
+  Legacy prototype CSS (from /public) loaded into a cascade layer.
+
+  Important: these @import rules must come before Tailwind is expanded, otherwise the
+  built CSS becomes invalid (CSS requires @import to precede regular rules).
+*/
+@import url("/styles.css") layer(legacy);
+@import url("/css/components/carousel.css") layer(legacy);
+@import url("/css/components/promo-addons-carousel.css") layer(legacy);
+@import url("/template.css") layer(legacy);
+@import url("/discounts.css") layer(legacy);
+/* Homepage-only styles are scoped to `body.index-page` */
+@import url("/css/pages/home.css") layer(legacy);
+
 @import "tailwindcss";
 
 /*
