@@ -40,16 +40,6 @@ export default function HeroSlider() {
     };
   }, [isPlaying, activeSlide, total]);
 
-  /* Keyboard navigation */
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") goToSlide(activeSlide - 1);
-      else if (e.key === "ArrowRight") goToSlide(activeSlide + 1);
-    };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [activeSlide, goToSlide]);
-
   /* Image preloading */
   useEffect(() => {
     SLIDES.forEach((src) => {
@@ -90,6 +80,21 @@ export default function HeroSlider() {
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
+      tabIndex={0}
+      onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+        // Scope ArrowLeft/ArrowRight navigation to when the slider (or its children)
+        // has focus so we don't hijack other controls (e.g. booking <select>).
+        if (e.defaultPrevented) return;
+        if (e.altKey || e.ctrlKey || e.metaKey) return;
+
+        if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          goToSlide(activeSlide - 1);
+        } else if (e.key === "ArrowRight") {
+          e.preventDefault();
+          goToSlide(activeSlide + 1);
+        }
+      }}
       role="region"
       aria-roledescription="carousel"
       aria-label="Hero image slider"
@@ -119,7 +124,15 @@ export default function HeroSlider() {
                 aria-label={`Go to slide ${i + 1}`}
                 tabIndex={0}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") onDotClick(i);
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    onDotClick(i);
+                  }
+
+                  if (e.key === " " || e.key === "Spacebar") {
+                    e.preventDefault();
+                    onDotClick(i);
+                  }
                 }}
               >
                 <div className="progress-bar">

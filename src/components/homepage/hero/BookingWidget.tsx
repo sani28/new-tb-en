@@ -214,7 +214,14 @@ export default function BookingWidget() {
                           }}
                           onKeyDown={(e) => {
                             if (cell.disabled || cell.soldOut) return;
-                            if (e.key === "Enter" || e.key === " ") onSelectDay(cell.day);
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              onSelectDay(cell.day);
+                            }
+                            if (e.key === " " || e.key === "Spacebar") {
+                              e.preventDefault();
+                              onSelectDay(cell.day);
+                            }
                           }}
                         >
                           {cell.day}

@@ -135,7 +135,14 @@ export default function PromoTabCarousel() {
               aria-label={`Go to promotion ${i + 1}`}
               tabIndex={0}
               onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") goToSlide(i);
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  goToSlide(i);
+                }
+                if (e.key === " " || e.key === "Spacebar") {
+                  e.preventDefault();
+                  goToSlide(i);
+                }
               }}
             >
               <div
@@ -194,7 +201,14 @@ export default function PromoTabCarousel() {
                 style={{ cursor: "pointer" }}
                 onClick={() => onPromoClick(slide.id)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") onPromoClick(slide.id);
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    onPromoClick(slide.id);
+                  }
+                  if (e.key === " " || e.key === "Spacebar") {
+                    e.preventDefault();
+                    onPromoClick(slide.id);
+                  }
                 }}
                 role="button"
                 tabIndex={i === currentIndex ? 0 : -1}
