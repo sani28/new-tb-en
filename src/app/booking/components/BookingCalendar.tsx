@@ -13,6 +13,16 @@ type Props = {
   onDateSelect: (d: Date) => void;
 };
 
+type Cell = { day: number; disabled: boolean; soldOut: boolean } | null;
+
+function getDayCls(cell: NonNullable<Cell>, selected: boolean): string {
+  const base = "p-2.5 text-center rounded-full relative flex items-center justify-center text-sm";
+  if (cell.disabled) return `${base} text-[#999] bg-[#f0f0f0] cursor-not-allowed opacity-60`;
+  if (selected) return `${base} bg-[#E20021] text-white cursor-pointer`;
+  if (cell.soldOut) return `${base} cursor-not-allowed`;
+  return `${base} cursor-pointer hover:bg-gray-100`;
+}
+
 export default function BookingCalendar({ selectedDate, onDateSelect }: Props) {
   const today = new Date();
   const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +55,6 @@ export default function BookingCalendar({ selectedDate, onDateSelect }: Props) {
   const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
   const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
-  type Cell = { day: number; disabled: boolean; soldOut: boolean } | null;
   const cells: Cell[] = [];
   for (let i = 0; i < firstDay; i++) cells.push(null);
   for (let d = 1; d <= daysInMonth; d++) {
@@ -68,11 +77,16 @@ export default function BookingCalendar({ selectedDate, onDateSelect }: Props) {
     selectedDate.getDate() === day;
 
   return (
-    <div className="date-selector">
-      <div className="date-picker-wrapper" ref={wrapperRef}>
-        <div className="date-picker-trigger" id="date-trigger" onClick={() => setIsOpen((o) => !o)}>
-          <span className="selected-date">{displayText}</span>
-          <svg className="calendar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <div className="mb-5">
+      <div className="relative w-full" ref={wrapperRef}>
+        {/* Trigger */}
+        <div
+          className="w-full px-4 py-3.5 border border-[#ddd] rounded-lg bg-white flex justify-between items-center cursor-pointer text-[15px] box-border"
+          id="date-trigger"
+          onClick={() => setIsOpen((o) => !o)}
+        >
+          <span>{displayText}</span>
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
             <line x1="16" y1="2" x2="16" y2="6" />
             <line x1="8" y1="2" x2="8" y2="6" />
@@ -80,29 +94,43 @@ export default function BookingCalendar({ selectedDate, onDateSelect }: Props) {
           </svg>
         </div>
 
+        {/* Dropdown */}
         {isOpen && (
-          <div className="calendar-dropdown" id="calendar-dropdown">
-            <div className="calendar-header">
-              <button className="prev-month" onClick={prevMonth}>←</button>
-              <span className="current-month" id="current-month">{MONTH_NAMES[viewMonth]} {viewYear}</span>
-              <button className="next-month" onClick={nextMonth}>→</button>
+          <div
+            className="absolute top-full left-1/2 -translate-x-1/2 w-full max-w-[350px] bg-white rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.15)] z-50 mt-2 p-4 box-border"
+            id="calendar-dropdown"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between mb-4">
+              <button
+                className="bg-transparent border-0 cursor-pointer text-lg p-2"
+                onClick={prevMonth}
+              >←</button>
+              <span className="text-base font-semibold" id="current-month">
+                {MONTH_NAMES[viewMonth]} {viewYear}
+              </span>
+              <button
+                className="bg-transparent border-0 cursor-pointer text-lg p-2"
+                onClick={nextMonth}
+              >→</button>
             </div>
-            <div className="weekdays">
-              {WEEKDAYS.map((d) => <span key={d}>{d}</span>)}
+
+            {/* Weekday labels */}
+            <div className="grid grid-cols-7 text-center mb-2">
+              {WEEKDAYS.map((d) => (
+                <span key={d} className="text-xs text-[#666] p-2">{d}</span>
+              ))}
             </div>
-            <div className="days" id="calendar-days">
+
+            {/* Day grid */}
+            <div className="grid grid-cols-7 gap-1" id="calendar-days">
               {cells.map((cell, i) => {
-                if (!cell) return <span key={`empty-${i}`} className="day empty" />;
-                const cls = [
-                  "day",
-                  cell.disabled ? "disabled" : "",
-                  cell.soldOut ? "sold-out" : "",
-                  isSelected(cell.day) ? "selected" : "",
-                ].filter(Boolean).join(" ");
+                if (!cell) return <span key={`empty-${i}`} />;
+                const selected = isSelected(cell.day);
                 return (
                   <span
                     key={cell.day}
-                    className={cls}
+                    className={getDayCls(cell, selected)}
                     onClick={() => {
                       if (cell.disabled || cell.soldOut) return;
                       onDateSelect(new Date(viewYear, viewMonth, cell.day));
@@ -111,16 +139,28 @@ export default function BookingCalendar({ selectedDate, onDateSelect }: Props) {
                   >
                     {cell.day}
                     {!cell.disabled && (
-                      <span className={`dot ${cell.soldOut ? "sold-out" : "available"}`} />
+                      <span
+                        className={`absolute bottom-0.5 w-1.5 h-1.5 rounded-full ${
+                          cell.soldOut ? "bg-[#F44336]" : "bg-[#4CAF50]"
+                        }`}
+                      />
                     )}
                   </span>
                 );
               })}
             </div>
-            <div className="calendar-footer">
-              <div className="availability-legend">
-                <div className="legend-item"><span className="dot available" /><span>Available</span></div>
-                <div className="legend-item"><span className="dot sold-out" /><span>Sold Out</span></div>
+
+            {/* Footer legend */}
+            <div className="mt-4 pt-4 border-t border-[#eee]">
+              <div className="flex gap-4">
+                <div className="flex items-center gap-1.5 text-xs text-[#666]">
+                  <span className="w-2 h-2 rounded-full bg-[#4CAF50]" />
+                  <span>Available</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-xs text-[#666]">
+                  <span className="w-2 h-2 rounded-full bg-[#F44336]" />
+                  <span>Sold Out</span>
+                </div>
               </div>
             </div>
           </div>
@@ -129,4 +169,3 @@ export default function BookingCalendar({ selectedDate, onDateSelect }: Props) {
     </div>
   );
 }
-
