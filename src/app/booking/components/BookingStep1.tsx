@@ -150,7 +150,7 @@ export default function BookingStep1({ onContinue }: Props) {
               </div>
               <div className="counter">
                 <button className="decrease" onClick={() => bookingStep1Store.dec("adult")}>-</button>
-                <input type="text" readOnly className="count" value={step1.adultCount} onChange={() => {}} />
+                <input type="text" readOnly className="count" value={step1.adultCount} />
                 <button className="increase" onClick={() => bookingStep1Store.inc("adult")}>+</button>
               </div>
             </div>
@@ -167,7 +167,7 @@ export default function BookingStep1({ onContinue }: Props) {
               </div>
               <div className="counter">
                 <button className="decrease" onClick={() => bookingStep1Store.dec("child")}>-</button>
-                <input type="text" readOnly className="count" value={step1.childCount} onChange={() => {}} />
+                <input type="text" readOnly className="count" value={step1.childCount} />
                 <button className="increase" onClick={() => bookingStep1Store.inc("child")}>+</button>
               </div>
             </div>
