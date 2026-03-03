@@ -144,8 +144,7 @@ export default function BookingStep3({ isSubmitting, error, onBack, onMakePaymen
                         <img src={item.image} alt={item.name} className="order-item-image" />
                       ) : (
                         <div
-                          className="order-item-image"
-                          style={{ background: "#f5f5f5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "24px", borderRadius: "8px" }}
+                          className="order-item-image flex items-center justify-center rounded-lg bg-[#f5f5f5] text-2xl"
                         >
                           {item.placeholder || "📦"}
                         </div>
@@ -210,16 +209,15 @@ export default function BookingStep3({ isSubmitting, error, onBack, onMakePaymen
         </div>
 
         {error && (
-          <div style={{ color: "#E20021", background: "#fff0f0", border: "1px solid #E20021", borderRadius: "8px", padding: "12px 16px", marginBottom: "16px", fontSize: "14px" }}>
+          <div className="mb-4 rounded-lg border border-[#E20021] bg-[#fff0f0] px-4 py-3 text-sm text-[#E20021]">
             {error}
           </div>
         )}
 
         <button
-          className="continue-btn"
+          className={`continue-btn${isSubmitting ? " opacity-70" : ""}`}
           onClick={onMakePayment}
           disabled={isSubmitting}
-          style={{ opacity: isSubmitting ? 0.7 : 1 }}
         >
           {isSubmitting ? "Processing..." : "Make Payment"}
         </button>

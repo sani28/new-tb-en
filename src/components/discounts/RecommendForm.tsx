@@ -29,11 +29,10 @@ export default function RecommendForm() {
     try {
       // TODO (backend): POST to Python API
       // await fetch("/api/discounts/recommend", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-      console.log("[RecommendForm] payload ready for backend:", payload);
+      void payload;
       setSuccess(true);
       e.currentTarget.reset();
-    } catch (err) {
-      console.error(err);
+    } catch {
       alert("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
@@ -53,7 +52,7 @@ export default function RecommendForm() {
         <div className="recommend-form">
           <h3>Recommend a Business</h3>
           {success ? (
-            <p style={{ textAlign: "center", color: "#2e7d32", fontWeight: 600 }}>
+            <p className="text-center font-semibold text-[#2e7d32]">
               Thank you for your recommendation! If we partner with this business, we will notify you with a special discount.
             </p>
           ) : (

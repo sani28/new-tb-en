@@ -14,7 +14,7 @@ export default function PromoFloatingCart() {
           </div>
           <div className="cart-items-list" id="promoCartItemsList" />
           <div className="cart-expanded-footer">
-            <div className="cart-savings" id="promoCartSavingsRow" style={{ display: "none" }}>
+            <div className="cart-savings hidden" id="promoCartSavingsRow">
               <span>You Save</span>
               <span id="promoCartSavings">$0.00</span>
             </div>

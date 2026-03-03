@@ -54,36 +54,36 @@ export default function DiscountsPageClient({ affiliates, autoOpenSlug, initialT
         </div>
 
         {/* Tab content */}
-        <div className={`tab-content${activeTab === "affiliate" ? " active" : ""}`} id="affiliate-tab" style={{ display: activeTab === "affiliate" ? "block" : "none" }}>
+        <div className={`tab-content${activeTab === "affiliate" ? " active" : ""}${activeTab !== "affiliate" ? " hidden" : ""}`} id="affiliate-tab">
           <AffiliateGrid affiliates={affiliates} autoOpenSlug={autoOpenSlug} />
         </div>
-        <div className={`tab-content${activeTab === "partner" ? " active" : ""}`} id="partner-tab" style={{ display: activeTab === "partner" ? "block" : "none" }}>
+        <div className={`tab-content${activeTab === "partner" ? " active" : ""}${activeTab !== "partner" ? " hidden" : ""}`} id="partner-tab">
           <PartnerForm />
         </div>
-        <div className={`tab-content${activeTab === "recommend" ? " active" : ""}`} id="recommend-tab" style={{ display: activeTab === "recommend" ? "block" : "none" }}>
+        <div className={`tab-content${activeTab === "recommend" ? " active" : ""}${activeTab !== "recommend" ? " hidden" : ""}`} id="recommend-tab">
           <RecommendForm />
         </div>
       </div>
 
       {/* Partner / Recommend link boxes */}
-      <div className="partner-link-section" style={{ textAlign: "center", padding: "20px 0" }}>
-        <div className="partner-link-container" style={{ maxWidth: 1200, margin: "0 auto", display: "flex", gap: 20, width: "100%" }}>
-          <div className="partner-link-box" style={{ flex: 1, backgroundColor: "#f9f9f9", padding: "30px 50px", borderRadius: 10, display: "flex", flexDirection: "column", alignItems: "center", gap: 20 }}>
-            <span style={{ fontSize: 20, textAlign: "center" }}>If you&apos;d like to partner with us as a business, please visit the partner form below</span>
+      <div className="partner-link-section text-center py-5">
+        <div className="partner-link-container mx-auto flex w-full max-w-[1200px] gap-5">
+          <div className="partner-link-box flex flex-1 flex-col items-center gap-5 rounded-[10px] bg-[#f9f9f9] px-[50px] py-[30px]">
+            <span className="text-center text-xl">If you&apos;d like to partner with us as a business, please visit the partner form below</span>
             <button
               type="button"
               onClick={() => { setActiveTab("partner"); document.getElementById("partner-tab")?.scrollIntoView({ behavior: "smooth" }); }}
-              style={{ padding: "15px 30px", backgroundColor: "#e4002b", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontSize: 20 }}
+              className="cursor-pointer rounded-[5px] border-none bg-[#e4002b] px-[30px] py-[15px] text-xl text-white"
             >
               Partner Form
             </button>
           </div>
-          <div className="partner-link-box" style={{ flex: 1, backgroundColor: "#f9f9f9", padding: "30px 50px", borderRadius: 10, display: "flex", flexDirection: "column", alignItems: "center", gap: 20 }}>
-            <span style={{ fontSize: 20, textAlign: "center" }}>If you&apos;d like to recommend a place, please fill out the recommend a place form below</span>
+          <div className="partner-link-box flex flex-1 flex-col items-center gap-5 rounded-[10px] bg-[#f9f9f9] px-[50px] py-[30px]">
+            <span className="text-center text-xl">If you&apos;d like to recommend a place, please fill out the recommend a place form below</span>
             <button
               type="button"
               onClick={() => { setActiveTab("recommend"); document.getElementById("recommend-tab")?.scrollIntoView({ behavior: "smooth" }); }}
-              style={{ padding: "15px 30px", backgroundColor: "#e4002b", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontSize: 20 }}
+              className="cursor-pointer rounded-[5px] border-none bg-[#e4002b] px-[30px] py-[15px] text-xl text-white"
             >
               Recommend A Place
             </button>

@@ -320,14 +320,6 @@
     display: none;
 }
 
-/* Legacy description wrappers (no longer used — React handles truncation) */
-.affiliate-card .description-wrapper,
-.affiliate-card .truncated-text,
-.affiliate-card .full-text,
-.affiliate-card .truncated-text.expanded {
-    display: none;
-}
-
 .description {
     position: relative;
     display: block;
