@@ -84,60 +84,61 @@ export default function BookingStep2({ contact, onContactChange, onBack, onConti
 
   return (
     <>
-      <div className="step-title-section">
-        <span className="step-number">2</span>
-        <span className="step-title">Your Information</span>
+      {/* Step Title */}
+      <div className="flex items-center gap-3 border-b border-[#eee] px-6 py-5">
+        <span className="flex size-8 items-center justify-center rounded-full bg-brand-red text-base font-semibold text-white">2</span>
+        <span className="text-lg font-semibold text-text-dark">Your Information</span>
       </div>
-      <div className="booking-inner-container">
-        <button className="back-btn" onClick={onBack}>← Back</button>
+      <div className="p-6 max-md:p-4">
+        <button className="mb-2.5 border-none bg-transparent py-2.5 text-base text-text-gray hover:text-text-dark" onClick={onBack}>← Back</button>
 
         {/* Order Summary */}
-        <div className="order-summary">
-          <h4>Order Summary</h4>
+        <div className="mb-5 rounded-xl bg-[#f8f9fa] p-5">
+          <h4 className="mb-4 text-lg font-semibold">Order Summary</h4>
 
-          <div className="order-section">
-            <div className="order-section-title">Tour Tickets</div>
+          <div className="mb-4">
+            <div className="mb-3 text-sm font-semibold text-text-gray">Tour Tickets</div>
             {dateLabel && (
-              <div className="order-tour-date">{dateLabel}</div>
+              <div className="mb-3 inline-block rounded-md bg-brand-red/[0.08] px-3 py-2 text-sm font-semibold text-brand-red">{dateLabel}</div>
             )}
 
             {step1.adultCount > 0 && (
-              <div className="order-item">
-                <div className="order-item-info">
-                  <div className="order-item-details">
-                    <h5>{TOUR_NAMES[step1.tourId] ?? step1.tourId}</h5>
-                    <span className="order-item-meta">Adult</span>
+              <div className="flex items-center justify-between border-b border-[#eee] py-3">
+                <div className="flex items-center gap-3">
+                  <div>
+                    <h5 className="mb-1 text-sm font-semibold">{TOUR_NAMES[step1.tourId] ?? step1.tourId}</h5>
+                    <span className="text-xs text-text-gray">Adult</span>
                   </div>
                 </div>
-                <div className="order-item-controls">
-                  <div className="order-item-qty">
-                    <button className="step2-ticket-decrease" onClick={() => bookingStep1Store.dec("adult")}>-</button>
-                    <span>{step1.adultCount}</span>
-                    <button className="step2-ticket-increase" onClick={() => bookingStep1Store.inc("adult")}>+</button>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <button className="flex size-7 cursor-pointer items-center justify-center rounded border border-[#ddd] bg-white" onClick={() => bookingStep1Store.dec("adult")}>-</button>
+                    <span className="font-semibold">{step1.adultCount}</span>
+                    <button className="flex size-7 cursor-pointer items-center justify-center rounded border border-[#ddd] bg-white" onClick={() => bookingStep1Store.inc("adult")}>+</button>
                   </div>
-                  <div className="order-item-price">
-                    <span className="order-item-current">{formatUsd(adultLineTotal)}</span>
+                  <div className="text-right">
+                    <span className="text-base font-semibold text-brand-red">{formatUsd(adultLineTotal)}</span>
                   </div>
                 </div>
               </div>
             )}
 
             {step1.childCount > 0 && (
-              <div className="order-item">
-                <div className="order-item-info">
-                  <div className="order-item-details">
-                    <h5>{TOUR_NAMES[step1.tourId] ?? step1.tourId}</h5>
-                    <span className="order-item-meta">Child</span>
+              <div className="flex items-center justify-between border-b border-[#eee] py-3">
+                <div className="flex items-center gap-3">
+                  <div>
+                    <h5 className="mb-1 text-sm font-semibold">{TOUR_NAMES[step1.tourId] ?? step1.tourId}</h5>
+                    <span className="text-xs text-text-gray">Child</span>
                   </div>
                 </div>
-                <div className="order-item-controls">
-                  <div className="order-item-qty">
-                    <button className="step2-ticket-decrease" onClick={() => bookingStep1Store.dec("child")}>-</button>
-                    <span>{step1.childCount}</span>
-                    <button className="step2-ticket-increase" onClick={() => bookingStep1Store.inc("child")}>+</button>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <button className="flex size-7 cursor-pointer items-center justify-center rounded border border-[#ddd] bg-white" onClick={() => bookingStep1Store.dec("child")}>-</button>
+                    <span className="font-semibold">{step1.childCount}</span>
+                    <button className="flex size-7 cursor-pointer items-center justify-center rounded border border-[#ddd] bg-white" onClick={() => bookingStep1Store.inc("child")}>+</button>
                   </div>
-                  <div className="order-item-price">
-                    <span className="order-item-current">{formatUsd(childLineTotal)}</span>
+                  <div className="text-right">
+                    <span className="text-base font-semibold text-brand-red">{formatUsd(childLineTotal)}</span>
                   </div>
                 </div>
               </div>
@@ -145,46 +146,43 @@ export default function BookingStep2({ contact, onContactChange, onBack, onConti
           </div>
 
           {addonsCount > 0 && (
-            <div className="order-section">
-              <div className="order-section-title">Add-ons</div>
+            <div className="mb-4">
+              <div className="mb-3 text-sm font-semibold text-text-gray">Add-ons</div>
               {cart.items.map((item, index) => {
                 const itemTotal = item.computedLinePrice ?? item.price * item.quantity;
                 const meta = buildAddonMeta(item);
                 return (
-                  <div className="order-item" key={`${item.productId}-${index}`}>
-                    <div className="order-item-info">
+                  <div className="flex items-center justify-between border-b border-[#eee] py-3" key={`${item.productId}-${index}`}>
+                    <div className="flex items-center gap-3">
                       {item.image ? (
-                        <img src={item.image} alt={item.name} className="order-item-image" />
+                        <img src={item.image} alt={item.name} className="size-[60px] rounded-lg object-cover" />
                       ) : (
-                        <div
-                          className="order-item-image"
-                          style={{ background: "#f5f5f5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "24px", borderRadius: "8px" }}
-                        >
+                        <div className="flex size-[60px] items-center justify-center rounded-lg bg-[#f5f5f5] text-2xl">
                           {item.placeholder || "📦"}
                         </div>
                       )}
-                      <div className="order-item-details">
-                        <h5>{item.name}</h5>
-                        <span className="order-item-meta">{meta}</span>
+                      <div>
+                        <h5 className="mb-1 text-sm font-semibold">{item.name}</h5>
+                        <span className="text-xs text-text-gray">{meta}</span>
                       </div>
                     </div>
-                    <div className="order-item-controls">
-                      <div className="order-item-qty">
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-2">
                         <button
-                          className="step2-addon-decrease"
+                          className="flex size-7 cursor-pointer items-center justify-center rounded border border-[#ddd] bg-white"
                           onClick={() => bookingCartStore.updateItemQuantity(index, Math.max(1, item.quantity - 1))}
                         >-</button>
-                        <span>{item.quantity}</span>
+                        <span className="font-semibold">{item.quantity}</span>
                         <button
-                          className="step2-addon-increase"
+                          className="flex size-7 cursor-pointer items-center justify-center rounded border border-[#ddd] bg-white"
                           onClick={() => bookingCartStore.updateItemQuantity(index, item.quantity + 1)}
                         >+</button>
                       </div>
-                      <div className="order-item-price">
-                        <span className="order-item-current">{formatUsd(itemTotal)}</span>
+                      <div className="text-right">
+                        <span className="text-base font-semibold text-brand-red">{formatUsd(itemTotal)}</span>
                       </div>
                       <button
-                        className="step2-remove-addon-btn"
+                        className="ml-2 rounded border-none bg-transparent px-2 py-1 text-lg text-[#999] transition-all hover:bg-brand-red/10 hover:text-brand-red"
                         onClick={() => bookingCartStore.removeIndex(index)}
                         title="Remove add-on"
                       >×</button>
@@ -195,18 +193,18 @@ export default function BookingStep2({ contact, onContactChange, onBack, onConti
             </div>
           )}
 
-          <div className="order-totals">
-            <div className="subtotal">
+          <div className="mt-4 border-t-2 border-[#ddd] pt-4">
+            <div className="mb-2 flex justify-between">
               <span>Subtotal</span>
               <span>{formatUsd(grandOriginal)}</span>
             </div>
             {savings > 0 && (
-              <div className="savings">
+              <div className="mb-2 flex justify-between text-[#4CAF50]">
                 <span>You Save</span>
                 <span>-{formatUsd(savings)}</span>
               </div>
             )}
-            <div className="total">
+            <div className="flex justify-between text-lg font-bold">
               <span>Total</span>
               <span>{formatUsd(grandTotal)}</span>
             </div>
@@ -214,81 +212,86 @@ export default function BookingStep2({ contact, onContactChange, onBack, onConti
         </div>
 
         {/* Contact Info Form */}
-        <div className="user-info-form">
-          <div className="form-group">
-            <label htmlFor="full-name">Full Name *</label>
+        <div>
+          <div className="mb-5">
+            <label htmlFor="full-name" className="mb-2 block text-sm font-semibold text-text-dark">Full Name *</label>
             <input
               type="text"
               id="full-name"
               placeholder="Enter your full name"
               value={contact.fullName}
               onChange={(e) => set("fullName", e.target.value)}
+              className="w-full rounded-lg border border-[#ddd] px-4 py-3.5 text-[15px] focus:border-brand-red focus:outline-none"
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="email">Email Address *</label>
+          <div className="mb-5">
+            <label htmlFor="email" className="mb-2 block text-sm font-semibold text-text-dark">Email Address *</label>
             <input
               type="email"
               id="email"
               placeholder="Enter your email"
               value={contact.email}
               onChange={(e) => set("email", e.target.value)}
+              className="w-full rounded-lg border border-[#ddd] px-4 py-3.5 text-[15px] focus:border-brand-red focus:outline-none"
             />
-            <div className="info-text">
-              <span className="info-icon">i</span>
+            <div className="mt-2 flex items-center gap-2 text-xs text-text-gray">
+              <span className="flex size-4 items-center justify-center rounded-full bg-[#ddd] text-[10px]">i</span>
               <span>Your ticket will be sent to this email</span>
             </div>
           </div>
-          <div className="form-group">
-            <label htmlFor="phone">Phone Number *</label>
+          <div className="mb-5">
+            <label htmlFor="phone" className="mb-2 block text-sm font-semibold text-text-dark">Phone Number *</label>
             <input
               type="tel"
               id="phone"
               placeholder="Enter your phone number"
               value={contact.phone}
               onChange={(e) => set("phone", e.target.value)}
+              className="w-full rounded-lg border border-[#ddd] px-4 py-3.5 text-[15px] focus:border-brand-red focus:outline-none"
             />
           </div>
 
-          <div className="cancellation-policy-section">
-            <p><strong>Cancellation &amp; Refund Policy</strong></p>
-            <ul>
-              <li>100% refund for cancellations made 24 hours before the tour</li>
-              <li>50% refund for cancellations made 12 hours before the tour</li>
-              <li>No refund for cancellations made less than 12 hours before the tour</li>
-              <li>Night View Course (Tour 04) tickets are non-refundable on the day of the tour</li>
-              <li>Refund processing may take 3-5 business days</li>
-              <li>All times are based on local Seoul time (KST)</li>
+          <div className="mb-5 rounded-lg border border-[#ffc107] bg-[#fff8e1] p-4">
+            <p className="mb-2.5 text-sm font-bold">Cancellation &amp; Refund Policy</p>
+            <ul className="m-0 pl-5">
+              <li className="mb-1.5 text-[13px] text-text-gray">100% refund for cancellations made 24 hours before the tour</li>
+              <li className="mb-1.5 text-[13px] text-text-gray">50% refund for cancellations made 12 hours before the tour</li>
+              <li className="mb-1.5 text-[13px] text-text-gray">No refund for cancellations made less than 12 hours before the tour</li>
+              <li className="mb-1.5 text-[13px] text-text-gray">Night View Course (Tour 04) tickets are non-refundable on the day of the tour</li>
+              <li className="mb-1.5 text-[13px] text-text-gray">Refund processing may take 3-5 business days</li>
+              <li className="mb-0 text-[13px] text-text-gray">All times are based on local Seoul time (KST)</li>
             </ul>
           </div>
 
-          <div className="terms-section">
-            <div className="terms-text-box">
-              <p><strong>Terms and Conditions</strong></p>
+          <div className="py-3">
+            <div className="mb-4 max-h-[120px] overflow-y-auto rounded-lg bg-[#f8f9fa] p-4 text-[13px] text-text-gray">
+              <p className="font-bold">Terms and Conditions</p>
               <p>By proceeding with this booking, you agree to our terms of service and cancellation policy. Tickets are non-transferable and must be used on the selected date. Please arrive at least 15 minutes before departure time.</p>
             </div>
-            <div className="terms-checkbox">
+            <div className="mb-3 flex items-center gap-2.5">
               <input
                 type="checkbox"
                 id="terms-agree"
                 checked={contact.termsAgreed}
                 onChange={(e) => set("termsAgreed", e.target.checked)}
+                className="size-[18px] cursor-pointer"
               />
-              <label htmlFor="terms-agree">I agree to the Terms and Conditions</label>
+              <label htmlFor="terms-agree" className="cursor-pointer text-sm text-text-dark">I agree to the Terms and Conditions</label>
             </div>
-            <div className="terms-checkbox">
+            <div className="mb-3 flex items-center gap-2.5">
               <input
                 type="checkbox"
                 id="marketing-agree"
                 checked={contact.marketingAgreed}
                 onChange={(e) => set("marketingAgreed", e.target.checked)}
+                className="size-[18px] cursor-pointer"
               />
-              <label htmlFor="marketing-agree">I agree to receive marketing communications (optional)</label>
+              <label htmlFor="marketing-agree" className="cursor-pointer text-sm text-text-dark">I agree to receive marketing communications (optional)</label>
             </div>
           </div>
         </div>
 
-        <button className="continue-btn" onClick={onContinue}>Continue to Payment</button>
+        <button className="mt-5 w-full rounded-lg bg-brand-red p-4 text-base font-semibold text-white transition-colors hover:bg-brand-dark-red" onClick={onContinue}>Continue to Payment</button>
       </div>
     </>
   );
