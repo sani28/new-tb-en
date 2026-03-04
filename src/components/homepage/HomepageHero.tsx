@@ -9,9 +9,9 @@ import { HeroSlider, PromoTabCarousel, BookingWidget } from "./hero";
   dispatched from the HomepageCourseCarousel behavior.
 */
 const COURSE_SLIDES = [
-  { title: "Downtown Namsan Palace Course", color: "white", bg: "#001C2C" },
-  { title: "Nightview Course(Non Stop)", color: "black", bg: "#FCD700" },
-  { title: "Panorama Course", color: "white", bg: "#C41E3A" },
+  { title: "Downtown Namsan Palace Course", color: "white", bg: "#001C2C", icon: "/imgs/palacetour01.png" },
+  { title: "Nightview Course(Non Stop)", color: "black", bg: "#FCD700", icon: "/imgs/nighttouricon.png" },
+  { title: "Panorama Course", color: "white", bg: "#C41E3A", icon: "/imgs/sctbbusicon.png" },
 ];
 
 const GRADIENT_BACKGROUNDS = [
@@ -52,11 +52,18 @@ export default function HomepageHero() {
 
       {/* ── Gradient Section — driven by courseCarousel event ── */}
       <div
-        className={`gradient-section slide-${courseIndex + 1}`}
+        className="relative z-[1] w-full h-[250px] flex justify-center items-end mb-[30px] -mt-px transition-[background] duration-500"
         style={{ background: gradientBg }}
       >
+        {/* Tour icon — replaces the legacy ::after pseudo-element */}
+        <img
+          src={courseSlide.icon}
+          alt=""
+          className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[120px] object-contain z-[1] transition-opacity duration-300"
+        />
+
         <h1
-          className="course-title"
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90%] max-w-[1100px] m-0 p-[25px] text-center rounded-t-[20px] z-[3] text-4xl font-semibold shadow-[0_-4px_10px_rgba(0,0,0,0.1)] block transition-[background-color] duration-500"
           style={{ color: courseSlide.color, background: courseSlide.bg }}
         >
           {courseSlide.title}

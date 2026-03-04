@@ -791,68 +791,9 @@
 /* Gradient Section
    z-index 1 keeps .gradient-section BEHIND .courses (z-index 3).
    The course-title tab peeks out above the courses-inner rounded top edge. */
-.index-page .gradient-section {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    height: 250px;
-    background: linear-gradient(180deg, #C6F5FF 0%, #E1F7FF 30.56%, #E2601E 100%);
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    margin-bottom: 30px;
-    transition: background 0.5s ease;
-    margin-top: -1px;
-}
+/* gradient-section + slide icons → migrated to Tailwind + React <img> in HomepageHero.tsx */
 
-.index-page .gradient-section::after {
-    content: '';
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    height: 120px;
-    background-image: url('/imgs/palacetour01.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    z-index: 1;
-    transition: background-image 0.3s ease;
-}
-
-.index-page .gradient-section.slide-1::after {
-    background-image: url('/imgs/palacetour01.png');
-}
-
-.index-page .gradient-section.slide-2::after {
-    background-image: url('/imgs/nighttouricon.png');
-}
-
-.index-page .gradient-section.slide-3::after {
-    background-image: url('/imgs/sctbbusicon.png');
-}
-
-.index-page .gradient-section .course-title {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 1100px;
-    margin: 0;
-    padding: 25px;
-    background: #001C2C;
-    color: white;
-    text-align: center;
-    border-radius: 20px 20px 0 0;
-    z-index: 3;
-    font-size: 36px;
-    font-weight: 600;
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
-    display: block !important;
-    transition: background-color 0.5s ease;
-}
+/* course-title inside gradient-section → migrated to Tailwind in HomepageHero.tsx */
 
 .index-page .courses-inner {
     position: relative;
