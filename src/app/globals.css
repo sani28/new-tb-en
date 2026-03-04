@@ -37,4 +37,70 @@
   --font-sans-semibold: 'GeneralSans-Semibold', sans-serif;
   --font-sans-medium: 'GeneralSans-Medium', sans-serif;
   --font-sans-regular: 'GeneralSans-Regular', sans-serif;
+  --font-copperplate: 'Copperplate', 'GeneralSans-Medium', sans-serif;
+
+  /* Custom animations */
+  --animate-marquee: marquee 37s linear infinite;
+  --animate-marquee-mobile: marquee 30s linear infinite;
+}
+
+/* ─── Marquee keyframe for promo notification bar ─── */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+/* ─── Header element fixed positioning ───
+   These use @layer components so Tailwind utilities can still override
+   individual properties when needed, but body-class-dependent rules stay
+   here because Tailwind can't express parent-body-class selectors.
+*/
+@layer components {
+  /* Promo notification bar — always pinned at top:0 */
+  [data-header="promo-bar"] {
+    position: fixed;
+    top: 0;
+    z-index: 1001;
+  }
+
+  /* Notification bar — sits below promo bar (45px) */
+  [data-header="notification-bar"] {
+    position: fixed;
+    top: 45px;
+    z-index: 1000;
+    transition: top 0.3s ease;
+  }
+
+  /* Desktop main nav — below both bars (90px) */
+  [data-header="main-nav"] {
+    position: fixed;
+    top: 90px;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    transition: top 0.3s ease;
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Mobile header — hidden on desktop, fixed on mobile */
+  [data-header="mobile-header"] {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    [data-header="main-nav"] {
+      display: none !important;
+    }
+
+    [data-header="mobile-header"] {
+      display: flex;
+      position: fixed;
+      top: 90px;
+      left: 0;
+      right: 0;
+      z-index: 999;
+      box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+      transition: top 0.3s ease;
+    }
+  }
 }
