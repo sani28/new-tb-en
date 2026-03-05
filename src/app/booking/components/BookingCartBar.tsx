@@ -37,27 +37,24 @@ function CartItemRow({ item, index }: { item: BookingCartItem; index: number }) 
       : item.price * item.quantity;
 
   return (
-    <div className="cart-item">
-      <div className="cart-item-info">
+    <div className="flex items-center justify-between border-b border-[#eee] py-3">
+      <div className="flex items-center gap-3">
         {item.image ? (
-          <img src={item.image} alt={item.name} className="cart-item-image" />
+          <img src={item.image} alt={item.name} className="size-[50px] rounded-lg object-cover" />
         ) : (
-          <div
-            className="cart-item-image"
-            style={{ background: "#f5f5f5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "24px" }}
-          >
+          <div className="flex size-[50px] items-center justify-center rounded-lg bg-[#f5f5f5] text-2xl">
             {item.placeholder || "📦"}
           </div>
         )}
-        <div className="cart-item-details">
-          <h5>{item.name}</h5>
-          <span>{itemDesc}</span>
+        <div>
+          <h5 className="mb-1 text-sm font-semibold">{item.name}</h5>
+          <span className="text-xs text-text-gray">{itemDesc}</span>
         </div>
       </div>
-      <div className="cart-item-right">
-        <span className="cart-item-price">{formatUsd(displayPrice)}</span>
+      <div className="flex shrink-0 items-center gap-3">
+        <span className="font-semibold text-brand-red">{formatUsd(displayPrice)}</span>
         <button
-          className="cart-item-delete"
+          className="flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[#ddd] bg-white p-0 text-lg leading-none text-[#999] transition-all hover:border-brand-red hover:bg-brand-red hover:text-white"
           type="button"
           aria-label={`Remove ${item.name}`}
           onClick={(e) => {
@@ -93,30 +90,33 @@ export default function BookingCartBar({ onContinue }: Props) {
   const isVisible = itemCount > 0;
 
   return (
-    <div className={`upsell-cart-bar${isVisible ? " visible" : ""}`} id="upsell-cart-bar">
-      <div className="cart-bar-content">
-        <div className="cart-bar-left">
-          <div className="cart-bar-icon">
+    <div
+      className={`fixed inset-x-0 bottom-0 z-[9999] w-full bg-brand-red px-10 py-4 text-white shadow-[0_-4px_20px_rgba(0,0,0,0.15)] transition-transform duration-300 ${isVisible ? "translate-y-0" : "translate-y-full"}`}
+      id="upsell-cart-bar"
+    >
+      <div className="mx-auto flex max-w-[1200px] items-center justify-between">
+        <div className="flex items-center gap-6">
+          <div className="relative">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="9" cy="21" r="1" />
               <circle cx="20" cy="21" r="1" />
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
             </svg>
-            <span className="cart-badge">{itemCount}</span>
+            <span className="absolute -right-2 -top-2 flex size-[22px] items-center justify-center rounded-full bg-white text-xs font-bold text-brand-red">{itemCount}</span>
           </div>
-          <div className="cart-bar-info">
-            <span className="cart-bar-items">{itemCount} item{itemCount === 1 ? "" : "s"} added</span>
-            <span className="cart-bar-total">{formatUsd(total)}</span>
+          <div className="flex items-center gap-6">
+            <span className="text-[15px] opacity-90">{itemCount} item{itemCount === 1 ? "" : "s"} added</span>
+            <span className="text-xl font-bold">{formatUsd(total)}</span>
           </div>
         </div>
-        <div className="cart-bar-right">
-          <button className="view-cart-btn" onClick={() => setExpanded((v) => !v)}>
+        <div className="flex items-center gap-4">
+          <button className="flex items-center gap-2 rounded-[25px] border-none bg-white px-6 py-3 text-[15px] font-semibold text-brand-red transition-all hover:scale-[1.02] hover:bg-[#f5f5f5]" onClick={() => setExpanded((v) => !v)}>
             View Cart
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <polyline points="6 9 12 15 18 9" />
             </svg>
           </button>
-          <button className="view-cart-btn" onClick={onContinue} style={{ marginLeft: 8 }}>
+          <button className="flex items-center gap-2 rounded-[25px] border-none bg-white px-6 py-3 text-[15px] font-semibold text-brand-red transition-all hover:scale-[1.02] hover:bg-[#f5f5f5]" onClick={onContinue}>
             Continue Booking
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <polyline points="9 18 15 12 9 6" />
@@ -124,26 +124,28 @@ export default function BookingCartBar({ onContinue }: Props) {
           </button>
         </div>
       </div>
-      <div className={`cart-bar-expanded${expanded ? " visible" : ""}`}>
-        <div className="cart-expanded-header">
-          <h4>Your Add-ons</h4>
-          <button className="collapse-cart-btn" onClick={() => setExpanded(false)}>
+      <div className={`-mx-10 -mb-4 mt-4 max-h-[400px] overflow-y-auto rounded-t-2xl bg-white px-10 py-6 text-text-dark ${expanded ? "block" : "hidden"}`}>
+        <div className="mx-auto mb-5 flex max-w-[1200px] items-center justify-between">
+          <h4 className="text-xl font-semibold">Your Add-ons</h4>
+          <button className="rounded-full border-none bg-transparent p-2 transition-colors hover:bg-[#f5f5f5]" onClick={() => setExpanded(false)}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <polyline points="18 15 12 9 6 15" />
             </svg>
           </button>
         </div>
-        <div className="cart-items-list">
+        <div className="mx-auto max-h-[200px] max-w-[1200px] overflow-y-auto">
           {cart.items.map((item, idx) => (
             <CartItemRow key={`${item.productId}-${idx}`} item={item} index={idx} />
           ))}
         </div>
-        <div className="cart-expanded-footer">
-          <div className="cart-savings" style={{ display: savings > 0 ? "flex" : "none" }}>
-            <span>You Save</span>
-            <span>-{formatUsd(savings)}</span>
-          </div>
-          <div className="cart-total-row">
+        <div className="mx-auto mt-4 max-w-[1200px] border-t border-[#eee] pt-4">
+          {savings > 0 && (
+            <div className="mb-2 flex justify-between text-[#4CAF50]">
+              <span>You Save</span>
+              <span>-{formatUsd(savings)}</span>
+            </div>
+          )}
+          <div className="flex justify-between text-lg font-semibold">
             <span>Add-ons Total</span>
             <span>{formatUsd(total)}</span>
           </div>

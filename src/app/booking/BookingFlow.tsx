@@ -111,21 +111,21 @@ export default function BookingFlow() {
   };
 
   return (
-    <main className="booking-page-content">
+    <main className="relative z-1 mx-auto max-w-[800px] p-5 pt-[120px] max-md:p-2.5 max-md:pt-20">
       <BodyClass className="template-page booking-page" />
-      <div className="booking-page-container">
-        <div className="booking-page-header">
-          <h1>Book Your Tour</h1>
+      <div className="overflow-hidden rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.1)]">
+        <div className="flex items-center justify-between bg-brand-red px-6 py-5">
+          <h1 className="m-0 text-2xl font-semibold text-white">Book Your Tour</h1>
         </div>
 
         {step === 1 && (
-          <div className="booking-step-page active" id="step1">
+          <div id="step1">
             <BookingStep1 onContinue={goToStep2} />
           </div>
         )}
 
         {step === 2 && (
-          <div className="booking-step-page active" id="step2">
+          <div id="step2">
             <BookingStep2
               contact={contact}
               onContactChange={setContact}
@@ -136,7 +136,7 @@ export default function BookingFlow() {
         )}
 
         {step === 3 && (
-          <div className="booking-step-page active" id="step3">
+          <div id="step3">
             <BookingStep3
               isSubmitting={isSubmitting}
               error={submitError}
@@ -147,7 +147,7 @@ export default function BookingFlow() {
         )}
 
         {step === 4 && (
-          <div className="booking-step-page active" id="step4">
+          <div id="step4">
             <BookingStep4 referenceCode={bookingRef} />
           </div>
         )}
