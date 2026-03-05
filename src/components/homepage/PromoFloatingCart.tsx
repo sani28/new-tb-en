@@ -35,71 +35,69 @@ export default function PromoFloatingCart() {
         className={`promo-upsell-cart-bar ${visible ? "visible" : ""}`}
         aria-hidden={visible ? "false" : "true"}
       >
-        {/* Expanded panel */}
-        {cartExpanded && (
-          <div className="cart-bar-expanded">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-[#eee]">
-              <h4 className="m-0 text-[16px] font-semibold text-[#333]">Your Cart</h4>
-              <button
-                className="collapse-cart-btn bg-transparent border-none cursor-pointer text-[#666] p-1 flex items-center justify-center rounded hover:bg-[#f5f5f5] transition-colors"
-                type="button"
-                aria-label="Collapse cart"
-                onClick={() => setCartExpanded(false)}
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="18 15 12 9 6 15" />
-                </svg>
-              </button>
-            </div>
+        {/* Expanded panel — always in DOM, .show class drives the CSS max-height transition */}
+        <div className={`cart-bar-expanded${cartExpanded ? " show" : ""}`}>
+          <div className="flex items-center justify-between px-5 py-4 border-b border-[#eee]">
+            <h4 className="m-0 text-[16px] font-semibold text-[#333]">Your Cart</h4>
+            <button
+              className="collapse-cart-btn bg-transparent border-none cursor-pointer text-[#666] p-1 flex items-center justify-center rounded hover:bg-[#f5f5f5] transition-colors"
+              type="button"
+              aria-label="Collapse cart"
+              onClick={() => setCartExpanded(false)}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="18 15 12 9 6 15" />
+              </svg>
+            </button>
+          </div>
 
-            <div className="cart-items-list">
-              {cartItemRows.length === 0 ? (
-                <div className="p-5 text-center text-[#666]">Your cart is empty</div>
-              ) : (
-                cartItemRows.map(({ index, item, imageUrl, placeholder, linePrice, metaInfo }) => (
-                  <div key={index} className="cart-item">
-                    <div className="cart-item-image">
-                      {imageUrl
-                        ? <img src={imageUrl} alt={item.name} /> /* eslint-disable-line @next/next/no-img-element */
-                        : <div className="cart-item-placeholder">{placeholder}</div>
-                      }
-                    </div>
-                    <div className="cart-item-details">
-                      <div className="cart-item-name">{item.name}</div>
-                      {metaInfo && (
-                        <div className="cart-item-meta">
-                          <div className="cart-item-meta-line">{metaInfo}</div>
-                        </div>
-                      )}
-                      <div className="cart-item-price">${linePrice.toFixed(2)}</div>
-                    </div>
-                    <button
-                      className="cart-item-remove"
-                      type="button"
-                      aria-label="Remove"
-                      onClick={() => removeFromCart(index)}
-                    >
-                      ×
-                    </button>
+          <div className="cart-items-list">
+            {cartItemRows.length === 0 ? (
+              <div className="p-5 text-center text-[#666]">Your cart is empty</div>
+            ) : (
+              cartItemRows.map(({ index, item, imageUrl, placeholder, linePrice, metaInfo }) => (
+                <div key={index} className="cart-item">
+                  <div className="cart-item-image">
+                    {imageUrl
+                      ? <img src={imageUrl} alt={item.name} /> /* eslint-disable-line @next/next/no-img-element */
+                      : <div className="cart-item-placeholder">{placeholder}</div>
+                    }
                   </div>
-                ))
-              )}
-            </div>
-
-            <div className="px-5 py-3 border-t border-[#eee]">
-              {savings > 0.005 && (
-                <div className="flex justify-between text-[14px] mb-1">
-                  <span className="text-[#666]">You Save</span>
-                  <span className="text-[#2e7d32] font-semibold">${savings.toFixed(2)}</span>
+                  <div className="cart-item-details">
+                    <div className="cart-item-name">{item.name}</div>
+                    {metaInfo && (
+                      <div className="cart-item-meta">
+                        <div className="cart-item-meta-line">{metaInfo}</div>
+                      </div>
+                    )}
+                    <div className="cart-item-price">${linePrice.toFixed(2)}</div>
+                  </div>
+                  <button
+                    className="cart-item-remove"
+                    type="button"
+                    aria-label="Remove"
+                    onClick={() => removeFromCart(index)}
+                  >
+                    ×
+                  </button>
                 </div>
-              )}
-              <div className="flex justify-between text-[15px] font-bold">
-                <span>Cart Total</span>
-                <span>${total.toFixed(2)}</span>
+              ))
+            )}
+          </div>
+
+          <div className="px-5 py-3 border-t border-[#eee]">
+            {savings > 0.005 && (
+              <div className="flex justify-between text-[14px] mb-1">
+                <span className="text-[#666]">You Save</span>
+                <span className="text-[#2e7d32] font-semibold">${savings.toFixed(2)}</span>
               </div>
+            )}
+            <div className="flex justify-between text-[15px] font-bold">
+              <span>Cart Total</span>
+              <span>${total.toFixed(2)}</span>
             </div>
           </div>
-        )}
+        </div>
 
         {/* Bar row */}
         <div className="cart-bar-content">

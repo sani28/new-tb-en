@@ -140,7 +140,7 @@ function BookingCartBarInner({
         <div className="flex items-center gap-4">
           <button className="flex items-center gap-2 rounded-[25px] border-none bg-white px-6 py-3 text-[15px] font-semibold text-brand-red transition-all hover:scale-[1.02] hover:bg-[#f5f5f5]" onClick={() => setExpanded((v) => !v)}>
             View Cart
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ transform: expanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s" }}>
               <polyline points="6 9 12 15 18 9" />
             </svg>
           </button>
@@ -152,33 +152,35 @@ function BookingCartBarInner({
           </button>
         </div>
       </div>
-      <div className={`-mx-10 -mb-4 mt-4 max-h-[400px] overflow-y-auto rounded-t-2xl bg-white px-10 py-6 text-text-dark ${expanded ? "block" : "hidden"}`}>
-        <div className="mx-auto mb-5 flex max-w-[1200px] items-center justify-between">
-          <h4 className="text-xl font-semibold">Your Add-ons</h4>
-          <button className="rounded-full border-none bg-transparent p-2 transition-colors hover:bg-[#f5f5f5]" onClick={() => setExpanded(false)}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="18 15 12 9 6 15" />
-            </svg>
-          </button>
-        </div>
-        <div className="mx-auto max-h-[200px] max-w-[1200px] overflow-y-auto">
-          {items.map((item, idx) => (
-            <CartItemRow key={`${item.productId}-${idx}`} item={item} index={idx} />
-          ))}
-        </div>
-        <div className="mx-auto mt-4 max-w-[1200px] border-t border-[#eee] pt-4">
-          {savings > 0 && (
-            <div className="mb-2 flex justify-between text-[#4CAF50]">
-              <span>You Save</span>
-              <span>-{formatUsd(savings)}</span>
+      {expanded && (
+        <div className="-mx-10 -mb-4 mt-4 rounded-t-2xl bg-white px-10 py-6 text-text-dark">
+          <div className="mx-auto mb-5 flex max-w-[1200px] items-center justify-between">
+            <h4 className="text-xl font-semibold">Your Add-ons</h4>
+            <button className="rounded-full border-none bg-transparent p-2 transition-colors hover:bg-[#f5f5f5]" onClick={() => setExpanded(false)}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="18 15 12 9 6 15" />
+              </svg>
+            </button>
+          </div>
+          <div className="mx-auto max-h-[250px] max-w-[1200px] overflow-y-auto">
+            {items.map((item, idx) => (
+              <CartItemRow key={`${item.productId}-${idx}`} item={item} index={idx} />
+            ))}
+          </div>
+          <div className="mx-auto mt-4 max-w-[1200px] border-t border-[#eee] pt-4">
+            {savings > 0 && (
+              <div className="mb-2 flex justify-between text-[#4CAF50]">
+                <span>You Save</span>
+                <span>-{formatUsd(savings)}</span>
+              </div>
+            )}
+            <div className="flex justify-between text-lg font-semibold">
+              <span>Add-ons Total</span>
+              <span>{formatUsd(total)}</span>
             </div>
-          )}
-          <div className="flex justify-between text-lg font-semibold">
-            <span>Add-ons Total</span>
-            <span>{formatUsd(total)}</span>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

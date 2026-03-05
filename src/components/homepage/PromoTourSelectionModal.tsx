@@ -323,22 +323,13 @@ export default function PromoTourSelectionModal() {
           {/* Sticky bottom */}
           <div className="sticky bottom-0 bg-white border-t border-[#eee] py-[14px] px-[18px] shrink-0">
             <div className="flex gap-[10px]">
-              {tourOptional && (
-                <button
-                  className="border-none rounded-xl px-4 py-[14px] text-[15px] font-extrabold cursor-pointer flex-1 bg-[#f2f2f2] text-[#333]"
-                  type="button"
-                  onClick={skipTourSelection}
-                >
-                  Continue without Tour
-                </button>
-              )}
-              <button
+<button
                 className="border-none rounded-xl px-4 py-[14px] text-[15px] font-extrabold cursor-pointer flex-1 bg-brand-red text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 type="button"
                 disabled={!canContinue}
                 onClick={proceedFromTourSelection}
               >
-                Continue with Tour
+                Continue
               </button>
             </div>
           </div>
