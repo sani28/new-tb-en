@@ -1075,92 +1075,7 @@ body.promo-closed .main-nav {
     }
 }
 
-/* Desktop Booking Widget Styles */
-.booking-widget {
-    position: absolute;
-    bottom: 80px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    padding: 20px 28px;
-    border-radius: 20px;
-    box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.12),
-        0 2px 8px rgba(0, 0, 0, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    z-index: 100;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.booking-widget:hover {
-    box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.15),
-        0 4px 12px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-}
-
-/* Desktop select container - reset any mobile styles */
-.select-container {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-}
-
-/* Desktop tour and date selects */
-.tour-select select,
-.date-select select {
-    padding: 14px 18px;
-    border: 2px solid #E8E8E8;
-    border-radius: 14px;
-    background: linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%);
-    min-width: 200px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    color: #333;
-    transition: all 0.25s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-}
-
-/* Booking widget: ensure selectors match General Sans and feel more pill-shaped */
-	    .booking-widget .tour-select select,
-	    .booking-widget .date-select select {
-			font-family: 'GeneralSans-Medium', sans-serif;
-			border-radius: 999px;
-		}
-
-/* Booking widget: date picker trigger should match dropdown typography too */
-.booking-widget .date-picker-trigger,
-.booking-widget .selected-date {
-	font-family: 'GeneralSans-Medium', sans-serif;
-}
-
-.booking-widget .date-picker-trigger {
-	border-radius: 999px;
-}
-
-.tour-select select:hover,
-.date-select select:hover {
-    border-color: #D40004;
-    box-shadow: 0 4px 8px rgba(212, 0, 4, 0.1);
-}
-
-.tour-select select:focus,
-.date-select select:focus {
-    outline: none;
-    border-color: #D40004;
-    box-shadow: 0 0 0 3px rgba(212, 0, 4, 0.15);
-}
-
-.tour-select select {
-    min-width: 350px;
-}
+/* Desktop Booking Widget Styles — migrated to Tailwind in src/components/homepage/hero/BookingWidget.tsx */
 
 /* Tour Info Panel - Sliding bullet points */
 .tour-info-panel {
@@ -1352,51 +1267,7 @@ body.promo-closed .main-nav {
     object-fit: contain;
 }
 
-.passenger-counter {
-    display: flex;
-    gap: 15px;
-}
-
-.counter-group {
-		/* Homepage booking widget: Adult/Child blocks should match the Book button red */
-		background: #E20021;
-	border-radius: 999px;
-    padding: 12px 18px;
-	    color: #fff;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 700!important;
-    font-size: 15px!important;
-	box-shadow:
-	    0 2px 6px rgba(0, 0, 0, 0.08),
-	    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    transition: all 0.25s ease;
-}
-
-.counter-group:hover {
-		background: #C4001C;
-    box-shadow:
-	    0 3px 8px rgba(0, 0, 0, 0.10),
-	    inset 0 1px 0 rgba(255, 255, 255, 0.7);
-	    transform: none;
-}
-
-.counter-group label {
-    font-weight: 600;
-    margin-right: 8px;
-    text-transform: uppercase;
-    font-size: 13px;
-    letter-spacing: 0.5px;
-		color: rgba(255, 255, 255, 0.92);
-}
-
-.counter-group .price {
-    font-size: 20px;
-    font-weight: 800;
-	    color: #fff;
-    white-space: nowrap;
-}
+/* Homepage booking widget counters/buttons — migrated to Tailwind in src/components/homepage/hero/BookingWidget.tsx */
 
 .age-range {
     font-size: 0.8em;
@@ -1468,45 +1339,7 @@ body.promo-closed .main-nav {
     text-align: center;
 }
 
-.book-now {
-	/* Homepage booking widget: match top header nav booking button style */
-	background: #E20021;
-    color: #fff;
-    border: none;
-	border-radius: 10px;
-    padding: 16px 48px;
-    cursor: pointer;
-    font-size: 16px;
-	font-family: 'Copperplate', 'GeneralSans-Medium', sans-serif;
-	font-weight: bold;
-	letter-spacing: 0.2px;
-    white-space: nowrap;
-	box-shadow: none;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    text-transform: uppercase;
-}
 
-.book-now::before {
-	content: none;
-}
-
-.book-now:hover {
-	background: #C4001C;
-	transform: none;
-	box-shadow: none;
-}
-
-.book-now:hover::before {
-	content: none;
-}
-
-.book-now:active {
-	background: #A50000;
-	transform: none;
-	box-shadow: none;
-}
 
 /* Update select arrows */
 select {
@@ -1577,25 +1410,7 @@ select {
         display: none;
     }
 
-    .booking-widget {
-        position: relative;
-        bottom: auto;
-        left: auto;
-        width: 100%;
-        transform: none;
-        border-radius: 0; /* Connects with promo above */
-        padding: 16px 14px; /* Slightly tighter to feel lighter under the carousel */
-        background: rgba(255, 255, 255, 0.98);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        box-shadow: none;
-        border-top: none;
-        z-index: 100;
-        margin-top: 0;
-    }
+	    /* .booking-widget — migrated to Tailwind in src/components/homepage/hero/BookingWidget.tsx */
 
     /* Courses section adjustments */
     .courses {
@@ -1954,150 +1769,7 @@ select {
         text-align: left;
     }
 
-	    .booking-widget {
-	        position: relative;
-	        bottom: auto;
-	        left: auto;
-	        width: 100%;
-	        transform: none;
-	        border-radius: 0; /* Connects seamlessly with promo carousel above */
-	        padding: 16px 28px; /* Generous side margins on mobile */
-	        background: rgba(255, 255, 255, 0.98);
-	        backdrop-filter: blur(20px);
-	        -webkit-backdrop-filter: blur(20px);
-	        display: flex;
-	        flex-direction: row; /* Lay out sections in rows */
-	        flex-wrap: wrap;      /* Allow second row for passengers + book */
-	        align-items: stretch;
-	        gap: 10px; /* Reduce vertical gaps to lower overall height */
-	        box-shadow: none;
-	        border-top: none;
-	        z-index: 100;
-	    }
-
-    /* .select-container already handles its own flex layout via the rule below */
-
-	    .select-container {
-	        display: flex;
-	        gap: 10px;
-	        width: 100%;
-	        flex: 0 0 100%; /* Always take full width of the first row */
-	    }
-
-    .tour-select {
-        width: 70%;
-    }
-
-    .date-select {
-        width: 30%;
-    }
-
-    .tour-select select,
-    .date-select select {
-        width: 100%;
-        min-width: unset;
-        padding: 14px 12px;
-        border: 2px solid #E8E8E8;
-        border-radius: 12px;
-        font-size: 13px;
-        font-weight: 500;
-        background-image: url('data:image/svg+xml;utf8,<svg fill="%23D40004" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-        background-repeat: no-repeat;
-        background-position: right 12px center;
-        background-size: 20px;
-        padding-right: 35px;
-        transition: all 0.25s ease;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-	/* Booking widget: font + pill shape for mobile, too */
-	.booking-widget .tour-select select,
-	.booking-widget .date-select select {
-		font-family: 'GeneralSans-Medium', sans-serif;
-		border-radius: 999px;
-	}
-
-    .tour-select {
-        flex: unset;
-    }
-
-    .date-select {
-        flex: unset;
-    }
-
-    /* Let counter-groups flow as direct flex items alongside .book-now */
-    .booking-widget .passenger-counter {
-        display: contents;
-    }
-
-    .counter-group {
-        flex: 0 1 auto; /* Size to content, allow shrinking */
-        padding: 5px 6px;
-        border-radius: 999px;
-        gap: 4px; /* Tight gap between label and counter */
-        background: #E20021;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-        min-width: 0; /* Allow shrinking below content size */
-        overflow: hidden;
-    }
-
-    .counter-group label {
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 0.3px;
-        text-transform: uppercase;
-        margin-right: 0;
-    }
-
-    /* Hide price on mobile to save horizontal space */
-    .counter-group .price {
-        display: none;
-    }
-
-    .counter {
-        display: flex;
-        align-items: center;
-        gap: 2px;
-        background: rgba(0, 0, 0, 0.06);
-        padding: 2px;
-        border-radius: 5px;
-    }
-
-    .counter button {
-        font-size: 12px;
-        padding: 0;
-        width: 18px;
-        height: 18px;
-        background: rgba(255, 255, 255, 0.95);
-        color: #333;
-        border-radius: 4px;
-    }
-
-    .counter .count {
-        min-width: 10px;
-        text-align: center;
-        font-size: 11px;
-        font-weight: 700;
-    }
-
-    .book-now {
-        flex: 1 1 0; /* Take up all remaining space */
-        align-self: stretch;
-        padding: 12px 20px;
-        font-size: 15px;
-        font-family: 'Copperplate', 'GeneralSans-Medium', sans-serif;
-        font-weight: bold;
-        letter-spacing: 0.3px;
-        border-radius: 10px;
-        background: #E20021;
-        color: #fff;
-        margin-top: 0;
-        box-shadow: none;
-        text-transform: uppercase;
-        min-width: 80px; /* Guarantee minimum book button width */
-    }
+		    /* Homepage booking widget styles migrated to Tailwind in src/components/homepage/hero/BookingWidget.tsx */
 
     /* Mobile menu — migrated to Tailwind in SiteHeader.tsx */
 
@@ -6499,91 +6171,7 @@ html, body {
     }
 }
 
-/* Scale down booking widget gently for very small screens (no transforms) */
-@media (max-width: 400px) {
-    /* Extra side padding so selectors don't touch screen edges */
-    .booking-widget {
-        padding-left: 20px !important;
-        padding-right: 20px !important;
-    }
 
-    /* Compact tour & date selects for narrow viewports */
-    .booking-widget .select-container {
-        gap: 6px !important;
-    }
-
-    /* Shrink tour width, give date room to breathe from edge */
-    .booking-widget .tour-select {
-        width: 60% !important;
-    }
-
-    .booking-widget .date-select {
-        width: 40% !important;
-    }
-
-    .booking-widget .tour-select select,
-    .booking-widget .date-picker-trigger {
-        padding: 8px 8px !important;
-        font-size: 12px !important;
-        min-height: 40px !important;
-        border-width: 1.5px !important;
-        border-radius: 10px !important;
-    }
-
-    .booking-widget .tour-select select {
-        padding-right: 26px !important;
-        background-position: right 8px center !important;
-        background-size: 14px !important;
-    }
-
-    /* Close the gap between "Select a date" and calendar icon */
-    .booking-widget .date-picker-trigger {
-        justify-content: flex-start !important;
-        gap: 6px !important;
-    }
-
-    .booking-widget .selected-date {
-        font-size: 12px !important;
-    }
-
-    .booking-widget .calendar-icon {
-        width: 14px !important;
-        height: 14px !important;
-    }
-
-    /* .passenger-counter uses display:contents so its children are direct flex items.
-       Tighten counter pills further to keep everything in one row. */
-    .booking-widget .counter-group {
-        padding: 4px 5px;
-        gap: 3px;
-    }
-
-    .booking-widget .counter-group label {
-        font-size: 8px;
-    }
-
-    .booking-widget .counter button {
-        width: 16px;
-        height: 16px;
-        font-size: 11px !important; /* Override Samsung 16px !important */
-    }
-
-    .booking-widget .counter .count {
-        font-size: 10px;
-        min-width: 8px;
-    }
-
-    .booking-widget .counter {
-        gap: 1px;
-        padding: 1px;
-    }
-
-    .booking-widget .book-now {
-        padding: 10px 6px;
-        font-size: 13px !important; /* Override Samsung 16px !important */
-        min-width: 70px;
-    }
-}
 
 /* Promo Notification Bar */
 .promo-notification-bar {
@@ -6744,41 +6332,3 @@ body:not(.promo-closed) .mobile-header {
 
 
 
-/* === Next.js mobile layout fixes (mobile header stacking + hero slider) === */
-@media (max-width: 768px) {
-    /* Keep the mobile header below fixed promo + notification bars */
-    body:not(.template-page) .mobile-header {
-        top: calc(var(--promo-bar-height) + var(--notification-bar-height)) !important;
-    }
-
-    body:not(.template-page).promo-closed .mobile-header {
-        top: var(--notification-bar-height) !important;
-    }
-
-    /* Default mobile pages: offset content below the fixed header stack */
-    body:not(.template-page) {
-        padding-top: calc(var(--promo-bar-height) + var(--notification-bar-height) + var(--mobile-header-height));
-    }
-
-    body:not(.template-page).promo-closed {
-        padding-top: calc(var(--notification-bar-height) + var(--mobile-header-height));
-    }
-
-    /* Homepage: don't push the entire hero down; pad inside the hero instead */
-    body.index-page:not(.template-page) {
-        padding-top: 0 !important;
-    }
-
-    body.index-page:not(.template-page) .hero {
-        padding-top: calc(var(--promo-bar-height) + var(--notification-bar-height) + var(--mobile-header-height)) !important;
-    }
-
-    body.index-page:not(.template-page).promo-closed .hero {
-        padding-top: calc(var(--notification-bar-height) + var(--mobile-header-height)) !important;
-    }
-
-    /* The desktop hero slider offsets slides upward; on mobile that creates cropping */
-    .hero-slider .slide {
-        top: 0;
-    }
-}

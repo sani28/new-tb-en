@@ -37,14 +37,11 @@ export default function PromoEnhanceSeoulAddonsCarousel() {
   // We read the selected tour id from the DOM so React can drive compatibility UI.
   const selectedTourId = useDomSelectValue("promoTourSelect", "tour01");
 
-  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [detailsProductId, setDetailsProductId] = useState<string | null>(null);
   const [detailsSourceTour, setDetailsSourceTour] = useState<string | null>(null);
 
-  useEffect(() => {
-    setPortalRoot(document.body);
-  }, []);
+  const portalRoot = typeof document !== "undefined" ? document.body : null;
 
   const closeDetails = useCallback(() => setDetailsOpen(false), []);
 
@@ -108,6 +105,7 @@ export default function PromoEnhanceSeoulAddonsCarousel() {
       {portalRoot &&
         createPortal(
           <AddonProductDetailsModal
+            key={`${detailsProductId ?? "none"}-${detailsOpen ? "open" : "closed"}`}
             open={detailsOpen}
             productId={detailsProductId}
             onClose={closeDetails}

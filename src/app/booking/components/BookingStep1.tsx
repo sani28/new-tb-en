@@ -224,6 +224,7 @@ export default function BookingStep1({ onContinue }: Props) {
 
       {/* Add-on details modal */}
       <AddonProductDetailsModal
+        key={`${detailsProductId ?? "none"}-${detailsOpen ? "open" : "closed"}`}
         open={detailsOpen}
         productId={detailsProductId}
         onClose={closeDetails}

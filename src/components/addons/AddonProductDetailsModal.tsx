@@ -83,27 +83,11 @@ export default function AddonProductDetailsModal({
   const [adultQty, setAdultQty] = useState(0);
   const [childQty, setChildQty] = useState(0);
 	const [showHanbokInfo, setShowHanbokInfo] = useState(false);
-  const [cruiseType, setCruiseType] = useState<string | null>(null);
-  const [timeSlot, setTimeSlot] = useState<string | null>(null);
+	  const initialCruiseType = product?.cruiseTypes?.[0]?.id ?? null;
+	  const initialTimeSlot = product?.timeSlots?.[0]?.value ?? null;
+	  const [cruiseType, setCruiseType] = useState<string | null>(initialCruiseType);
+	  const [timeSlot, setTimeSlot] = useState<string | null>(initialTimeSlot);
   const [colorQtyByIndex, setColorQtyByIndex] = useState<Record<number, number>>({});
-
-  // Reset state when the modal opens or the product changes.
-  useEffect(() => {
-    if (!open) return;
-    setVariantIndex(0);
-    setQuantity(1);
-    setSelectedDate(null);
-    setSelectedTime(null);
-    setAdultQty(0);
-    setChildQty(0);
-	    setShowHanbokInfo(false);
-    setColorQtyByIndex({});
-
-    const firstCruise = product?.cruiseTypes?.[0];
-    setCruiseType(firstCruise?.id || null);
-    const firstSlot = product?.timeSlots?.[0];
-    setTimeSlot(firstSlot?.value || null);
-  }, [open, product?.id]);
 
   // Scroll lock while open.
   useEffect(() => {

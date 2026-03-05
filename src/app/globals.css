@@ -33,6 +33,12 @@
   --color-text-gray: #666666;
   --color-text-light-gray: #888888;
 
+  /* Fixed header stack heights (used for mobile padding-top calculations)
+     Keep these in theme tokens so we can remove legacy /public/styles.css safely. */
+  --promo-bar-height: 45px;
+  --notification-bar-height: 45px;
+  --mobile-header-height: 60px;
+
   /* Custom font families */
   --font-sans-semibold: 'GeneralSans-Semibold', sans-serif;
   --font-sans-medium: 'GeneralSans-Medium', sans-serif;
@@ -101,6 +107,56 @@
       z-index: 999;
       box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
       transition: top 0.3s ease;
+    }
+  }
+}
+
+/*
+  Next.js layout offsets (mobile)
+
+  Why this exists:
+  - Header bars are fixed-position (promo + notification + mobile header)
+  - Non-template pages need padding-top so content doesn't sit under the bars
+  - Homepage is special: we keep body padding-top at 0 and pad inside `.hero`
+
+  These rules live in @layer utilities so they override legacy CSS imported in
+  layer(legacy) during migration.
+*/
+@layer utilities {
+  @media (max-width: 768px) {
+    /* Default mobile pages: offset content below the fixed header stack */
+    body:not(.template-page) {
+      padding-top: calc(
+        var(--promo-bar-height) +
+        var(--notification-bar-height) +
+        var(--mobile-header-height)
+      );
+    }
+
+    body:not(.template-page).promo-closed {
+      padding-top: calc(var(--notification-bar-height) + var(--mobile-header-height));
+    }
+
+    /* Homepage: don't push the entire page down; pad inside the hero instead */
+    body.index-page:not(.template-page) {
+      padding-top: 0;
+    }
+
+    body.index-page:not(.template-page) .hero {
+      padding-top: calc(
+        var(--promo-bar-height) +
+        var(--notification-bar-height) +
+        var(--mobile-header-height)
+      );
+    }
+
+    body.index-page:not(.template-page).promo-closed .hero {
+      padding-top: calc(var(--notification-bar-height) + var(--mobile-header-height));
+    }
+
+    /* Desktop hero slider offsets slides upward; on mobile that causes cropping */
+    .hero-slider .slide {
+      top: 0;
     }
   }
 }

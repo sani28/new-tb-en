@@ -71,7 +71,6 @@ function CartItemRow({ item, index }: { item: BookingCartItem; index: number }) 
 
 export default function BookingCartBar({ onContinue }: Props) {
   const cart = useBookingCart();
-  const [expanded, setExpanded] = useState(false);
 
   const itemCount = getBookingCartItemCount(cart.items);
   const total = getBookingCartTotal(cart.items);
@@ -81,13 +80,42 @@ export default function BookingCartBar({ onContinue }: Props) {
   // Add padding to page body when cart bar is visible
   useEffect(() => {
     document.body.classList.toggle("cart-visible", itemCount > 0);
-    if (itemCount === 0) setExpanded(false);
     return () => {
       document.body.classList.remove("cart-visible");
     };
   }, [itemCount]);
 
   const isVisible = itemCount > 0;
+
+  return (
+    <BookingCartBarInner
+      key={isVisible ? "visible" : "hidden"}
+      onContinue={onContinue}
+      items={cart.items}
+      itemCount={itemCount}
+      total={total}
+      savings={savings}
+      isVisible={isVisible}
+    />
+  );
+}
+
+function BookingCartBarInner({
+  onContinue,
+  items,
+  itemCount,
+  total,
+  savings,
+  isVisible,
+}: {
+  onContinue: () => void;
+  items: BookingCartItem[];
+  itemCount: number;
+  total: number;
+  savings: number;
+  isVisible: boolean;
+}) {
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <div
@@ -134,7 +162,7 @@ export default function BookingCartBar({ onContinue }: Props) {
           </button>
         </div>
         <div className="mx-auto max-h-[200px] max-w-[1200px] overflow-y-auto">
-          {cart.items.map((item, idx) => (
+          {items.map((item, idx) => (
             <CartItemRow key={`${item.productId}-${idx}`} item={item} index={idx} />
           ))}
         </div>
