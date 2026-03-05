@@ -109,7 +109,7 @@ export default function HeroSlider() {
           aria-label={`Slide ${i + 1} of ${total}`}
           aria-hidden={i !== activeSlide}
         >
-          <span className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/60 text-white/90 text-xs font-mono px-2 py-0.5 rounded pointer-events-none z-10 select-none">
+          <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/60 text-white/90 text-4xl font-mono px-4 py-2 rounded pointer-events-none z-10 select-none">
             1920×1080px
           </span>
         </div>

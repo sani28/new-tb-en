@@ -317,7 +317,7 @@ export default function BookingWidget() {
           "flex-1 min-w-0 rounded-[10px] py-3 text-[14px] bg-[var(--color-brand-red)] " +
           "font-[var(--font-copperplate)] font-bold uppercase tracking-[0.3px] text-white transition-colors " +
           "hover:bg-[#C4001C] " +
-          "md:flex-none md:shrink-0 md:min-w-[140px] md:self-stretch md:px-12 md:py-4 md:text-[16px] md:tracking-[0.2px]"
+          "md:flex-none md:shrink-0 md:min-w-[90px] md:self-stretch md:px-6 md:py-3 md:text-[15px] md:tracking-[0.2px]"
         }
         onClick={onBook}
         aria-label="Book tour"

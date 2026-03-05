@@ -389,18 +389,14 @@ export function PromoCheckoutProvider({ children }: { children: React.ReactNode 
       if (opts?.preferredTour) setSelectedTourId(opts.preferredTour);
       if (opts?.pendingItems?.length) setPendingItems(opts.pendingItems);
       setTourOptional(opts?.tourOptional ?? false);
+      setSelectedDate(null);
       setCartItems((prev) => {
         if (prev.length === 0) {
-          setSelectedDate(opts?.dateText ? new Date(opts.dateText) : null);
           setAdultQty(opts?.adultCount ?? 1);
           setChildQty(opts?.childCount ?? 0);
         } else {
           if (opts?.adultCount !== undefined) setAdultQty(opts.adultCount);
           if (opts?.childCount !== undefined) setChildQty(opts.childCount);
-          if (opts?.dateText) {
-            const d = new Date(opts.dateText);
-            if (!isNaN(d.getTime())) setSelectedDate(d);
-          }
         }
         return prev;
       });
@@ -552,37 +548,16 @@ export function PromoCheckoutProvider({ children }: { children: React.ReactNode 
 // ── Addon items handler for PromoEnhanceSeoulAddonsCarousel ───────────────────
 // Used by the carousel's onAddItems callback
 export function usePromoAddonHandler() {
-  const { addonProductId, addonSourceTour, addToCart, openTourSelection, cartItems, step, tourSkipped } =
-    usePromoCheckout();
+  const { addonProductId, addonSourceTour, addToCart } = usePromoCheckout();
 
   const handleAddItems = useCallback(
     (items: PromoCartItem[]) => {
       if (!addonProductId) return;
-      const product = promoProductData[addonProductId] as {
-        compatibleTours?: string[] | null;
-        tourOptional?: boolean;
-        name?: string;
-      } | undefined;
-      const incomingTours = product?.compatibleTours ?? null;
-      const tourOpt = product?.tourOptional ?? false;
-
-      // If no tour selected and addon requires one → open tour selection first
-      const needsTourSelection = !tourSkipped && incomingTours && incomingTours.length > 0;
-      const alreadyHasTour = cartItems.length > 0;
-
-      if (needsTourSelection && !alreadyHasTour) {
-        // Defer items to after tour selection
-        openTourSelection({
-          preferredTour: addonSourceTour,
-          pendingItems: items,
-          tourOptional: tourOpt,
-        });
-        return;
-      }
-
+      // Add directly to cart so the floating cart bar appears immediately.
+      // Tour selection happens later when the user clicks "Continue to Booking".
       addToCart(items, { sourceTour: addonSourceTour ?? undefined });
     },
-    [addonProductId, addonSourceTour, addToCart, openTourSelection, cartItems, tourSkipped],
+    [addonProductId, addonSourceTour, addToCart],
   );
 
   return { handleAddItems };
