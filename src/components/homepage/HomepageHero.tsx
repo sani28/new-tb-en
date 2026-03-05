@@ -39,11 +39,11 @@ export default function HomepageHero() {
   return (
     <>
       {/* ── Hero Section ── */}
-      <header className="hero">
+      <header className="relative overflow-visible z-50 h-[calc(100vh-100px)] pt-[100px] max-md:pt-[90px] max-md:min-h-[100dvh] max-md:h-auto max-md:bg-[url('/imgs/mobilelanding.png')] max-md:bg-top max-md:bg-cover max-md:flex max-md:flex-col max-md:justify-end">
         <HeroSlider />
 
-        <div className="logo">
-          <img src="/imgs/logo.svg" alt="Seoul City Tour Tiger Bus" />
+        <div className="pl-10 w-[28%] max-md:hidden">
+          <img src="/imgs/logo.svg" alt="Seoul City Tour Tiger Bus" className="w-full h-auto" />
         </div>
 
         <PromoTabCarousel />

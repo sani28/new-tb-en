@@ -4,11 +4,22 @@ export default function HomepageCoursesSection() {
   const addonAddToCartClass =
     "more-info card-more-info-btn ml-0 inline-flex w-full items-center justify-center rounded-lg bg-[var(--color-brand-red)] px-6 py-3 font-bold text-white no-underline transition-colors hover:bg-[var(--color-brand-dark-red)] hover:text-white visited:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-red)] focus-visible:ring-offset-2";
 
+  // Add-on cards section title should be left-aligned on the homepage.
+  // Also add a left inset on desktop so the heading aligns with the card text padding.
+  const addonSectionTitleClass = "card-section-title text-left md:pl-[15px]";
+
+  // Shared add-on card typography/spacing (Tailwind-first).
+  const addonCardTitleClass =
+    "card-title text-left text-xl md:text-[22px] leading-tight font-semibold";
+  const addonCardDescClass =
+    "text-left text-sm leading-relaxed pt-2 px-[12px] md:px-[15px]";
+  const addonCardActionsClass = "card-actions mt-4";
+
   // Tour 01 add-on cards sit on a dark background in the courses carousel, so enforce
   // left-aligned white text for readability (without affecting other tours).
   const tour01AddonCardClass = "card text-left";
-  const tour01AddonTitleClass = "card-title text-left text-white";
-  const tour01AddonDescClass = "text-left text-white/80";
+  const tour01AddonTitleClass = `${addonCardTitleClass} text-white`;
+  const tour01AddonDescClass = `${addonCardDescClass} text-white/80`;
 
   return (
     <>
@@ -92,8 +103,8 @@ export default function HomepageCoursesSection() {
                       </div>
                     </div>
                   </div>
-                  <div className="card-section">
-                    <h3 className="card-section-title">Enhance your experience with...</h3>
+					  <div className="card-section">
+					    <h3 className={addonSectionTitleClass}>Enhance your experience with...</h3>
                     <div className="card-carousel-wrapper">
                       <button
                         className="card-carousel-nav card-prev"
@@ -116,7 +127,7 @@ export default function HomepageCoursesSection() {
                               Experience traditional Korean ceramics at the renowned
                               Kwangjuyo pottery studio.
                             </p>
-                            <div className="card-actions">
+	                            <div className={addonCardActionsClass}>
                               <a
                                 href="#"
                                 className={addonAddToCartClass}
@@ -135,7 +146,7 @@ export default function HomepageCoursesSection() {
                               Get access to multiple museums with our exclusive museum
                               pass package.
                             </p>
-                            <div className="card-actions">
+	                            <div className={addonCardActionsClass}>
                               <a
                                 href="#"
                                 className={addonAddToCartClass}
@@ -157,7 +168,7 @@ export default function HomepageCoursesSection() {
                               Go behind the scenes at the prestigious Sejong Center for
                               the Performing Arts.
                             </p>
-                            <div className="card-actions">
+	                            <div className={addonCardActionsClass}>
                               <a
                                 href="#"
                                 className={addonAddToCartClass}
@@ -176,7 +187,7 @@ export default function HomepageCoursesSection() {
                               Dress up in beautiful traditional Korean attire and explore
                               the palaces in style.
                             </p>
-                            <div className="card-actions">
+	                            <div className={addonCardActionsClass}>
                               <a
                                 href="#"
                                 className={addonAddToCartClass}
@@ -263,8 +274,8 @@ export default function HomepageCoursesSection() {
                       </div>
                     </div>
                   </div>
-                  <div className="card-section">
-                    <h3 className="card-section-title">Enhance your experience with...</h3>
+					  <div className="card-section">
+					    <h3 className={addonSectionTitleClass}>Enhance your experience with...</h3>
                     <div className="card-carousel-wrapper">
                       <button
                         className="card-carousel-nav card-prev"
@@ -282,12 +293,12 @@ export default function HomepageCoursesSection() {
                               <div className="card-number">1</div>
                               <img src="/imgs/kwangjuyo.png" alt="Kwangjuyo" />
                             </div>
-                            <h4 className="card-title">Kwangjuyo</h4>
-                            <p>
+	                            <h4 className={addonCardTitleClass}>Kwangjuyo</h4>
+	                            <p className={addonCardDescClass}>
                               Experience traditional Korean ceramics at the renowned
                               Kwangjuyo pottery studio.
                             </p>
-                            <div className="card-actions">
+	                            <div className={addonCardActionsClass}>
                               <a
                                 href="#"
                                 className={addonAddToCartClass}
@@ -301,12 +312,12 @@ export default function HomepageCoursesSection() {
                               <div className="card-number">2</div>
                               <img src="/imgs/hanbok-addon.png" alt="Hanbok Rental" />
                             </div>
-                            <h4 className="card-title">Hanbok Rental</h4>
-                            <p>
+	                            <h4 className={addonCardTitleClass}>Hanbok Rental</h4>
+	                            <p className={addonCardDescClass}>
                               Dress up in beautiful traditional Korean attire and explore
                               the palaces in style.
                             </p>
-                            <div className="card-actions">
+	                            <div className={addonCardActionsClass}>
                               <a
                                 href="#"
                                 className={addonAddToCartClass}
@@ -392,8 +403,8 @@ export default function HomepageCoursesSection() {
                       </div>
                     </div>
                   </div>
-                  <div className="card-section">
-                    <h3 className="card-section-title">Enhance your experience with...</h3>
+					  <div className="card-section">
+					    <h3 className={addonSectionTitleClass}>Enhance your experience with...</h3>
                     <div className="card-carousel-wrapper">
                       <button
                         className="card-carousel-nav card-prev"
@@ -411,12 +422,12 @@ export default function HomepageCoursesSection() {
                               <div className="card-number">1</div>
                               <img src="/imgs/kwangjuyo.png" alt="Kwangjuyo" />
                             </div>
-                            <h4 className="card-title">Kwangjuyo</h4>
-                            <p>
+	                            <h4 className={addonCardTitleClass}>Kwangjuyo</h4>
+	                            <p className={addonCardDescClass}>
                               Experience traditional Korean ceramics at the renowned
                               Kwangjuyo pottery studio.
                             </p>
-                            <div className="card-actions">
+	                            <div className={addonCardActionsClass}>
                               <a
                                 href="#"
                                 className={addonAddToCartClass}
@@ -430,12 +441,12 @@ export default function HomepageCoursesSection() {
                               <div className="card-number">3</div>
                               <img src="/imgs/daycruise.png" alt="Han River Cruise" />
                             </div>
-                            <h4 className="card-title">Han River Cruise</h4>
-                            <p>
+	                            <h4 className={addonCardTitleClass}>Han River Cruise</h4>
+	                            <p className={addonCardDescClass}>
                               Enjoy a scenic cruise along the beautiful Han River with
                               stunning city views.
                             </p>
-                            <div className="card-actions">
+	                            <div className={addonCardActionsClass}>
                               <a
                                 href="#"
                                 className={addonAddToCartClass}
@@ -449,12 +460,12 @@ export default function HomepageCoursesSection() {
                               <div className="card-number">4</div>
                               <img src="/imgs/hanbok-addon.png" alt="Hanbok Rental" />
                             </div>
-                            <h4 className="card-title">Hanbok Rental</h4>
-                            <p>
+	                            <h4 className={addonCardTitleClass}>Hanbok Rental</h4>
+	                            <p className={addonCardDescClass}>
                               Dress up in beautiful traditional Korean attire and explore
                               the palaces in style.
                             </p>
-                            <div className="card-actions">
+	                            <div className={addonCardActionsClass}>
                               <a
                                 href="#"
                                 className={addonAddToCartClass}

@@ -131,15 +131,25 @@ export default function BookingWidget() {
   };
 
   return (
-    <div className="booking-widget" role="form" aria-label="Tour booking">
+    <div
+      className="absolute bottom-[80px] left-1/2 -translate-x-1/2 flex items-center gap-5 bg-[linear-gradient(135deg,rgba(255,255,255,0.98)_0%,rgba(255,255,255,0.95)_100%)] backdrop-blur-[20px] pt-5 pb-5 pl-7 pr-7 rounded-[20px] shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/60 z-[100] transition-[box-shadow] duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.15),0_4px_12px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.9)] max-md:relative max-md:bottom-auto max-md:left-auto max-md:w-full max-md:translate-x-0 max-md:rounded-none max-md:pt-4 max-md:pb-4 max-md:pl-7 max-md:pr-7 max-md:bg-white/[0.98] max-md:flex-row max-md:flex-wrap max-md:items-stretch max-md:gap-[10px] max-md:shadow-none max-md:border-t-0 max-md:z-[100] max-md:mt-0 max-[400px]:pl-5 max-[400px]:pr-5"
+      role="form"
+      aria-label="Tour booking"
+    >
       {/* Tour & Date selectors */}
-      <div className="select-container">
-        <div className="tour-select">
+      <div className="flex gap-[15px] items-center max-md:flex max-md:gap-[10px] max-md:w-full max-md:flex-[0_0_100%] max-[400px]:gap-[6px]">
+        {/*
+          Keep tour-select + date-select CSS class names so that:
+          - .tour-select select { background-gradient + SVG arrow } from styles.css still applies
+          - Mobile responsive overrides in styles.css still apply
+        */}
+        <div className="tour-select max-md:w-[70%] max-[400px]:w-[58%]">
           <select
             id="booking-tour-select"
             value={tour}
             onChange={(e) => setTour(e.target.value)}
             aria-label="Select tour"
+            className="rounded-[999px] font-sans-medium max-[400px]:p-2 max-[400px]:text-xs max-[400px]:min-h-[40px] max-[400px]:border-[1.5px] max-[400px]:rounded-[10px]"
           >
             {TOUR_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -149,17 +159,24 @@ export default function BookingWidget() {
           </select>
         </div>
 
-        <div className="date-select" ref={calendarRef}>
-          <div className="date-picker-wrapper">
+        <div className="date-select max-md:w-[30%] max-[400px]:w-[42%]" ref={calendarRef}>
+          <div className="relative w-full z-[99999]">
             <button
-              className="date-picker-trigger"
+              className="group w-full min-w-[200px] pt-[14px] pb-[14px] pl-[18px] pr-[18px] bg-[linear-gradient(180deg,#FFFFFF_0%,#FAFAFA_100%)] border-2 border-[#E8E8E8] rounded-[999px] flex justify-between items-center cursor-pointer text-sm font-medium text-[#333] transition-all duration-[250ms] shadow-[0_2px_4px_rgba(0,0,0,0.04)] font-sans-medium hover:border-[#D40004] hover:shadow-[0_4px_8px_rgba(212,0,4,0.1)] focus:outline-none focus:border-[#D40004] focus:shadow-[0_0_0_3px_rgba(212,0,4,0.15)] max-[400px]:p-2 max-[400px]:text-xs max-[400px]:min-h-[40px] max-[400px]:border-[1.5px] max-[400px]:rounded-[10px] max-[400px]:justify-start max-[400px]:gap-[6px]"
               onClick={() => setCalendarOpen((o) => !o)}
               aria-expanded={calendarOpen}
               aria-haspopup="dialog"
               aria-label="Select date"
             >
-              <span className="selected-date">{dateDisplay}</span>
-              <img src="/imgs/calendar.svg" alt="" className="calendar-icon" aria-hidden="true" />
+              <span className="whitespace-nowrap overflow-hidden text-ellipsis text-sm text-[#555] font-sans-medium max-[400px]:text-xs">
+                {dateDisplay}
+              </span>
+              <img
+                src="/imgs/calendar.svg"
+                alt=""
+                className="w-5 h-5 opacity-70 transition-opacity duration-200 group-hover:opacity-100 max-[400px]:w-[14px] max-[400px]:h-[14px]"
+                aria-hidden="true"
+              />
             </button>
 
             {calendarOpen && (
@@ -252,7 +269,11 @@ export default function BookingWidget() {
       </div>
 
       {/* Passenger counters */}
-      <div className="passenger-counter">
+      {/*
+        max-md:contents makes this div invisible to layout on mobile,
+        letting counter-groups become direct flex children of the booking-widget.
+      */}
+      <div className="flex gap-[15px] max-md:contents">
         <CounterGroup
           label="Adult"
           price={prices.adult}
@@ -269,7 +290,11 @@ export default function BookingWidget() {
         />
       </div>
 
-      <button className="book-now" onClick={onBook} aria-label="Book tour">
+      <button
+        className="bg-brand-red text-white border-0 rounded-[10px] pt-4 pb-4 pl-12 pr-12 cursor-pointer text-[16px] font-bold tracking-[0.2px] whitespace-nowrap transition-all duration-300 relative overflow-hidden uppercase font-copperplate hover:bg-[#C4001C] active:bg-[#A50000] max-md:flex-[1_1_0] max-md:self-stretch max-md:pt-3 max-md:pb-3 max-md:pl-5 max-md:pr-5 max-md:text-[15px] max-md:min-w-[80px]"
+        onClick={onBook}
+        aria-label="Book tour"
+      >
         Book
       </button>
     </div>
@@ -287,26 +312,32 @@ interface CounterGroupProps {
 
 function CounterGroup({ label, price, count, onDecrement, onIncrement }: CounterGroupProps) {
   return (
-    <div className="counter-group">
-      <label>{label}</label>
-      <div className="counter-info">
-        <span className="price">${price} USD</span>
-        <div className="counter" role="group" aria-label={`${label} count`}>
+    <div className="bg-brand-red rounded-[999px] py-3 px-[18px] text-white flex items-center gap-3 font-bold text-[15px] shadow-[0_2px_6px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.6)] transition-all duration-[250ms] ease-in-out hover:bg-[#C4001C] hover:shadow-[0_3px_8px_rgba(0,0,0,0.10),inset_0_1px_0_rgba(255,255,255,0.7)] max-md:flex-[0_1_auto] max-md:py-[5px] max-md:px-[6px] max-md:gap-1 max-md:min-w-0 max-md:overflow-hidden">
+      <label className="font-semibold mr-2 uppercase text-[13px] tracking-[0.5px] text-white/[0.92] max-md:text-[9px] max-md:font-bold max-md:tracking-[0.3px] max-md:mr-0">
+        {label}
+      </label>
+      <div className="flex flex-col">
+        <span className="text-[20px] font-extrabold text-white whitespace-nowrap max-md:hidden">
+          ${price} USD
+        </span>
+        <div
+          className="flex items-center gap-2 bg-black/[0.06] py-1 px-2 rounded-[10px] max-md:gap-0.5 max-md:p-0.5 max-md:rounded-[5px]"
+          role="group"
+          aria-label={`${label} count`}
+        >
           <button
-            className="decrease"
-            style={{ opacity: count === 0 ? 0.3 : 1 }}
+            className="bg-white/95 border-0 text-[#333] cursor-pointer text-lg font-semibold p-0 flex items-center justify-center w-7 h-7 rounded-lg transition-all duration-200 hover:bg-white hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed max-md:text-xs max-md:w-[18px] max-md:h-[18px] max-md:rounded"
             onClick={onDecrement}
             aria-label={`Decrease ${label.toLowerCase()} count`}
             disabled={count === 0}
           >
             -
           </button>
-          <span className="count" aria-live="polite">
+          <span className="min-w-6 text-center font-bold text-[16px] max-md:min-w-[10px] max-md:text-[11px]" aria-live="polite">
             {count}
           </span>
           <button
-            className="increase"
-            style={{ opacity: count === 10 ? 0.3 : 1 }}
+            className="bg-white/95 border-0 text-[#333] cursor-pointer text-lg font-semibold p-0 flex items-center justify-center w-7 h-7 rounded-lg transition-all duration-200 hover:bg-white hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed max-md:text-xs max-md:w-[18px] max-md:h-[18px] max-md:rounded"
             onClick={onIncrement}
             aria-label={`Increase ${label.toLowerCase()} count`}
             disabled={count === 10}

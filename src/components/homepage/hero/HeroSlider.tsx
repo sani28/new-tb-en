@@ -76,14 +76,12 @@ export default function HeroSlider() {
 
   return (
     <div
-      className="hero-slider"
+      className="absolute top-0 left-0 w-full h-full"
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
       tabIndex={0}
       onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
-        // Scope ArrowLeft/ArrowRight navigation to when the slider (or its children)
-        // has focus so we don't hijack other controls (e.g. booking <select>).
         if (e.defaultPrevented) return;
         if (e.altKey || e.ctrlKey || e.metaKey) return;
 
@@ -102,7 +100,7 @@ export default function HeroSlider() {
       {SLIDES.map((src, i) => (
         <div
           key={i}
-          className={`slide${i === activeSlide ? " active" : ""}`}
+          className={`absolute -top-[150px] left-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ease-in-out${i === activeSlide ? " opacity-100" : " opacity-0"}`}
           style={{ backgroundImage: `url('${src}')` }}
           role="group"
           aria-roledescription="slide"
@@ -111,10 +109,11 @@ export default function HeroSlider() {
         />
       ))}
 
-      {/* Slider controls — progress dots */}
-      <div className="slider-controls">
-        <div className="controls-row">
-          <div className="slider-dots">
+      {/* Slider controls — progress dots (hidden on desktop, available for mobile) */}
+      <div className="absolute top-[30px] left-1/2 -translate-x-1/2 flex items-center gap-5 z-10">
+        <div className="flex items-center gap-[10px]">
+          {/* Progress dot indicators — hidden by default (display:none in legacy CSS) */}
+          <div className="hidden" aria-hidden="true">
             {SLIDES.map((_, i) => (
               <span
                 key={i}
@@ -128,7 +127,6 @@ export default function HeroSlider() {
                     e.preventDefault();
                     onDotClick(i);
                   }
-
                   if (e.key === " " || e.key === "Spacebar") {
                     e.preventDefault();
                     onDotClick(i);
@@ -146,23 +144,9 @@ export default function HeroSlider() {
           </div>
 
           <button
-            className={`slider-pause${!isPlaying ? " paused" : ""}`}
+            className="bg-white/25 border-0 text-white w-7 h-7 rounded-full cursor-pointer flex items-center justify-center text-[11px] ml-2 opacity-70 transition-all duration-300 hover:opacity-100"
             onClick={togglePlay}
             aria-label={isPlaying ? "Pause slider" : "Play slider"}
-            style={{
-              background: "rgba(255,255,255,0.25)",
-              border: "none",
-              color: "white",
-              width: 28,
-              height: 28,
-              borderRadius: "50%",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 11,
-              marginLeft: 8,
-            }}
           >
             <i className={`fas ${isPlaying ? "fa-pause" : "fa-play"}`} />
           </button>

@@ -1,8 +1,6 @@
 @layer theme, base, components, legacy, utilities;
 
 /*
-  Legacy prototype CSS (from /public) loaded into a cascade layer.
-
   Important: these @import rules must come before Tailwind is expanded, otherwise the
   built CSS becomes invalid (CSS requires @import to precede regular rules).
 */
@@ -37,4 +35,5 @@
   --font-sans-semibold: 'GeneralSans-Semibold', sans-serif;
   --font-sans-medium: 'GeneralSans-Medium', sans-serif;
   --font-sans-regular: 'GeneralSans-Regular', sans-serif;
+  --font-copperplate: 'Copperplate', 'GeneralSans-Medium', sans-serif;
 }
