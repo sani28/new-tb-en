@@ -845,18 +845,19 @@
 .index-page .courses .card .card-title {
     color: #000;
     font-family: 'GeneralSans-Semibold', 'GeneralSans-Medium', 'GeneralSans-Regular', Arial, sans-serif;
+    font-size: 15px;
     font-weight: 700;
     letter-spacing: -0.02em;
     line-height: 1.2;
     margin: 0;
-    padding: 14px 15px 0;
+    padding: 12px 15px 0;
 }
 
 /* Align the Add to Cart CTA with the card text block (left aligned under title/description). */
 .index-page .courses .card .card-actions {
     justify-content: flex-start !important;
-    /* Ensure the button container starts at the same left edge as the title/description (15px desktop). */
-    padding: 0 15px 15px !important;
+    /* Top padding creates breathing room between description and button. */
+    padding: 10px 15px 14px !important;
 }
 
 .index-page .courses .card .card-actions a {
@@ -870,14 +871,20 @@
 /* On mobile, match the paragraph padding so title + detail text align perfectly. */
 @media (max-width: 768px) {
     .index-page .courses .card .card-title {
+        font-size: 13px;
         padding-left: 12px;
         padding-right: 12px;
-        padding-top: 12px;
+        padding-top: 10px;
+    }
+
+    .index-page .courses .card p {
+        font-size: 11px;
+        padding-left: 12px;
+        padding-right: 12px;
     }
 
     .index-page .courses .card .card-actions {
-        /* Match the mobile paragraph padding so left edges align. */
-        padding: 0 12px 12px !important;
+        padding: 8px 12px 12px !important;
     }
 }
 
@@ -887,9 +894,12 @@
         max-width: 850px;
     }
 
-    /* Reduce the large default top padding on the detail text so it sits nicely under the title. */
+    /* Description text: left-aligned with title, explicit font-size for clear type hierarchy. */
     .index-page .courses .card p {
-        padding-top: 8px;
+        padding-top: 6px;
+        padding-left: 15px;
+        padding-right: 15px;
+        font-size: 12px;
     }
 }
 

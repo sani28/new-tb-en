@@ -2,7 +2,7 @@
 
 export default function HomepageCoursesSection() {
   const addonAddToCartClass =
-    "more-info card-more-info-btn ml-0 inline-flex w-full items-center justify-center rounded-lg bg-[var(--color-brand-red)] px-6 py-3 font-bold text-white no-underline transition-colors hover:bg-[var(--color-brand-dark-red)] hover:text-white visited:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-red)] focus-visible:ring-offset-2";
+    "more-info card-more-info-btn ml-0 inline-flex w-full items-center justify-center rounded-md bg-[var(--color-brand-red)] px-3 py-2 text-sm font-bold text-white no-underline transition-colors hover:bg-[var(--color-brand-dark-red)] hover:text-white visited:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-red)] focus-visible:ring-offset-2";
 
   // Tour 01 add-on cards sit on a dark background in the courses carousel, so enforce
   // left-aligned white text for readability (without affecting other tours).
