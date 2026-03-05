@@ -44,7 +44,6 @@ export default function PromoTabCarousel() {
     }, SLIDE_DURATION);
   }, [isPaused, total, clearTimer]);
 
-  /* Auto-rotate */
   useEffect(() => {
     startTimer();
     return clearTimer;
@@ -59,13 +58,8 @@ export default function PromoTabCarousel() {
     [total],
   );
 
-  const goPrev = () => {
-    if (currentIndex > 0) goToSlide(currentIndex - 1);
-  };
-
-  const goNext = () => {
-    if (currentIndex < total - 1) goToSlide(currentIndex + 1);
-  };
+  const goPrev = () => { if (currentIndex > 0) goToSlide(currentIndex - 1); };
+  const goNext = () => { if (currentIndex < total - 1) goToSlide(currentIndex + 1); };
 
   const togglePause = () => {
     setIsPaused((p) => {
@@ -76,15 +70,9 @@ export default function PromoTabCarousel() {
     setProgressKey((k) => k + 1);
   };
 
-  /* Hover pause */
-  const onMouseEnter = () => {
-    if (!isPaused) clearTimer();
-  };
-  const onMouseLeave = () => {
-    if (!isPaused) startTimer();
-  };
+  const onMouseEnter = () => { if (!isPaused) clearTimer(); };
+  const onMouseLeave = () => { if (!isPaused) startTimer(); };
 
-  /* Touch / swipe */
   const onTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.changedTouches[0].clientX;
     touchEndX.current = null;
@@ -103,7 +91,6 @@ export default function PromoTabCarousel() {
     touchEndX.current = null;
   };
 
-  /* Promo click — dispatch event for the PromoHeroPromotionModal */
   const onPromoClick = (promoId: number) => {
     document.dispatchEvent(
       new CustomEvent("tb:openPromoHeroPromotion", { detail: { promoId } }),
@@ -111,9 +98,13 @@ export default function PromoTabCarousel() {
   };
 
   return (
+    /* Desktop: absolute, centered, 45% wide, 190px above bottom of hero
+       Mobile: relative, full-width, stacked above booking widget */
     <div
       ref={containerRef}
-      className="promo-tab-carousel"
+      className={
+        "w-full relative z-[101] md:absolute md:bottom-[190px] md:left-1/2 md:-translate-x-1/2 md:z-[50] md:w-[45%] max-[1200px]:md:w-[55%] max-[992px]:md:w-[65%]"
+      }
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onTouchStart={onTouchStart}
@@ -123,23 +114,32 @@ export default function PromoTabCarousel() {
       aria-roledescription="carousel"
       aria-label="Promotional offers"
     >
-      <div className="promo-tabs-container">
-        {/* Progress bars */}
-        <div className="promo-progress-bars">
+      {/* Container — glass card desktop, white-bg card on mobile */}
+      <div
+        className={
+          "relative flex items-center justify-center h-[160px] rounded-2xl backdrop-blur-[10px] border border-white/20 shadow-[0_6px_20px_rgba(0,0,0,0.15)] " +
+          "max-[1200px]:h-[140px] max-[992px]:h-[120px] " +
+          "max-md:h-auto max-md:min-h-[64px] max-md:rounded-t-2xl max-md:rounded-b-none max-md:bg-white/98 max-md:backdrop-blur-[20px] max-md:shadow-[0_-4px_20px_rgba(0,0,0,0.1)] max-md:border-b-0 max-md:px-4 max-md:py-3"
+        }
+      >
+        {/* Progress bars — gradient overlay at the top */}
+        <div
+          className={
+            "absolute top-0 left-0 right-0 z-[10] flex items-center gap-1.5 px-4 py-3 pr-[50px] rounded-t-2xl " +
+            "bg-gradient-to-b from-black/40 to-transparent " +
+            "max-md:px-3 max-md:py-2 max-md:pr-[40px] max-md:gap-[3px] max-md:rounded-t-2xl"
+          }
+        >
           {PROMO_SLIDES.map((_, i) => (
             <div
               key={i}
-              className="promo-progress-bar"
+              className="flex-1 h-1 bg-white/40 rounded-sm overflow-hidden cursor-pointer max-md:h-[3px]"
               onClick={() => goToSlide(i)}
               role="button"
               aria-label={`Go to promotion ${i + 1}`}
               tabIndex={0}
               onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  goToSlide(i);
-                }
-                if (e.key === " " || e.key === "Spacebar") {
+                if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
                   e.preventDefault();
                   goToSlide(i);
                 }
@@ -147,16 +147,12 @@ export default function PromoTabCarousel() {
             >
               <div
                 key={`pf-${progressKey}-${i}`}
-                className="promo-fill"
+                className="block h-full bg-white rounded-sm"
                 style={
                   i < currentIndex
                     ? { width: "100%", transition: "none" }
                     : i === currentIndex && !isPaused
-                      ? {
-                          width: "100%",
-                          transition: `width ${SLIDE_DURATION}ms linear`,
-                          transitionDelay: "50ms",
-                        }
+                      ? { width: "100%", transition: `width ${SLIDE_DURATION}ms linear`, transitionDelay: "50ms" }
                       : i === currentIndex && isPaused
                         ? { width: "50%", transition: "none" }
                         : { width: "0%", transition: "none" }
@@ -164,8 +160,10 @@ export default function PromoTabCarousel() {
               />
             </div>
           ))}
+
+          {/* Pause/play button */}
           <button
-            className={`promo-pause-btn${isPaused ? " paused" : ""}`}
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full bg-white/25 border-none text-white cursor-pointer text-[10px] transition-all hover:bg-white/40 hover:scale-110 max-md:right-3 max-md:w-5 max-md:h-5 max-md:text-[8px]"
             onClick={togglePause}
             aria-label={isPaused ? "Resume carousel" : "Pause carousel"}
           >
@@ -175,20 +173,20 @@ export default function PromoTabCarousel() {
 
         {/* Prev arrow */}
         <button
-          className="promo-nav-arrow prev"
+          className="shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-brand-red border-none text-white cursor-pointer transition-all hover:bg-brand-dark-red hover:scale-110 max-[1200px]:w-9 max-[1200px]:h-9 max-[992px]:w-8 max-[992px]:h-8 max-md:w-8 max-md:h-8"
           onClick={goPrev}
           aria-label="Previous promotion"
           style={{ display: currentIndex > 0 ? "flex" : "none" }}
         >
-          <i className="fas fa-chevron-left" />
+          <i className="fas fa-chevron-left text-base max-[992px]:text-[14px] max-md:text-[12px]" />
         </button>
 
         {/* Slides */}
-        <div className="promo-slides">
+        <div className="flex flex-1 overflow-hidden relative w-full h-full max-md:h-auto max-md:min-h-[50px]">
           {PROMO_SLIDES.map((slide, i) => (
             <div
               key={slide.id}
-              className={`promo-slide${i === currentIndex ? " active" : ""}`}
+              className={`absolute inset-0 transition-opacity duration-300 ${i === currentIndex ? "opacity-100 block" : "opacity-0 hidden"} max-md:relative max-md:inset-auto`}
               data-promo={String(slide.id)}
               role="group"
               aria-roledescription="slide"
@@ -196,16 +194,12 @@ export default function PromoTabCarousel() {
               aria-hidden={i !== currentIndex}
             >
               <div
-                className="promo-content promo-clickable"
+                className="w-full h-full flex flex-col justify-center items-center text-center text-white rounded-xl box-border cursor-pointer max-md:px-3 max-md:py-1.5"
                 data-promo-popup={String(slide.id)}
                 style={{ cursor: "pointer" }}
                 onClick={() => onPromoClick(slide.id)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    onPromoClick(slide.id);
-                  }
-                  if (e.key === " " || e.key === "Spacebar") {
+                  if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
                     e.preventDefault();
                     onPromoClick(slide.id);
                   }
@@ -216,11 +210,13 @@ export default function PromoTabCarousel() {
                 <div className="relative">
                   <img
                     src={slide.image}
-                    className="promo-banner-img"
                     alt={slide.alt}
                     loading="lazy"
+                    className="w-[90%] max-w-full h-auto max-h-[110px] object-contain max-[1200px]:max-h-[95px] max-[992px]:max-h-[80px] max-md:w-full max-md:max-h-[80px] max-md:rounded-lg"
                   />
-                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 bg-black/60 text-white/90 text-xs font-mono px-2 py-0.5 rounded pointer-events-none z-10 select-none">640×110px</span>
+                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 bg-black/60 text-white/90 text-xs font-mono px-2 py-0.5 rounded pointer-events-none z-10 select-none">
+                    640×110px
+                  </span>
                 </div>
               </div>
             </div>
@@ -229,12 +225,12 @@ export default function PromoTabCarousel() {
 
         {/* Next arrow */}
         <button
-          className="promo-nav-arrow next"
+          className="shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-brand-red border-none text-white cursor-pointer transition-all hover:bg-brand-dark-red hover:scale-110 max-[1200px]:w-9 max-[1200px]:h-9 max-[992px]:w-8 max-[992px]:h-8 max-md:w-8 max-md:h-8"
           onClick={goNext}
           aria-label="Next promotion"
           style={{ display: currentIndex < total - 1 ? "flex" : "none" }}
         >
-          <i className="fas fa-chevron-right" />
+          <i className="fas fa-chevron-right text-base max-[992px]:text-[14px] max-md:text-[12px]" />
         </button>
       </div>
     </div>

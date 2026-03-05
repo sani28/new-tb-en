@@ -43,6 +43,16 @@ export default function PromoHeroPromotionModal() {
     return () => carousel?.removeEventListener("click", onClick as EventListener);
   }, [open]);
 
+  /* Listen for custom event from PromoTabCarousel */
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const id = String((e as CustomEvent).detail?.promoId ?? "1");
+      open(id);
+    };
+    document.addEventListener("tb:openPromoHeroPromotion", handler);
+    return () => document.removeEventListener("tb:openPromoHeroPromotion", handler);
+  }, [open]);
+
   /* Escape key */
   useEffect(() => {
     if (!isOpen) return;
@@ -58,30 +68,70 @@ export default function PromoHeroPromotionModal() {
     }));
   };
 
+  if (!isOpen) return null;
+
   return (
     <div
-      className={`promo-hero-modal-overlay${isOpen ? " active" : ""}`}
+      className="fixed inset-0 flex items-center justify-center bg-black/70 z-[10000004] p-5"
       id="promoHeroPromotionModal"
-      aria-hidden={!isOpen}
+      aria-modal="true"
       onClick={(e) => { if (e.target === e.currentTarget) close(); }}
     >
-      <div className="promo-hero-modal" role="dialog" aria-modal="true" aria-labelledby="promoHeroPromotionTitle">
-        <button className="close-popup" id="closePromoHeroPromotionModal" type="button" aria-label="Close" onClick={close}>
+      <div
+        className="bg-white w-[min(720px,92vw)] max-h-[90vh] rounded-xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.35)] relative flex flex-col"
+        role="dialog"
+        aria-labelledby="promoHeroPromotionTitle"
+      >
+        <button
+          className="absolute top-[10px] right-[10px] w-9 h-9 rounded-full border-none bg-white/90 cursor-pointer text-[24px] leading-none z-[2] flex items-center justify-center hover:bg-white transition-colors"
+          id="closePromoHeroPromotionModal"
+          type="button"
+          aria-label="Close"
+          onClick={close}
+        >
           &times;
         </button>
-        <div className="promo-hero-modal-media">
-          <img id="promoHeroPromotionImg" src={promo.image} alt="Promotion" />
+
+        {/* Media */}
+        <div>
+          <img
+            id="promoHeroPromotionImg"
+            src={promo.image}
+            alt="Promotion"
+            className="w-full h-auto block"
+          />
         </div>
-        <div className="promo-hero-modal-body">
-          <h3 id="promoHeroPromotionTitle">{promo.title}</h3>
-          <p id="promoHeroPromotionDesc">{promo.desc}</p>
+
+        {/* Body */}
+        <div className="p-[18px]">
+          <h3 id="promoHeroPromotionTitle" className="m-0 mb-2 text-[20px] text-[#111]">
+            {promo.title}
+          </h3>
+          <p id="promoHeroPromotionDesc" className="m-0 text-[#333] leading-[1.4]">
+            {promo.desc}
+          </p>
         </div>
-        <div className="promo-hero-actions">
-          <button className="promo-hero-secondary" id="promoHeroPromotionCloseBtn" type="button" onClick={close}>Close</button>
-          <button className="promo-hero-cta" id="promoHeroPromotionBookNowBtn" type="button" onClick={onBookNow}>Book now</button>
+
+        {/* Actions */}
+        <div className="flex gap-3 justify-end px-[18px] py-[14px] border-t border-[#eee]">
+          <button
+            className="bg-transparent border border-[#cfcfcf] text-[#111] px-[14px] py-[10px] rounded-[10px] cursor-pointer font-semibold hover:bg-[#f5f5f5] transition-colors"
+            id="promoHeroPromotionCloseBtn"
+            type="button"
+            onClick={close}
+          >
+            Close
+          </button>
+          <button
+            className="bg-[#E2601E] border border-[#E2601E] text-white px-[14px] py-[10px] rounded-[10px] cursor-pointer font-bold hover:brightness-95 transition-all"
+            id="promoHeroPromotionBookNowBtn"
+            type="button"
+            onClick={onBookNow}
+          >
+            Book now
+          </button>
         </div>
       </div>
     </div>
   );
 }
-

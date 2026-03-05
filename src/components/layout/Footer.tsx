@@ -110,8 +110,7 @@ export default function Footer() {
       </div>
 
       <div className="flex justify-between items-end max-w-[1400px] mx-auto mt-[40px] px-10 max-md:text-center max-md:p-5">
-        <div className="footer-info">{/* Empty in current version */}</div>
-        <div className="flex-[0_0_50%] text-right ml-auto max-md:w-full max-md:mt-5 max-md:mx-auto">
+<div className="flex-[0_0_50%] text-right ml-auto max-md:w-full max-md:mt-5 max-md:mx-auto">
           <img
             src="/imgs/footerimg.png"
             alt="Seoul City Illustration"

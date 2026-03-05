@@ -5,7 +5,6 @@ import type { Cleanup } from "./behaviors/types";
 import { initHomepageCourseCarousel } from "./behaviors/courseCarousel";
 import { initCoursesScrollVisibility } from "./behaviors/coursesVisibility";
 import { initCardCarousels } from "./behaviors/cardCarousels";
-import { initPromoAddonProductModal } from "./behaviors/promoCheckoutFlow";
 import { initDiscoveryMobileCarousel } from "./behaviors/discoveryCarousel";
 
 /*
@@ -20,7 +19,6 @@ export default function HomepageBehaviors() {
       initHomepageCourseCarousel(),
       initCoursesScrollVisibility(),
       initCardCarousels(),
-      initPromoAddonProductModal(),
       initDiscoveryMobileCarousel(),
     ];
 

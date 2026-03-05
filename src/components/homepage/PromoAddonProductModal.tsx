@@ -2,39 +2,86 @@
 
 export default function PromoAddonProductModal() {
   return (
+    /* promo-product-modal-overlay kept — JS toggles .active to display:flex */
     <div className="promo-product-modal-overlay" id="promoProductModal" aria-hidden="true">
-      <div className="promo-product-details-content" role="dialog" aria-modal="true" aria-labelledby="promoProductModalTitle">
-        <div className="promo-product-modal-header">
-          <button className="promo-back-to-modal" id="closePromoProductModal" aria-label="Close">←</button>
-          <h3 id="promoProductModalTitle">Product Details</h3>
-          <button className="promo-close-product-details" id="closePromoProductModal2" aria-label="Close">×</button>
+      <div
+        className="bg-white w-[90%] max-w-[600px] h-[90vh] rounded-xl overflow-hidden flex flex-col shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="promoProductModalTitle"
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#eee] bg-white shrink-0">
+          <button
+            className="border-none bg-transparent text-xl leading-none cursor-pointer p-2 text-[#333] hover:text-black transition-colors"
+            id="closePromoProductModal"
+            type="button"
+            aria-label="Close"
+          >
+            ←
+          </button>
+          <h3 id="promoProductModalTitle" className="m-0 text-base font-semibold">Product Details</h3>
+          <button
+            className="border-none bg-transparent text-xl leading-none cursor-pointer p-2 text-[#333] hover:text-black transition-colors"
+            id="closePromoProductModal2"
+            type="button"
+            aria-label="Close"
+          >
+            ×
+          </button>
         </div>
-        <div className="promo-product-scrollable-content">
-          <div className="promo-product-main-image" id="promoProductModalImage">
+
+        {/* Scrollable body */}
+        <div className="flex-1 overflow-y-auto min-h-0">
+          {/* promo-product-main-image kept — JS adds .placeholder-image class for gradient bg */}
+          <div
+            className="promo-product-main-image w-full h-[300px] overflow-hidden bg-[#f5f5f5] flex items-center justify-center shrink-0"
+            id="promoProductModalImage"
+          >
             <img
               src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
               alt="Product"
               id="promoProductModalImg"
+              className="w-full h-full object-cover"
               style={{ display: "none" }}
             />
-            <span className="promo-image-placeholder" id="promoProductModalPlaceholder" style={{ display: "none" }}>
+            <span
+              className="text-[120px] opacity-70"
+              id="promoProductModalPlaceholder"
+              style={{ display: "none" }}
+            >
               📦
             </span>
           </div>
+
+          {/* promo-product-variant-tabs kept — home.css scopes variant UI rules to this parent */}
           <div className="promo-product-variant-tabs" id="promoProductVariantTabs">
-            {/* Variant tabs will be populated by JavaScript */}
+            {/* Populated by JS */}
           </div>
-          <div className="promo-product-details-info">
-            <h2 id="promoProductModalName">Product Name</h2>
-            <p id="promoProductModalDesc">Product description goes here.</p>
-            <div className="promo-product-modal-pricing">
-              <span className="promo-modal-current-price" id="promoProductModalPrice">$0.00 USD</span>
-              <span className="promo-modal-original-price" id="promoProductModalOrigPrice">$0.00 USD</span>
+
+          <div className="p-5">
+            <h2 id="promoProductModalName" className="m-0 mb-3 text-2xl font-semibold leading-tight text-[#333]">
+              Product Name
+            </h2>
+            <p id="promoProductModalDesc" className="text-sm text-[#666] m-0 mb-4 leading-relaxed">
+              Product description goes here.
+            </p>
+            <div className="flex items-center gap-3">
+              <span className="text-2xl font-bold text-[#E20021]" id="promoProductModalPrice">$0.00 USD</span>
+              <span className="text-base text-[#999] line-through" id="promoProductModalOrigPrice">$0.00 USD</span>
             </div>
           </div>
         </div>
-        <div className="promo-product-sticky-bottom">
-          <button className="promo-add-to-cart-btn" id="promoAddToCartBtn">Add to Cart - $0.00</button>
+
+        {/* Sticky bottom */}
+        <div className="flex items-center gap-4 px-5 py-4 border-t border-[#eee] bg-white shrink-0">
+          <button
+            className="flex-1 border-none rounded-lg px-5 py-[14px] bg-[#E20021] text-white text-base font-semibold cursor-pointer transition-colors hover:bg-[#C4001A] disabled:opacity-50 disabled:cursor-not-allowed"
+            id="promoAddToCartBtn"
+            type="button"
+          >
+            Add to Cart - $0.00
+          </button>
         </div>
       </div>
     </div>

@@ -80,21 +80,13 @@ export default function BookingWidget() {
     : "Select a date";
 
   const prevMonth = () => {
-    if (viewMonth === 0) {
-      setViewYear((y) => y - 1);
-      setViewMonth(11);
-    } else {
-      setViewMonth((m) => m - 1);
-    }
+    if (viewMonth === 0) { setViewYear((y) => y - 1); setViewMonth(11); }
+    else { setViewMonth((m) => m - 1); }
   };
 
   const nextMonth = () => {
-    if (viewMonth === 11) {
-      setViewYear((y) => y + 1);
-      setViewMonth(0);
-    } else {
-      setViewMonth((m) => m + 1);
-    }
+    if (viewMonth === 11) { setViewYear((y) => y + 1); setViewMonth(0); }
+    else { setViewMonth((m) => m + 1); }
   };
 
   const isSelected = (d: number) =>
@@ -133,7 +125,7 @@ export default function BookingWidget() {
   return (
     <div
       className={
-        "booking-widget w-full relative z-[100] flex flex-wrap items-stretch gap-2 rounded-none bg-white/95 px-5 py-4 shadow-none backdrop-blur-xl " +
+        "w-full relative z-[100] flex flex-wrap items-stretch gap-2 rounded-none bg-white/95 px-5 py-4 shadow-none backdrop-blur-xl " +
         "md:absolute md:bottom-20 md:left-1/2 md:w-auto md:-translate-x-1/2 md:flex-nowrap md:items-center md:gap-5 md:rounded-[20px] md:border md:border-white/60 " +
         "md:bg-gradient-to-br md:from-white/98 md:to-white/95 md:px-7 md:py-5 " +
         "md:shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.8)] " +
@@ -143,8 +135,9 @@ export default function BookingWidget() {
       aria-label="Tour booking"
     >
       {/* Tour & Date selectors */}
-      <div className="select-container flex basis-full items-center gap-2 md:basis-auto md:gap-4 max-[400px]:gap-1.5">
-        <div className="tour-select min-w-0 w-[70%] max-[400px]:w-[58%] md:w-auto">
+      <div className="flex basis-full items-center gap-2 md:basis-auto md:gap-4 max-[400px]:gap-1.5">
+        {/* Tour select */}
+        <div className="min-w-0 w-[70%] max-[400px]:w-[58%] md:w-auto">
           <select
             id="booking-tour-select"
             value={tour}
@@ -167,124 +160,150 @@ export default function BookingWidget() {
           </select>
         </div>
 
-        <div className="date-select relative min-w-0 w-[30%] max-[400px]:w-[42%] md:w-auto" ref={calendarRef}>
-          <div className="date-picker-wrapper">
-            <button
-              onClick={() => setCalendarOpen((o) => !o)}
-              aria-expanded={calendarOpen}
-              aria-haspopup="dialog"
-              aria-label="Select date"
-              type="button"
-              className={
-                "date-picker-trigger flex w-full min-w-0 min-h-11 items-center justify-between gap-2 rounded-full border-2 border-[#E8E8E8] " +
-                "bg-gradient-to-b from-white to-[#FAFAFA] px-4 py-3.5 text-left text-[14px] font-[var(--font-sans-medium)] " +
-                "text-[var(--color-text-dark)] shadow-sm transition-colors hover:border-[#D40004] " +
-                "focus:border-[#D40004] focus:outline-none focus:ring-4 focus:ring-[#D40004]/15 " +
-                "max-md:px-3 max-md:py-3 max-md:text-[13px] " +
-                "max-[400px]:min-h-10 max-[400px]:px-2 max-[400px]:py-2 max-[400px]:text-[12px] " +
-                "max-[400px]:justify-start max-[400px]:gap-1.5"
-              }
-            >
-              <span className="selected-date min-w-0 flex-1 truncate">{dateDisplay}</span>
-              <img
-                src="/imgs/calendar.svg"
-                alt=""
-                className="calendar-icon h-4 w-4 shrink-0 max-[400px]:h-3.5 max-[400px]:w-3.5"
-                aria-hidden="true"
-              />
-            </button>
+        {/* Date picker */}
+        <div className="relative min-w-0 w-[30%] max-[400px]:w-[42%] md:w-auto z-[99999]" ref={calendarRef}>
+          <button
+            onClick={() => setCalendarOpen((o) => !o)}
+            aria-expanded={calendarOpen}
+            aria-haspopup="dialog"
+            aria-label="Select date"
+            type="button"
+            className={
+              "flex w-full min-w-0 min-h-11 items-center justify-between gap-2 rounded-full border-2 border-[#E8E8E8] " +
+              "bg-gradient-to-b from-white to-[#FAFAFA] px-4 py-3.5 text-left text-[14px] font-[var(--font-sans-medium)] " +
+              "text-[var(--color-text-dark)] shadow-sm transition-colors hover:border-[#D40004] " +
+              "focus:border-[#D40004] focus:outline-none focus:ring-4 focus:ring-[#D40004]/15 " +
+              "max-md:px-3 max-md:py-3 max-md:text-[13px] " +
+              "max-[400px]:min-h-10 max-[400px]:px-2 max-[400px]:py-2 max-[400px]:text-[12px] " +
+              "max-[400px]:justify-start max-[400px]:gap-1.5"
+            }
+          >
+            <span className="min-w-0 flex-1 truncate">{dateDisplay}</span>
+            <img
+              src="/imgs/calendar.svg"
+              alt=""
+              className="h-4 w-4 shrink-0 opacity-70 max-[400px]:h-3.5 max-[400px]:w-3.5"
+              aria-hidden="true"
+            />
+          </button>
 
-            {calendarOpen && (
-              <div className="calendar-dropdown active" role="dialog" aria-label="Date picker">
-                <div className="calendar-header">
-                  <button className="prev-month" onClick={prevMonth} aria-label="Previous month">
-                    &larr;
-                  </button>
-                  <h3 className="current-month">
-                    {MONTH_NAMES[viewMonth]} {viewYear}
-                  </h3>
-                  <button className="next-month" onClick={nextMonth} aria-label="Next month">
-                    &rarr;
-                  </button>
+          {/* Calendar dropdown — conditionally rendered (no display:none toggle needed) */}
+          {calendarOpen && (
+            <div
+              className={
+                "absolute top-[calc(100%+8px)] left-0 w-[350px] bg-white rounded-2xl p-5 " +
+                "shadow-[0_8px_32px_rgba(0,0,0,0.15),0_2px_8px_rgba(0,0,0,0.1)] z-[100001] " +
+                "max-md:fixed max-md:top-1/2 max-md:left-1/2 max-md:-translate-x-1/2 max-md:-translate-y-1/2 " +
+                "max-md:w-[90%] max-md:max-w-[350px] max-md:max-h-[90vh] max-md:overflow-y-auto max-md:z-[999999]"
+              }
+              role="dialog"
+              aria-label="Date picker"
+            >
+              {/* Header — month navigation */}
+              <div className="flex justify-between items-center mb-5">
+                <button
+                  className="bg-transparent border-none text-[20px] cursor-pointer px-3 py-2 rounded text-[#666] transition-colors hover:bg-[#f5f5f5]"
+                  onClick={prevMonth}
+                  aria-label="Previous month"
+                >
+                  &larr;
+                </button>
+                <h3 className="text-[18px] font-semibold text-[#333] m-0">
+                  {MONTH_NAMES[viewMonth]} {viewYear}
+                </h3>
+                <button
+                  className="bg-transparent border-none text-[20px] cursor-pointer px-3 py-2 rounded text-[#666] transition-colors hover:bg-[#f5f5f5]"
+                  onClick={nextMonth}
+                  aria-label="Next month"
+                >
+                  &rarr;
+                </button>
+              </div>
+
+              {/* Grid */}
+              <div role="grid">
+                {/* Weekday headers */}
+                <div className="grid grid-cols-7 text-center font-semibold text-[#666] mb-2.5 py-2.5" role="row">
+                  {WEEKDAYS.map((w) => (
+                    <span key={w} className="text-[14px]" role="columnheader">
+                      {w}
+                    </span>
+                  ))}
                 </div>
-                <div className="calendar-grid" role="grid">
-                  <div className="weekdays" role="row">
-                    {WEEKDAYS.map((w) => (
-                      <span key={w} role="columnheader">
-                        {w}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="days">
-                    {cells.map((cell, i) => {
-                      if (!cell) return <div key={`e-${i}`} className="day empty" />;
-                      const cls = [
-                        "day",
-                        cell.disabled ? "disabled" : "",
-                        cell.soldOut ? "sold-out disabled" : "",
-                        !cell.disabled && !cell.soldOut ? "available" : "",
-                        isSelected(cell.day) ? "selected" : "",
-                      ]
-                        .filter(Boolean)
-                        .join(" ");
-                      return (
-                        <div
-                          key={cell.day}
-                          className={cls}
-                          role="gridcell"
-                          aria-disabled={cell.disabled || cell.soldOut}
-                          aria-selected={isSelected(cell.day)}
-                          title={
-                            new Date(viewYear, viewMonth, cell.day).getDay() === 1
-                              ? "Closed on Mondays"
-                              : undefined
-                          }
-                          tabIndex={!cell.disabled && !cell.soldOut ? 0 : -1}
-                          onClick={() => {
-                            if (cell.disabled || cell.soldOut) return;
+
+                {/* Day cells */}
+                <div className="grid grid-cols-7 gap-2 px-1">
+                  {cells.map((cell, i) => {
+                    if (!cell) return <div key={`e-${i}`} className="aspect-square" />;
+
+                    const sel = isSelected(cell.day);
+                    const dayCls = [
+                      "aspect-square flex flex-col items-center justify-center rounded-full relative p-2 text-[14px] transition-colors",
+                      cell.disabled
+                        ? "text-[#999] bg-[#f0f0f0] cursor-not-allowed opacity-60 pointer-events-none"
+                        : cell.soldOut
+                          ? "text-[#ccc] cursor-not-allowed"
+                          : "cursor-pointer hover:bg-[#f5f5f5]",
+                      sel ? "!bg-brand-red !text-white" : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ");
+
+                    return (
+                      <div
+                        key={cell.day}
+                        className={dayCls}
+                        role="gridcell"
+                        aria-disabled={cell.disabled || cell.soldOut}
+                        aria-selected={sel}
+                        title={
+                          new Date(viewYear, viewMonth, cell.day).getDay() === 1
+                            ? "Closed on Mondays"
+                            : undefined
+                        }
+                        tabIndex={!cell.disabled && !cell.soldOut ? 0 : -1}
+                        onClick={() => {
+                          if (cell.disabled || cell.soldOut) return;
+                          onSelectDay(cell.day);
+                        }}
+                        onKeyDown={(e) => {
+                          if (cell.disabled || cell.soldOut) return;
+                          if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+                            e.preventDefault();
                             onSelectDay(cell.day);
-                          }}
-                          onKeyDown={(e) => {
-                            if (cell.disabled || cell.soldOut) return;
-                            if (e.key === "Enter") {
-                              e.preventDefault();
-                              onSelectDay(cell.day);
-                            }
-                            if (e.key === " " || e.key === "Spacebar") {
-                              e.preventDefault();
-                              onSelectDay(cell.day);
-                            }
-                          }}
-                        >
-                          {cell.day}
-                          {!cell.disabled && (
-                            <span className={`dot ${cell.soldOut ? "sold-out" : "available"}`} />
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-                <div className="calendar-footer">
-                  <div className="availability-legend">
-                    <div className="legend-item">
-                      <span className="dot available" />
-                      <span>Available</span>
-                    </div>
-                    <div className="legend-item">
-                      <span className="dot sold-out" />
-                      <span>Sold Out</span>
-                    </div>
-                  </div>
+                          }
+                        }}
+                      >
+                        {cell.day}
+                        {!cell.disabled && (
+                          <span
+                            className={`w-1.5 h-1.5 rounded-full absolute bottom-1 ${cell.soldOut ? "bg-brand-red" : "bg-[#4CAF50]"}`}
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
-            )}
-          </div>
+
+              {/* Footer — availability legend */}
+              <div className="flex justify-center gap-[30px] mt-5 pt-[15px] border-t border-[#eee]">
+                <div className="flex items-center gap-2 text-[14px] text-[#666]">
+                  <span className="w-2 h-2 rounded-full inline-block bg-[#4CAF50]" />
+                  <span>Available</span>
+                </div>
+                <div className="flex items-center gap-2 text-[14px] text-[#666]">
+                  <span className="w-2 h-2 rounded-full inline-block bg-brand-red" />
+                  <span>Sold Out</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Passenger counters */}
-      <div className="passenger-counter shrink-0 flex items-center gap-1.5 md:flex md:items-center md:gap-[15px]">
+      <div className="shrink-0 flex items-center gap-1.5 md:flex md:items-center md:gap-[15px]">
         <CounterGroup
           label="Adult"
           price={prices.adult}
@@ -303,7 +322,7 @@ export default function BookingWidget() {
 
       <button
         className={
-          "book-now flex-1 min-w-0 rounded-[10px] py-3 text-[14px] bg-[var(--color-brand-red)] " +
+          "flex-1 min-w-0 rounded-[10px] py-3 text-[14px] bg-[var(--color-brand-red)] " +
           "font-[var(--font-copperplate)] font-bold uppercase tracking-[0.3px] text-white transition-colors " +
           "hover:bg-[#C4001C] " +
           "md:flex-none md:shrink-0 md:min-w-[140px] md:self-stretch md:px-12 md:py-4 md:text-[16px] md:tracking-[0.2px]"
@@ -331,7 +350,7 @@ function CounterGroup({ label, price, count, onDecrement, onIncrement }: Counter
   return (
     <div
       className={
-        "counter-group shrink-0 flex items-center gap-1.5 overflow-hidden rounded-full bg-[var(--color-brand-red)] px-3 py-2.5 text-white shadow-sm " +
+        "shrink-0 flex items-center gap-1.5 overflow-hidden rounded-full bg-[var(--color-brand-red)] px-3 py-2.5 text-white shadow-sm " +
         "md:flex-[0_1_auto] md:gap-3 md:px-[18px] md:py-3 md:shadow-[0_2px_6px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.6)] md:hover:bg-[#C4001C] md:transition-colors"
       }
     >
@@ -339,45 +358,50 @@ function CounterGroup({ label, price, count, onDecrement, onIncrement }: Counter
         <label className="text-[9px] font-bold uppercase tracking-[0.5px] text-white/90 md:text-[13px] md:font-semibold md:tracking-[0.5px]">
           {label}
         </label>
-        <span className="price hidden whitespace-nowrap text-white md:inline md:text-[20px] md:font-extrabold">
+        <span className="hidden whitespace-nowrap text-white md:inline md:text-[20px] md:font-extrabold">
           ${price} USD
         </span>
       </div>
-      <div className="counter flex items-center gap-1 rounded-[5px] bg-black/10 p-0.5 md:gap-2 md:rounded-[10px] md:bg-black/5 md:px-2 md:py-1" role="group" aria-label={`${label} count`}>
-          <button
-            className={
-              "decrease grid h-[18px] w-[18px] place-items-center rounded-[4px] bg-white/95 text-[12px] font-semibold text-[var(--color-text-dark)] " +
-              "transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-30 " +
-              "md:h-7 md:w-7 md:rounded-[8px] md:text-[18px] md:hover:scale-110 md:transition-transform " +
-              "max-[400px]:!text-[11px]"
-            }
-            style={{ opacity: count === 0 ? 0.3 : 1 }}
-            onClick={onDecrement}
-            aria-label={`Decrease ${label.toLowerCase()} count`}
-            disabled={count === 0}
-            type="button"
-          >
-            -
-          </button>
-          <span className="count min-w-[10px] text-center text-[11px] font-bold md:min-w-6 md:text-[16px]" aria-live="polite">
-            {count}
-          </span>
-          <button
-            className={
-              "increase grid h-[18px] w-[18px] place-items-center rounded-[4px] bg-white/95 text-[12px] font-semibold text-[var(--color-text-dark)] " +
-              "transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-30 " +
-              "md:h-7 md:w-7 md:rounded-[8px] md:text-[18px] md:hover:scale-110 md:transition-transform " +
-              "max-[400px]:!text-[11px]"
-            }
-            style={{ opacity: count === 10 ? 0.3 : 1 }}
-            onClick={onIncrement}
-            aria-label={`Increase ${label.toLowerCase()} count`}
-            disabled={count === 10}
-            type="button"
-          >
-            +
-          </button>
-        </div>
+      <div
+        className="flex items-center gap-1 rounded-[5px] bg-black/10 p-0.5 md:gap-2 md:rounded-[10px] md:bg-black/5 md:px-2 md:py-1"
+        role="group"
+        aria-label={`${label} count`}
+      >
+        <button
+          className={
+            "grid h-[18px] w-[18px] place-items-center rounded-[4px] bg-white/95 text-[12px] font-semibold text-[var(--color-text-dark)] " +
+            "transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-30 " +
+            "md:h-7 md:w-7 md:rounded-[8px] md:text-[18px] md:hover:scale-110 md:transition-transform " +
+            "max-[400px]:!text-[11px]"
+          }
+          onClick={onDecrement}
+          aria-label={`Decrease ${label.toLowerCase()} count`}
+          disabled={count === 0}
+          type="button"
+        >
+          -
+        </button>
+        <span
+          className="min-w-[10px] text-center text-[11px] font-bold md:min-w-6 md:text-[16px]"
+          aria-live="polite"
+        >
+          {count}
+        </span>
+        <button
+          className={
+            "grid h-[18px] w-[18px] place-items-center rounded-[4px] bg-white/95 text-[12px] font-semibold text-[var(--color-text-dark)] " +
+            "transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-30 " +
+            "md:h-7 md:w-7 md:rounded-[8px] md:text-[18px] md:hover:scale-110 md:transition-transform " +
+            "max-[400px]:!text-[11px]"
+          }
+          onClick={onIncrement}
+          aria-label={`Increase ${label.toLowerCase()} count`}
+          disabled={count === 10}
+          type="button"
+        >
+          +
+        </button>
+      </div>
     </div>
   );
 }

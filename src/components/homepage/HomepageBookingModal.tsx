@@ -35,7 +35,11 @@ export default function HomepageBookingModal() {
       if (typeof d.children === "number") setChildCount(d.children);
       if (d.date) {
         const parsed = new Date(d.date);
-        if (!isNaN(parsed.getTime())) { setSelectedDate(parsed); setViewMonth(parsed.getMonth()); setViewYear(parsed.getFullYear()); }
+        if (!isNaN(parsed.getTime())) {
+          setSelectedDate(parsed);
+          setViewMonth(parsed.getMonth());
+          setViewYear(parsed.getFullYear());
+        }
       }
       setIsOpen(true);
     };
@@ -49,7 +53,10 @@ export default function HomepageBookingModal() {
     else document.body.classList.remove("booking-modal-open");
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape" && isOpen) setIsOpen(false); };
     document.addEventListener("keydown", onKey);
-    return () => { document.removeEventListener("keydown", onKey); document.body.classList.remove("booking-modal-open"); };
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.classList.remove("booking-modal-open");
+    };
   }, [isOpen]);
 
   const close = useCallback(() => { setIsOpen(false); setCalendarOpen(false); }, []);
@@ -78,8 +85,14 @@ export default function HomepageBookingModal() {
     ? selectedDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
     : "Please select a date";
 
-  const prevMonth = () => { if (viewMonth === 0) { setViewYear(y => y - 1); setViewMonth(11); } else setViewMonth(m => m - 1); };
-  const nextMonth = () => { if (viewMonth === 11) { setViewYear(y => y + 1); setViewMonth(0); } else setViewMonth(m => m + 1); };
+  const prevMonth = () => {
+    if (viewMonth === 0) { setViewYear(y => y - 1); setViewMonth(11); }
+    else setViewMonth(m => m - 1);
+  };
+  const nextMonth = () => {
+    if (viewMonth === 11) { setViewYear(y => y + 1); setViewMonth(0); }
+    else setViewMonth(m => m + 1);
+  };
 
   const onContinue = () => {
     if (adultCount + childCount <= 0) { alert("Please select at least 1 passenger."); return; }
@@ -91,119 +104,306 @@ export default function HomepageBookingModal() {
   };
 
   const isSelected = (d: number) =>
-    selectedDate !== null && selectedDate.getFullYear() === viewYear && selectedDate.getMonth() === viewMonth && selectedDate.getDate() === d;
+    selectedDate !== null &&
+    selectedDate.getFullYear() === viewYear &&
+    selectedDate.getMonth() === viewMonth &&
+    selectedDate.getDate() === d;
+
+  if (!isOpen) return null;
 
   return (
-    <div className={`modal-overlay${isOpen ? " active" : ""}`} id="bookingModal" aria-hidden={!isOpen}
-      onClick={(e) => { if (e.target === e.currentTarget) close(); }}>
-      <div className="booking-modal" role="dialog" aria-modal="true" aria-labelledby="bookingModalTitle">
-        <div className="modal-header">
-          <h3 id="bookingModalTitle">Cart Reservation</h3>
-          <button className="close-modal" aria-label="Close" onClick={close}>&times;</button>
+    /* Overlay */
+    <div
+      id="bookingModal"
+      className="fixed inset-0 bg-black/50 z-[2000] overflow-y-auto flex items-start justify-center pt-6 px-4"
+      onClick={(e) => { if (e.target === e.currentTarget) close(); }}
+      aria-modal="true"
+    >
+      {/* Modal card */}
+      <div
+        className="relative w-full max-w-[600px] mx-auto my-10 bg-white rounded-xl overflow-hidden"
+        role="dialog"
+        aria-labelledby="bookingModalTitle"
+      >
+        {/* Header */}
+        <div className="flex justify-between items-center p-5 border-b border-[#eee]">
+          <h3 id="bookingModalTitle" className="text-[18px] font-semibold text-[#333] m-0">
+            Cart Reservation
+          </h3>
+          <button
+            className="bg-transparent border-none text-[24px] cursor-pointer text-[#666] leading-none"
+            aria-label="Close"
+            onClick={close}
+          >
+            &times;
+          </button>
         </div>
-        <div className="booking-container">
-          <div className="step-title-section">
-            <div className="step-number">1</div>
-            <div className="step-title">Select Your Items</div>
+
+        {/* Body */}
+        <div className="p-5">
+          {/* Step indicator */}
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-6 h-6 bg-brand-red text-white rounded-full flex items-center justify-center font-semibold text-[14px] shrink-0">
+              1
+            </div>
+            <div className="text-[16px] font-semibold text-[#333]">Select Your Items</div>
           </div>
 
-          <div className="tour-selector">
-            <select id="tourSelect" value={tour} onChange={(e) => setTour(e.target.value)}>
+          {/* Tour selector */}
+          <div className="mb-5">
+            <select
+              id="tourSelect"
+              value={tour}
+              onChange={(e) => setTour(e.target.value)}
+              className="w-full py-3 px-[15px] border border-[#ddd] rounded text-[16px] bg-white"
+            >
               <option value="tour01">Tour 01 Downtown Palace Namsan Course (Hop On, Hop Off)</option>
               <option value="tour02">Tour 02 Panorama Course</option>
               <option value="tour04">Tour 04 Night View Course (Non Stop)</option>
             </select>
           </div>
 
-          <div className="date-selector">
-            <div className="date-picker-wrapper">
-              <button className="date-picker-trigger modal-date-trigger" type="button" onClick={() => setCalendarOpen(o => !o)}>
-                <span id="selectedDateDisplay" className="selected-date">{dateDisplay}</span>
-                <img src="/imgs/calendar.svg" alt="Calendar" className="calendar-icon" />
-              </button>
-              {calendarOpen && (
-                <div className="calendar-dropdown modal-calendar active">
-                  <div className="calendar-header">
-                    <button className="prev-month" type="button" onClick={prevMonth}>←</button>
-                    <h3 className="current-month">{MONTH_NAMES[viewMonth]} {viewYear}</h3>
-                    <button className="next-month" type="button" onClick={nextMonth}>→</button>
-                    <button className="close-calendar" type="button" aria-label="Close" onClick={() => setCalendarOpen(false)}>&times;</button>
+          {/* Date picker */}
+          <div className="mb-5 relative">
+            <button
+              className="w-full py-3 px-[15px] bg-white border border-[#E5E5E5] rounded-lg flex justify-between items-center cursor-pointer text-[16px] text-left"
+              type="button"
+              onClick={() => setCalendarOpen(o => !o)}
+              aria-expanded={calendarOpen}
+              aria-haspopup="dialog"
+            >
+              <span id="selectedDateDisplay">{dateDisplay}</span>
+              <img src="/imgs/calendar.svg" alt="Calendar" className="w-5 h-5 opacity-70" />
+            </button>
+
+            {/* Modal calendar — fixed centered overlay */}
+            {calendarOpen && (
+              <>
+                {/* Backdrop */}
+                <div
+                  className="fixed inset-0 bg-black/30 z-[1999]"
+                  onClick={() => setCalendarOpen(false)}
+                />
+                <div
+                  className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[350px] bg-white rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.2)] z-[2000]"
+                  role="dialog"
+                  aria-label="Date picker"
+                >
+                  {/* Calendar header */}
+                  <div className="p-[15px] border-b border-[#E5E5E5] flex items-center relative">
+                    <button
+                      className="bg-transparent border-none text-[20px] p-2 cursor-pointer text-[#666] rounded-full transition-colors hover:bg-[#f5f5f5]"
+                      type="button"
+                      onClick={prevMonth}
+                      aria-label="Previous month"
+                    >
+                      ←
+                    </button>
+                    <h3 className="flex-1 text-center text-[18px] font-semibold text-[#333] m-0">
+                      {MONTH_NAMES[viewMonth]} {viewYear}
+                    </h3>
+                    <button
+                      className="bg-transparent border-none text-[20px] p-2 cursor-pointer text-[#666] rounded-full transition-colors hover:bg-[#f5f5f5]"
+                      type="button"
+                      onClick={nextMonth}
+                      aria-label="Next month"
+                    >
+                      →
+                    </button>
+                    <button
+                      className="absolute right-[10px] top-2 bg-transparent border-none text-[24px] text-[#666] cursor-pointer p-[5px] flex items-center justify-center w-[30px] h-[30px] rounded-full transition-colors hover:bg-[#f5f5f5] z-[2]"
+                      type="button"
+                      aria-label="Close calendar"
+                      onClick={() => setCalendarOpen(false)}
+                    >
+                      &times;
+                    </button>
                   </div>
-                  <div className="calendar-grid">
-                    <div className="weekdays">{WEEKDAYS.map(w => <span key={w}>{w}</span>)}</div>
-                    <div className="days">
+
+                  {/* Calendar grid */}
+                  <div className="p-4" role="grid">
+                    <div className="grid grid-cols-7 text-center font-semibold text-[#666] mb-2.5 py-2.5" role="row">
+                      {WEEKDAYS.map(w => (
+                        <span key={w} className="text-[14px]" role="columnheader">{w}</span>
+                      ))}
+                    </div>
+                    <div className="grid grid-cols-7 gap-2 px-1">
                       {cells.map((cell, i) => {
-                        if (!cell) return <div key={`e-${i}`} className="day empty" />;
-                        const cls = ["day", cell.disabled ? "disabled" : "", cell.soldOut ? "sold-out disabled" : "",
-                          !cell.disabled && !cell.soldOut ? "available" : "", isSelected(cell.day) ? "selected" : ""].filter(Boolean).join(" ");
+                        if (!cell) return <div key={`e-${i}`} className="aspect-square" />;
+                        const sel = isSelected(cell.day);
+                        const dayCls = [
+                          "aspect-square flex flex-col items-center justify-center rounded-full relative p-2 text-[14px] transition-colors",
+                          cell.disabled
+                            ? "text-[#999] bg-[#f0f0f0] cursor-not-allowed opacity-60 pointer-events-none"
+                            : cell.soldOut
+                              ? "text-[#ccc] cursor-not-allowed"
+                              : "cursor-pointer hover:bg-[#f5f5f5]",
+                          sel ? "!bg-brand-red !text-white" : "",
+                        ].filter(Boolean).join(" ");
                         return (
-                          <div key={cell.day} className={cls}
+                          <div
+                            key={cell.day}
+                            className={dayCls}
+                            role="gridcell"
+                            aria-disabled={cell.disabled || cell.soldOut}
+                            aria-selected={sel}
                             title={new Date(viewYear, viewMonth, cell.day).getDay() === 1 ? "Closed on Mondays" : undefined}
-                            onClick={() => { if (cell.disabled || cell.soldOut) return; setSelectedDate(new Date(viewYear, viewMonth, cell.day)); setCalendarOpen(false); }}>
+                            tabIndex={!cell.disabled && !cell.soldOut ? 0 : -1}
+                            onClick={() => {
+                              if (cell.disabled || cell.soldOut) return;
+                              setSelectedDate(new Date(viewYear, viewMonth, cell.day));
+                              setCalendarOpen(false);
+                            }}
+                            onKeyDown={(e) => {
+                              if (cell.disabled || cell.soldOut) return;
+                              if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+                                e.preventDefault();
+                                setSelectedDate(new Date(viewYear, viewMonth, cell.day));
+                                setCalendarOpen(false);
+                              }
+                            }}
+                          >
                             {cell.day}
-                            {!cell.disabled && <span className={`dot ${cell.soldOut ? "sold-out" : "available"}`} />}
+                            {!cell.disabled && (
+                              <span className={`w-1.5 h-1.5 rounded-full absolute bottom-1 ${cell.soldOut ? "bg-brand-red" : "bg-[#4CAF50]"}`} />
+                            )}
                           </div>
                         );
                       })}
                     </div>
                   </div>
-                  <div className="calendar-footer">
-                    <div className="availability-legend">
-                      <div className="legend-item"><span className="dot available" /><span>Available</span></div>
-                      <div className="legend-item"><span className="dot sold-out" /><span>Sold Out</span></div>
+
+                  {/* Availability legend */}
+                  <div className="flex justify-center gap-[30px] py-[15px] px-5 border-t border-[#eee]">
+                    <div className="flex items-center gap-2 text-[14px] text-[#666]">
+                      <span className="w-2 h-2 rounded-full inline-block bg-[#4CAF50]" />
+                      <span>Available</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-[14px] text-[#666]">
+                      <span className="w-2 h-2 rounded-full inline-block bg-brand-red" />
+                      <span>Sold Out</span>
                     </div>
                   </div>
                 </div>
-              )}
-            </div>
+              </>
+            )}
           </div>
 
-          <div className="ticket-selection">
+          {/* Ticket selection */}
+          <div className="bg-white border border-[#E5E5E5] rounded-xl mb-6">
             {/* Adult */}
-            <div className="ticket-type">
-              <div className="ticket-info"><div className="ticket-label">Adult</div></div>
-              <div className="price-counter">
-                <div className="price">
-                  <span className="current-price">${prices.adult.toFixed(2)} USD</span>
-                  <span className="original-price">${prices.adultOrig.toFixed(2)} USD</span>
+            <div className="flex justify-between items-center p-4 border-b border-[#E5E5E5]">
+              <div className="flex-1">
+                <div className="text-[16px] font-medium text-[#333]">Adult</div>
+              </div>
+              <div className="flex items-center gap-6">
+                <div className="flex flex-col items-end">
+                  <span className="text-brand-red font-semibold text-[16px]">${prices.adult.toFixed(2)} USD</span>
+                  <span className="text-[#999] line-through text-[14px]">${prices.adultOrig.toFixed(2)} USD</span>
                 </div>
-                <div className="counter">
-                  <button className="minus" type="button" onClick={() => setAdultCount(c => clamp(c - 1))}>-</button>
-                  <input type="number" value={adultCount} min={0} max={10} readOnly />
-                  <button className="plus" type="button" onClick={() => setAdultCount(c => clamp(c + 1))}>+</button>
+                <div className="flex items-center gap-3" role="group" aria-label="Adult count">
+                  <button
+                    className="w-7 h-7 border border-[#E5E5E5] rounded-full bg-white text-[18px] flex items-center justify-center cursor-pointer hover:bg-[#f5f5f5] disabled:opacity-40 disabled:cursor-not-allowed"
+                    type="button"
+                    onClick={() => setAdultCount(c => clamp(c - 1))}
+                    disabled={adultCount === 0}
+                    aria-label="Decrease adult count"
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    value={adultCount}
+                    min={0}
+                    max={10}
+                    readOnly
+                    className="w-6 text-center border-none text-[16px] font-medium"
+                    aria-live="polite"
+                  />
+                  <button
+                    className="w-7 h-7 border border-[#E5E5E5] rounded-full bg-white text-[18px] flex items-center justify-center cursor-pointer hover:bg-[#f5f5f5] disabled:opacity-40 disabled:cursor-not-allowed"
+                    type="button"
+                    onClick={() => setAdultCount(c => clamp(c + 1))}
+                    disabled={adultCount === 10}
+                    aria-label="Increase adult count"
+                  >
+                    +
+                  </button>
                 </div>
               </div>
             </div>
+
             {/* Child */}
-            <div className="ticket-type">
-              <div className="ticket-info"><div className="ticket-label">Child</div></div>
-              <div className="price-counter">
-                <div className="price">
-                  <span className="current-price">${prices.child.toFixed(2)} USD</span>
-                  <span className="original-price">${prices.childOrig.toFixed(2)} USD</span>
-                </div>
-                <div className="counter">
-                  <button className="minus" type="button" onClick={() => setChildCount(c => clamp(c - 1))}>-</button>
-                  <input type="number" value={childCount} min={0} max={10} readOnly />
-                  <button className="plus" type="button" onClick={() => setChildCount(c => clamp(c + 1))}>+</button>
-                </div>
+            <div className="flex justify-between items-center p-4">
+              <div className="flex-1">
+                <div className="text-[16px] font-medium text-[#333]">Child</div>
               </div>
-            </div>
-            <div className="total-summary">
-              <div className="ticket-total">
-                <div className="total-label">Total Amount</div>
-                <div className="total-price">
-                  <span className="current-total">${currentTotal.toFixed(2)} USD</span>
-                  <span className="original-total">${originalTotal.toFixed(2)} USD</span>
+              <div className="flex items-center gap-6">
+                <div className="flex flex-col items-end">
+                  <span className="text-brand-red font-semibold text-[16px]">${prices.child.toFixed(2)} USD</span>
+                  <span className="text-[#999] line-through text-[14px]">${prices.childOrig.toFixed(2)} USD</span>
+                </div>
+                <div className="flex items-center gap-3" role="group" aria-label="Child count">
+                  <button
+                    className="w-7 h-7 border border-[#E5E5E5] rounded-full bg-white text-[18px] flex items-center justify-center cursor-pointer hover:bg-[#f5f5f5] disabled:opacity-40 disabled:cursor-not-allowed"
+                    type="button"
+                    onClick={() => setChildCount(c => clamp(c - 1))}
+                    disabled={childCount === 0}
+                    aria-label="Decrease child count"
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    value={childCount}
+                    min={0}
+                    max={10}
+                    readOnly
+                    className="w-6 text-center border-none text-[16px] font-medium"
+                    aria-live="polite"
+                  />
+                  <button
+                    className="w-7 h-7 border border-[#E5E5E5] rounded-full bg-white text-[18px] flex items-center justify-center cursor-pointer hover:bg-[#f5f5f5] disabled:opacity-40 disabled:cursor-not-allowed"
+                    type="button"
+                    onClick={() => setChildCount(c => clamp(c + 1))}
+                    disabled={childCount === 10}
+                    aria-label="Increase child count"
+                  >
+                    +
+                  </button>
                 </div>
               </div>
             </div>
           </div>
 
-          <button className="continue-btn" id="step1ContinueBtn" type="button" onClick={onContinue}>Continue</button>
+          {/* Total summary */}
+          <div className="bg-[#f8f9fa] rounded-xl p-5 mb-5 border border-[#eee]">
+            <div className="flex justify-between items-center">
+              <div className="text-[18px] font-bold text-[#333]">Total Amount</div>
+              <div className="flex items-center gap-3">
+                <span className="text-[24px] font-extrabold text-brand-red">
+                  ${currentTotal.toFixed(2)} USD
+                </span>
+                {originalTotal > currentTotal && (
+                  <span className="text-[16px] text-[#888] line-through">
+                    ${originalTotal.toFixed(2)} USD
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Continue */}
+          <button
+            id="step1ContinueBtn"
+            className="w-full py-4 bg-brand-red text-white border-none rounded-lg text-[18px] font-semibold cursor-pointer mb-6 transition-colors hover:bg-brand-dark-red"
+            type="button"
+            onClick={onContinue}
+          >
+            Continue
+          </button>
         </div>
       </div>
     </div>
   );
 }
-

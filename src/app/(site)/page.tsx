@@ -1,5 +1,6 @@
 import BodyClass from "@/components/BodyClass";
 import HomepageBehaviors from "@/components/homepage/HomepageBehaviors";
+import { PromoCheckoutProvider } from "@/components/homepage/checkout/PromoCheckoutContext";
 import HomepageHero from "@/components/homepage/HomepageHero";
 import HomepageCoursesSection from "@/components/homepage/HomepageCoursesSection";
 import HomepageDiscoverySection from "@/components/homepage/HomepageDiscoverySection";
@@ -16,7 +17,7 @@ import HomepageBookingModal from "@/components/homepage/HomepageBookingModal";
 
 export default function Home() {
   return (
-    <>
+    <PromoCheckoutProvider>
       <BodyClass className="index-page" />
       <HomepageBehaviors />
 
@@ -41,6 +42,6 @@ export default function Home() {
       <PromoOrderSummaryModal />
       <PromoPaymentModal />
       <HomepageBookingModal />
-    </>
+    </PromoCheckoutProvider>
   );
 }
