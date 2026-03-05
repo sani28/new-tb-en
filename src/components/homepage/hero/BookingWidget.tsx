@@ -133,7 +133,7 @@ export default function BookingWidget() {
   return (
     <div
       className={
-        "booking-widget w-full relative z-[100] flex flex-wrap items-stretch gap-2 rounded-none bg-white/95 px-7 py-4 shadow-none backdrop-blur-xl max-[400px]:px-5 " +
+        "booking-widget w-full relative z-[100] flex flex-wrap items-stretch gap-2 rounded-none bg-white/95 px-5 py-4 shadow-none backdrop-blur-xl " +
         "md:absolute md:bottom-20 md:left-1/2 md:w-auto md:-translate-x-1/2 md:flex-nowrap md:items-center md:gap-5 md:rounded-[20px] md:border md:border-white/60 " +
         "md:bg-gradient-to-br md:from-white/98 md:to-white/95 md:px-7 md:py-5 " +
         "md:shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.8)] " +
@@ -284,7 +284,7 @@ export default function BookingWidget() {
       </div>
 
       {/* Passenger counters */}
-      <div className="passenger-counter contents md:flex md:items-center md:gap-[15px]">
+      <div className="passenger-counter shrink-0 flex items-center gap-1.5 md:flex md:items-center md:gap-[15px]">
         <CounterGroup
           label="Adult"
           price={prices.adult}
@@ -303,11 +303,10 @@ export default function BookingWidget() {
 
       <button
         className={
-          "book-now flex-[1_1_0] min-w-[80px] self-stretch rounded-[10px] bg-[var(--color-brand-red)] px-5 py-3 " +
-          "font-[var(--font-copperplate)] text-[15px] font-bold uppercase tracking-[0.3px] text-white shadow-none transition-colors " +
+          "book-now flex-1 min-w-0 rounded-[10px] py-3 text-[14px] bg-[var(--color-brand-red)] " +
+          "font-[var(--font-copperplate)] font-bold uppercase tracking-[0.3px] text-white transition-colors " +
           "hover:bg-[#C4001C] " +
-          "md:px-12 md:py-4 md:text-[16px] md:tracking-[0.2px] " +
-          "max-[400px]:min-w-[70px] max-[400px]:px-2 max-[400px]:py-2.5 max-[400px]:!text-[13px]"
+          "md:flex-none md:shrink-0 md:min-w-[140px] md:self-stretch md:px-12 md:py-4 md:text-[16px] md:tracking-[0.2px]"
         }
         onClick={onBook}
         aria-label="Book tour"
@@ -332,18 +331,19 @@ function CounterGroup({ label, price, count, onDecrement, onIncrement }: Counter
   return (
     <div
       className={
-        "counter-group min-w-0 flex-[0_1_auto] items-center gap-1 overflow-hidden rounded-full bg-[var(--color-brand-red)] px-1.5 py-1 text-white shadow-sm " +
-        "md:gap-3 md:px-[18px] md:py-3 md:shadow-[0_2px_6px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.6)] md:hover:bg-[#C4001C] md:transition-colors"
+        "counter-group shrink-0 flex items-center gap-1.5 overflow-hidden rounded-full bg-[var(--color-brand-red)] px-3 py-2.5 text-white shadow-sm " +
+        "md:flex-[0_1_auto] md:gap-3 md:px-[18px] md:py-3 md:shadow-[0_2px_6px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.6)] md:hover:bg-[#C4001C] md:transition-colors"
       }
     >
-      <label className="text-[9px] font-bold uppercase tracking-[0.3px] text-white/90 md:text-[13px] md:font-semibold md:tracking-[0.5px]">
-        {label}
-      </label>
-      <div className="counter-info flex items-center gap-1.5 md:gap-3">
+      <div className="flex flex-col items-start md:flex-row md:items-center md:gap-3">
+        <label className="text-[9px] font-bold uppercase tracking-[0.5px] text-white/90 md:text-[13px] md:font-semibold md:tracking-[0.5px]">
+          {label}
+        </label>
         <span className="price hidden whitespace-nowrap text-white md:inline md:text-[20px] md:font-extrabold">
           ${price} USD
         </span>
-        <div className="counter flex items-center gap-0.5 rounded-[5px] bg-black/10 p-0.5 md:gap-2 md:rounded-[10px] md:bg-black/5 md:px-2 md:py-1" role="group" aria-label={`${label} count`}>
+      </div>
+      <div className="counter flex items-center gap-1 rounded-[5px] bg-black/10 p-0.5 md:gap-2 md:rounded-[10px] md:bg-black/5 md:px-2 md:py-1" role="group" aria-label={`${label} count`}>
           <button
             className={
               "decrease grid h-[18px] w-[18px] place-items-center rounded-[4px] bg-white/95 text-[12px] font-semibold text-[var(--color-text-dark)] " +
@@ -378,7 +378,6 @@ function CounterGroup({ label, price, count, onDecrement, onIncrement }: Counter
             +
           </button>
         </div>
-      </div>
     </div>
   );
 }

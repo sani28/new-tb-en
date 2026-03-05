@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import "./booking.css";
 import BookingFlow from "./BookingFlow";
 
 export const metadata: Metadata = {

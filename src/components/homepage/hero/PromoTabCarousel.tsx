@@ -213,12 +213,15 @@ export default function PromoTabCarousel() {
                 role="button"
                 tabIndex={i === currentIndex ? 0 : -1}
               >
-                <img
-                  src={slide.image}
-                  className="promo-banner-img"
-                  alt={slide.alt}
-                  loading="lazy"
-                />
+                <div className="relative">
+                  <img
+                    src={slide.image}
+                    className="promo-banner-img"
+                    alt={slide.alt}
+                    loading="lazy"
+                  />
+                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 bg-black/60 text-white/90 text-xs font-mono px-2 py-0.5 rounded pointer-events-none z-10 select-none">640×110px</span>
+                </div>
               </div>
             </div>
           ))}

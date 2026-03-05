@@ -76,7 +76,7 @@ export default function HeroSlider() {
 
   return (
     <div
-      className="hero-slider"
+      className="absolute top-0 left-0 w-full h-full"
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
@@ -102,19 +102,23 @@ export default function HeroSlider() {
       {SLIDES.map((src, i) => (
         <div
           key={i}
-          className={`slide${i === activeSlide ? " active" : ""}`}
+          className={`absolute top-[-150px] max-md:top-0 left-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ease-in-out ${i === activeSlide ? "opacity-100" : "opacity-0"}`}
           style={{ backgroundImage: `url('${src}')` }}
           role="group"
           aria-roledescription="slide"
           aria-label={`Slide ${i + 1} of ${total}`}
           aria-hidden={i !== activeSlide}
-        />
+        >
+          <span className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/60 text-white/90 text-xs font-mono px-2 py-0.5 rounded pointer-events-none z-10 select-none">
+            1920×1080px
+          </span>
+        </div>
       ))}
 
       {/* Slider controls — progress dots */}
-      <div className="slider-controls">
-        <div className="controls-row">
-          <div className="slider-dots">
+      <div className="absolute top-[30px] left-1/2 -translate-x-1/2 flex items-center gap-5 z-[10]">
+        <div className="flex items-center gap-[10px]">
+          <div className="hidden">
             {SLIDES.map((_, i) => (
               <span
                 key={i}
@@ -146,7 +150,6 @@ export default function HeroSlider() {
           </div>
 
           <button
-            className={`slider-pause${!isPlaying ? " paused" : ""}`}
             onClick={togglePlay}
             aria-label={isPlaying ? "Pause slider" : "Play slider"}
             style={{

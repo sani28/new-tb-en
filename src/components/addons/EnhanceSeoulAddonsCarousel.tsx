@@ -143,21 +143,24 @@ export default function EnhanceSeoulAddonsCarousel({
   const openDetails = (productId: string) => onViewDetails(productId);
 
   return (
-    <div className={`promo-addons-carousel promo-cross-sell-section${className ? ` ${className}` : ""}`}>
-      <h3>Enhance your experience</h3>
-      <p className="cross-sell-subtitle">{subtitle}</p>
+    <div className={`mt-[18px] border-t border-[#eee] pt-4 w-3/4 max-[520px]:w-[92%] mx-auto${className ? ` ${className}` : ""}`}>
+      <h3 className="mb-1.5 text-lg font-black text-[#111] text-center">Enhance your experience</h3>
+      <p className="mb-3 text-[13px] text-[#666] leading-[1.4] text-center">{subtitle}</p>
 
-      <div className="promo-category-tabs">
+      <div className="flex gap-2 mb-3 justify-center flex-wrap">
         {CATEGORY_ORDER.map((c) => (
           <button
-            className={`promo-category-tab${activeCategory === c ? " active" : ""}`}
+            className={`border rounded-full px-3 py-2 text-[13px] font-extrabold cursor-pointer transition-colors ${
+              activeCategory === c
+                ? "border-[#E20021] bg-brand-red/[0.08] text-[#E20021]"
+                : "border-[#e1e1e1] bg-white text-[#222]"
+            }`}
             data-category={c}
             key={c}
             type="button"
             onClick={(e) => {
               e.preventDefault();
               setActiveCategory(c);
-              // Keep prototype expectation: default to first slide when switching categories.
               setIndex(c, 0);
             }}
           >
@@ -174,11 +177,11 @@ export default function EnhanceSeoulAddonsCarousel({
 
         return (
           <div
-            className={`promo-products-grid${activeCategory === category ? " active" : ""}`}
+            className={activeCategory === category ? "block" : "hidden"}
             data-category={category}
             key={category}
           >
-            <div className="promo-cross-sell-carousel">
+            <div className="relative">
               {slides.map((p, i) => {
                 const ui = cardPresentationById[p.id] || {
                   imgSrc: p.image || "/imgs/kwangjuyo.webp",
@@ -196,9 +199,9 @@ export default function EnhanceSeoulAddonsCarousel({
                 const originalLabel = showOriginal ? formatUsd(p.originalPrice) : null;
 
                 return (
-                  <div className={`promo-cross-sell-slide${i === activeIdx ? " active" : ""}`} key={p.id}>
+                  <div className={i === activeIdx ? "block" : "hidden"} key={p.id}>
                     <div
-                      className={`promo-product-card${isCompatible ? "" : " incompatible"}`}
+                      className={`relative flex flex-col border border-[#eee] rounded-2xl bg-white overflow-hidden${isCompatible ? "" : " opacity-[0.45]"}`}
                       data-product-id={p.id}
                       data-type={p.type}
                       data-price={String(p.price)}
@@ -207,25 +210,33 @@ export default function EnhanceSeoulAddonsCarousel({
                       {...(p.childPrice != null ? { "data-child-price": String(p.childPrice) } : {})}
                       {...(p.validUntil ? { "data-valid-until": p.validUntil } : {})}
                     >
-                      {ui.badge && <div className="promo-product-badge">{ui.badge}</div>}
-                      <div className="promo-product-image">
-                        <img src={ui.imgSrc} alt={ui.imgAlt} />
+                      {ui.badge && (
+                        <div className="absolute top-2.5 left-2.5 bg-[#111] text-white text-[11px] font-black px-2 py-1.5 rounded-full">
+                          {ui.badge}
+                        </div>
+                      )}
+                      <div className="bg-[#f6f6f6] h-[196px] overflow-hidden">
+                        <img src={ui.imgSrc} alt={ui.imgAlt} className="size-full object-cover block" />
                       </div>
-                      <div className="promo-product-info">
-                        <h4>{p.name}</h4>
-                        <p>{p.description}</p>
-                        <div className="promo-upsell-pricing">
-                          <span className="promo-upsell-price">{priceLabel}</span>
-                          {originalLabel && <span className="promo-upsell-original-price">{originalLabel}</span>}
-                          {discountLabel && <span className="promo-discount-badge">{discountLabel}</span>}
+                      <div className="px-3 pt-3 pb-3.5">
+                        <h4 className="mb-1 text-sm font-black text-[#111]">{p.name}</h4>
+                        <p className="mb-2.5 text-xs text-[#666] leading-[1.4]">{p.description}</p>
+                        <div className="flex items-center flex-wrap gap-2 mb-2.5">
+                          <span className="font-black text-brand-red text-xl leading-[1.15]">{priceLabel}</span>
+                          {originalLabel && <span className="text-[#888] line-through font-bold">{originalLabel}</span>}
+                          {discountLabel && (
+                            <span className="bg-brand-red/10 text-brand-red font-black text-[11px] px-2 py-1 rounded-full">
+                              {discountLabel}
+                            </span>
+                          )}
                         </div>
 
                         {ui.typeIndicator && ui.typeClass && (
-                          <div className={`promo-type-indicator ${ui.typeClass}`}>{ui.typeIndicator}</div>
+                          <div className="text-[11px] font-extrabold text-[#333] mb-2.5">{ui.typeIndicator}</div>
                         )}
 
                         <button
-                          className="promo-view-btn"
+                          className="w-full border-none rounded-[10px] bg-brand-red text-white font-black px-3 py-2.5 cursor-pointer hover:brightness-95 transition-[filter]"
                           type="button"
                           onClick={(e) => {
                             e.preventDefault();
@@ -237,7 +248,9 @@ export default function EnhanceSeoulAddonsCarousel({
                       </div>
 
                       {!isCompatible && ui.incompatibleLabel && (
-                        <div className="promo-incompatible-label">{ui.incompatibleLabel}</div>
+                        <div className="absolute top-2.5 right-2.5 bg-black/75 text-white text-[11px] font-extrabold px-2 py-1.5 rounded-full">
+                          {ui.incompatibleLabel}
+                        </div>
                       )}
                     </div>
                   </div>
@@ -246,20 +259,28 @@ export default function EnhanceSeoulAddonsCarousel({
 
               {hasMultiple && (
                 <>
-                  <button className="promo-cross-sell-nav prev" type="button" onClick={() => showSlide(category, activeIdx - 1)}>
+                  <button
+                    className="absolute top-1/2 -translate-y-1/2 -left-1.5 size-[34px] rounded-full border border-[#e1e1e1] bg-white cursor-pointer font-black"
+                    type="button"
+                    onClick={() => showSlide(category, activeIdx - 1)}
+                  >
                     ←
                   </button>
-                  <button className="promo-cross-sell-nav next" type="button" onClick={() => showSlide(category, activeIdx + 1)}>
+                  <button
+                    className="absolute top-1/2 -translate-y-1/2 -right-1.5 size-[34px] rounded-full border border-[#e1e1e1] bg-white cursor-pointer font-black"
+                    type="button"
+                    onClick={() => showSlide(category, activeIdx + 1)}
+                  >
                     →
                   </button>
                 </>
               )}
             </div>
 
-            <div className="promo-cross-sell-dots">
+            <div className="flex justify-center gap-1.5 mt-2.5">
               {slides.map((p, i) => (
                 <span
-                  className={`dot${i === activeIdx ? " active" : ""}`}
+                  className={`size-2 rounded-full cursor-pointer ${i === activeIdx ? "bg-[#111]" : "bg-[#d7d7d7]"}`}
                   key={`${category}-${p.id}-dot`}
                   onClick={(e) => {
                     e.preventDefault();

@@ -1,5 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 
+const DIM_LABEL_TOUR = "1200×600px";
+const DIM_LABEL_CARD = "400×280px";
+const DIM_LABEL_ICON = "80×80px";
+
+const dimLabel = (text: string) => (
+  <span className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-black/60 text-white/90 text-xs font-mono px-2 py-0.5 rounded pointer-events-none z-10 select-none">
+    {text}
+  </span>
+);
+
 export default function HomepageCoursesSection() {
   const addonAddToCartClass =
     "more-info card-more-info-btn ml-0 inline-flex w-full items-center justify-center rounded-md bg-[var(--color-brand-red)] px-3 py-2 text-sm font-bold text-white no-underline transition-colors hover:bg-[var(--color-brand-dark-red)] hover:text-white visited:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-red)] focus-visible:ring-offset-2";
@@ -35,7 +45,10 @@ export default function HomepageCoursesSection() {
                   <div className="slide-content">
                     <div className="tour-label-fixed">TOUR 01</div>
                     <div className="homepage-carousel-image">
-                      <img src="/imgs/tour01home.png" alt="Downtown Palace Course" />
+                      <div className="relative">
+                        <img src="/imgs/tour01home.png" alt="Downtown Palace Course" />
+                        {dimLabel(DIM_LABEL_TOUR)}
+                      </div>
                     </div>
                     <div className="homepage-carousel-content">
                       <h2>Hop on, Hop off anytime!</h2>
@@ -106,13 +119,16 @@ export default function HomepageCoursesSection() {
                         id="tour01-cards"
                       >
                         <div className="card-carousel-track">
-						  <div className={tour01AddonCardClass} data-product-id="kwangjuyo">
+					      <div className={tour01AddonCardClass} data-product-id="kwangjuyo">
                             <div className="card-image">
                               <div className="card-number">1</div>
-                              <img src="/imgs/kwangjuyo.png" alt="Kwangjuyo" />
+                              <div className="relative">
+                                <img src="/imgs/kwangjuyo.png" alt="Kwangjuyo" />
+                                {dimLabel(DIM_LABEL_CARD)}
+                              </div>
                             </div>
-						    <h4 className={tour01AddonTitleClass}>Kwangjuyo</h4>
-						    <p className={tour01AddonDescClass}>
+					        <h4 className={tour01AddonTitleClass}>Kwangjuyo</h4>
+					        <p className={tour01AddonDescClass}>
                               Experience traditional Korean ceramics at the renowned
                               Kwangjuyo pottery studio.
                             </p>
@@ -125,13 +141,16 @@ export default function HomepageCoursesSection() {
                               </a>
                             </div>
                           </div>
-						  <div className={tour01AddonCardClass} data-product-id="museum-pass">
+					      <div className={tour01AddonCardClass} data-product-id="museum-pass">
                             <div className="card-image">
                               <div className="card-number">2</div>
-                              <img src="/imgs/monet-addon.png" alt="Museum Pass" />
+                              <div className="relative">
+                                <img src="/imgs/monet-addon.png" alt="Museum Pass" />
+                                {dimLabel(DIM_LABEL_CARD)}
+                              </div>
                             </div>
-						    <h4 className={tour01AddonTitleClass}>Museum Pass</h4>
-						    <p className={tour01AddonDescClass}>
+					        <h4 className={tour01AddonTitleClass}>Museum Pass</h4>
+					        <p className={tour01AddonDescClass}>
                               Get access to multiple museums with our exclusive museum
                               pass package.
                             </p>
@@ -144,16 +163,19 @@ export default function HomepageCoursesSection() {
                               </a>
                             </div>
                           </div>
-						  <div className={tour01AddonCardClass} data-product-id="sejong-backstage">
+					      <div className={tour01AddonCardClass} data-product-id="sejong-backstage">
                             <div className="card-image">
                               <div className="card-number">3</div>
-                              <img
-                                src="/imgs/sejong-addon.png"
-                                alt="Sejong Centre Backstage Pass"
-                              />
+                              <div className="relative">
+                                <img
+                                  src="/imgs/sejong-addon.png"
+                                  alt="Sejong Centre Backstage Pass"
+                                />
+                                {dimLabel(DIM_LABEL_CARD)}
+                              </div>
                             </div>
-						    <h4 className={tour01AddonTitleClass}>Sejong Centre Backstage Pass</h4>
-						    <p className={tour01AddonDescClass}>
+					        <h4 className={tour01AddonTitleClass}>Sejong Centre Backstage Pass</h4>
+					        <p className={tour01AddonDescClass}>
                               Go behind the scenes at the prestigious Sejong Center for
                               the Performing Arts.
                             </p>
@@ -166,13 +188,16 @@ export default function HomepageCoursesSection() {
                               </a>
                             </div>
                           </div>
-						  <div className={tour01AddonCardClass} data-product-id="hanbok-rental">
+					      <div className={tour01AddonCardClass} data-product-id="hanbok-rental">
                             <div className="card-image">
                               <div className="card-number">4</div>
-                              <img src="/imgs/hanbok-addon.png" alt="Hanbok Rental" />
+                              <div className="relative">
+                                <img src="/imgs/hanbok-addon.png" alt="Hanbok Rental" />
+                                {dimLabel(DIM_LABEL_CARD)}
+                              </div>
                             </div>
-						    <h4 className={tour01AddonTitleClass}>Hanbok Rental</h4>
-						    <p className={tour01AddonDescClass}>
+					        <h4 className={tour01AddonTitleClass}>Hanbok Rental</h4>
+					        <p className={tour01AddonDescClass}>
                               Dress up in beautiful traditional Korean attire and explore
                               the palaces in style.
                             </p>
@@ -202,7 +227,10 @@ export default function HomepageCoursesSection() {
                   <div className="slide-content">
                     <div className="tour-label-fixed">TOUR 04</div>
                     <div className="homepage-carousel-image">
-                      <img src="/imgs/tour04home.png" alt="Night View Course" />
+                      <div className="relative">
+                        <img src="/imgs/tour04home.png" alt="Night View Course" />
+                        {dimLabel(DIM_LABEL_TOUR)}
+                      </div>
                     </div>
                     <div className="homepage-carousel-content">
                       <h2>Sparkling Night Views</h2>
@@ -280,7 +308,10 @@ export default function HomepageCoursesSection() {
                           <div className="card" data-product-id="kwangjuyo">
                             <div className="card-image">
                               <div className="card-number">1</div>
-                              <img src="/imgs/kwangjuyo.png" alt="Kwangjuyo" />
+                              <div className="relative">
+                                <img src="/imgs/kwangjuyo.png" alt="Kwangjuyo" />
+                                {dimLabel(DIM_LABEL_CARD)}
+                              </div>
                             </div>
                             <h4 className="card-title">Kwangjuyo</h4>
                             <p>
@@ -299,7 +330,10 @@ export default function HomepageCoursesSection() {
                           <div className="card" data-product-id="hanbok-rental">
                             <div className="card-image">
                               <div className="card-number">2</div>
-                              <img src="/imgs/hanbok-addon.png" alt="Hanbok Rental" />
+                              <div className="relative">
+                                <img src="/imgs/hanbok-addon.png" alt="Hanbok Rental" />
+                                {dimLabel(DIM_LABEL_CARD)}
+                              </div>
                             </div>
                             <h4 className="card-title">Hanbok Rental</h4>
                             <p>
@@ -332,7 +366,10 @@ export default function HomepageCoursesSection() {
                   <div className="slide-content">
                     <div className="tour-label-fixed">TOUR 02</div>
                     <div className="homepage-carousel-image">
-                      <img src="/imgs/panorama.png" alt="Panorama Course" />
+                      <div className="relative">
+                        <img src="/imgs/panorama.png" alt="Panorama Course" />
+                        {dimLabel(DIM_LABEL_TOUR)}
+                      </div>
                     </div>
                     <div
                       className="homepage-carousel-content"
@@ -409,7 +446,10 @@ export default function HomepageCoursesSection() {
                           <div className="card" data-product-id="kwangjuyo">
                             <div className="card-image">
                               <div className="card-number">1</div>
-                              <img src="/imgs/kwangjuyo.png" alt="Kwangjuyo" />
+                              <div className="relative">
+                                <img src="/imgs/kwangjuyo.png" alt="Kwangjuyo" />
+                                {dimLabel(DIM_LABEL_CARD)}
+                              </div>
                             </div>
                             <h4 className="card-title">Kwangjuyo</h4>
                             <p>
@@ -428,7 +468,10 @@ export default function HomepageCoursesSection() {
                           <div className="card" data-product-id="han-river-cruise">
                             <div className="card-image">
                               <div className="card-number">3</div>
-                              <img src="/imgs/daycruise.png" alt="Han River Cruise" />
+                              <div className="relative">
+                                <img src="/imgs/daycruise.png" alt="Han River Cruise" />
+                                {dimLabel(DIM_LABEL_CARD)}
+                              </div>
                             </div>
                             <h4 className="card-title">Han River Cruise</h4>
                             <p>
@@ -447,7 +490,10 @@ export default function HomepageCoursesSection() {
                           <div className="card" data-product-id="hanbok-rental">
                             <div className="card-image">
                               <div className="card-number">4</div>
-                              <img src="/imgs/hanbok-addon.png" alt="Hanbok Rental" />
+                              <div className="relative">
+                                <img src="/imgs/hanbok-addon.png" alt="Hanbok Rental" />
+                                {dimLabel(DIM_LABEL_CARD)}
+                              </div>
                             </div>
                             <h4 className="card-title">Hanbok Rental</h4>
                             <p>
@@ -499,23 +545,38 @@ export default function HomepageCoursesSection() {
           <h3>Bus Features</h3>
           <div className="feature-icons">
             <div className="feature">
-              <img src="/imgs/1.png" alt="Free Audio Guide" />
+              <div className="relative inline-block">
+                <img src="/imgs/1.png" alt="Free Audio Guide" />
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 bg-black/60 text-white/90 text-[9px] font-mono px-1 py-0.5 rounded pointer-events-none z-10 select-none whitespace-nowrap">{DIM_LABEL_ICON}</span>
+              </div>
               <span>Free Audio</span>
             </div>
             <div className="feature">
-              <img src="/imgs/2.png" alt="Free USB Charger" />
+              <div className="relative inline-block">
+                <img src="/imgs/2.png" alt="Free USB Charger" />
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 bg-black/60 text-white/90 text-[9px] font-mono px-1 py-0.5 rounded pointer-events-none z-10 select-none whitespace-nowrap">{DIM_LABEL_ICON}</span>
+              </div>
               <span>Free USB</span>
             </div>
             <div className="feature">
-              <img src="/imgs/3.png" alt="Double Decker Bus" />
+              <div className="relative inline-block">
+                <img src="/imgs/3.png" alt="Double Decker Bus" />
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 bg-black/60 text-white/90 text-[9px] font-mono px-1 py-0.5 rounded pointer-events-none z-10 select-none whitespace-nowrap">{DIM_LABEL_ICON}</span>
+              </div>
               <span>Double Decker</span>
             </div>
             <div className="feature">
-              <img src="/imgs/4.png" alt="Single Decker Bus" />
+              <div className="relative inline-block">
+                <img src="/imgs/4.png" alt="Single Decker Bus" />
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 bg-black/60 text-white/90 text-[9px] font-mono px-1 py-0.5 rounded pointer-events-none z-10 select-none whitespace-nowrap">{DIM_LABEL_ICON}</span>
+              </div>
               <span>Single Decker</span>
             </div>
             <div className="feature">
-              <img src="/imgs/5.png" alt="Free Wi-Fi" />
+              <div className="relative inline-block">
+                <img src="/imgs/5.png" alt="Free Wi-Fi" />
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 bg-black/60 text-white/90 text-[9px] font-mono px-1 py-0.5 rounded pointer-events-none z-10 select-none whitespace-nowrap">{DIM_LABEL_ICON}</span>
+              </div>
               <span>Free Wi-Fi</span>
             </div>
           </div>

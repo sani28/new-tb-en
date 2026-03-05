@@ -249,7 +249,7 @@ export default function SiteHeader() {
               <img
                 src="/imgs/smalllogo.png"
                 alt="Seoul City Tour Bus"
-                className="h-[1.15em] w-auto object-contain block align-middle"
+                className="h-[clamp(32px,3.5vw,46px)] w-auto object-contain block"
                 onError={(e) => {
                   (e.currentTarget as HTMLImageElement).src = "/imgs/smalllogo.png";
                 }}

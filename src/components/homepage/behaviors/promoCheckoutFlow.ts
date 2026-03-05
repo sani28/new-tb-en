@@ -2389,34 +2389,7 @@ export function initPromoAddonProductModal(): Cleanup {
 						// Step 2: map popup
 					initPromoTourMapPopup(cleanupFns);
 
-					// Step 2: Add-on cards "View Details" (React carousel + legacy fallback)
-					// When the add-ons carousel is rendered by React, the click handler should be attached via React.
-					// In practice, the tour modal can be opened/closed by legacy DOM behaviors; this capture-phase
-					// delegation ensures the button still works even if the React boundary isn't hydrated yet.
-					const onAddonViewDetails = (e: MouseEvent) => {
-						const target = e.target as HTMLElement | null;
-						const btn = target?.closest<HTMLButtonElement>(".promo-view-btn");
-						if (!btn) return;
-						const card = btn.closest<HTMLElement>(".promo-product-card");
-						const productId = card?.dataset.productId;
-						if (!productId) return;
-
-						e.preventDefault();
-						e.stopPropagation();
-
-						const w = window as PromoWindow;
-						if (typeof w.__tbPromoOpenAddonModal === "function") {
-							w.__tbPromoOpenAddonModal(productId, tourSelect?.value || null);
-							return;
-						}
-
-						// Legacy fallback if the React bridge isn't available.
-						openModal(productId, tourSelect?.value || null);
-					};
-					tourModalOverlay.addEventListener("click", onAddonViewDetails, true);
-					cleanupFns.push(() => tourModalOverlay.removeEventListener("click", onAddonViewDetails, true));
-
-						// Allow the hero booking CTA to open this same modal (full UI parity).
+					// Allow the hero booking CTA to open this same modal (full UI parity).
 						const onOpenFromHero = (e: Event) => {
 							const ce = e as CustomEvent<OpenTourModalFromHeroDetail>;
 							openTourModalFromHero(ce.detail || {});

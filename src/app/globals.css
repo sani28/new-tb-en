@@ -8,9 +8,7 @@
 */
 @import url("/styles.css") layer(legacy);
 @import url("/css/components/carousel.css") layer(legacy);
-@import url("/css/components/promo-addons-carousel.css") layer(legacy);
 @import url("/template.css") layer(legacy);
-@import url("/discounts.css") layer(legacy);
 /* Homepage-only styles are scoped to `body.index-page` */
 @import url("/css/pages/home.css") layer(legacy);
 
@@ -62,6 +60,11 @@
    here because Tailwind can't express parent-body-class selectors.
 */
 @layer components {
+  /* Booking cart bar — add bottom padding when visible so content isn't obscured */
+  body.cart-visible main {
+    padding-bottom: 100px;
+  }
+
   /* Promo notification bar — always pinned at top:0 */
   [data-header="promo-bar"] {
     position: fixed;
@@ -142,7 +145,7 @@
       padding-top: 0;
     }
 
-    body.index-page:not(.template-page) .hero {
+    body.index-page:not(.template-page) [data-section="hero"] {
       padding-top: calc(
         var(--promo-bar-height) +
         var(--notification-bar-height) +
@@ -150,13 +153,9 @@
       );
     }
 
-    body.index-page:not(.template-page).promo-closed .hero {
+    body.index-page:not(.template-page).promo-closed [data-section="hero"] {
       padding-top: calc(var(--notification-bar-height) + var(--mobile-header-height));
     }
 
-    /* Desktop hero slider offsets slides upward; on mobile that causes cropping */
-    .hero-slider .slide {
-      top: 0;
-    }
   }
 }
