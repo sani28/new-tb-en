@@ -102,7 +102,7 @@ export default function HeroSlider() {
       {SLIDES.map((src, i) => (
         <div
           key={i}
-          className={`absolute top-[-150px] max-md:top-0 left-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ease-in-out ${i === activeSlide ? "opacity-100" : "opacity-0"}`}
+          className={`absolute top-[-150px] max-md:top-[var(--mobile-total-header-height)] left-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ease-in-out ${i === activeSlide ? "opacity-100" : "opacity-0"}`}
           style={{ backgroundImage: `url('${src}')` }}
           role="group"
           aria-roledescription="slide"
@@ -116,7 +116,7 @@ export default function HeroSlider() {
       ))}
 
       {/* Slider controls — progress dots */}
-      <div className="absolute top-[30px] left-1/2 -translate-x-1/2 flex items-center gap-5 z-[10]">
+      <div className="absolute top-[30px] left-1/2 -translate-x-1/2 flex items-center gap-5 z-[var(--z-nav)]">
         <div className="flex items-center gap-[10px]">
           <div className="hidden">
             {SLIDES.map((_, i) => (
@@ -152,6 +152,7 @@ export default function HeroSlider() {
           <button
             onClick={togglePlay}
             aria-label={isPlaying ? "Pause slider" : "Play slider"}
+            className="md:hidden flex items-center justify-center"
             style={{
               background: "rgba(255,255,255,0.25)",
               border: "none",
@@ -160,9 +161,6 @@ export default function HeroSlider() {
               height: 28,
               borderRadius: "50%",
               cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
               fontSize: 11,
               marginLeft: 8,
             }}

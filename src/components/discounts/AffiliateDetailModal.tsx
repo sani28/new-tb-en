@@ -28,8 +28,8 @@ export default function AffiliateDetailModal({ affiliate, onClose }: Props) {
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/50 z-[1000] block" onClick={onClose} />
-      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-[30px] rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.2)] z-[1001] w-[95%] max-w-[700px] max-h-[90vh] overflow-y-auto">
+      <div className="fixed inset-0 bg-black/50 z-[var(--z-backdrop)] block" onClick={onClose} />
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-[30px] rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.2)] z-[var(--z-modal)] w-[95%] max-w-[700px] max-h-[90vh] overflow-y-auto">
         <button
           className="absolute top-5 right-5 bg-transparent border-none text-2xl cursor-pointer text-[#666] leading-none"
           onClick={onClose}

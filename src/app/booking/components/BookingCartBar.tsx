@@ -89,7 +89,6 @@ export default function BookingCartBar({ onContinue }: Props) {
 
   return (
     <BookingCartBarInner
-      key={isVisible ? "visible" : "hidden"}
       onContinue={onContinue}
       items={cart.items}
       itemCount={itemCount}
@@ -119,7 +118,7 @@ function BookingCartBarInner({
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-[9999] w-full bg-brand-red px-10 py-4 text-white shadow-[0_-4px_20px_rgba(0,0,0,0.15)] transition-transform duration-300 ${isVisible ? "translate-y-0" : "translate-y-full"}`}
+      className={`fixed inset-x-0 bottom-0 z-[var(--z-cart-bar)] w-full bg-brand-red px-10 py-4 text-white shadow-[0_-4px_20px_rgba(0,0,0,0.15)] transition-transform duration-300 ${isVisible ? "translate-y-0" : "translate-y-full"}`}
       id="upsell-cart-bar"
     >
       <div className="mx-auto flex max-w-[1200px] items-center justify-between">

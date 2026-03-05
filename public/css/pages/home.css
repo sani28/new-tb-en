@@ -952,7 +952,7 @@ body.promo-hero-modal-open {
     align-items: center;
     justify-content: center;
     background: rgba(0, 0, 0, 0.7);
-    z-index: 10000004;
+    z-index: var(--z-modal);
     padding: 20px;
 }
 
@@ -1045,7 +1045,7 @@ body.promo-hero-modal-open {
     justify-content: center;
     background: rgba(0, 0, 0, 0.7);
     /* Must be above the tour selection modal overlay when opened from within it (View Details) */
-    z-index: 10000001;
+    z-index: var(--z-modal);
 }
 
 .index-page .promo-product-modal-overlay.active {
@@ -1063,7 +1063,7 @@ body.promo-hero-modal-open {
 	    justify-content: center;
 	    align-items: flex-start;
     background: rgba(0, 0, 0, 0.7);
-    z-index: 10000000; /* below product modal (10000001) but above cart bar (9999998) */
+    z-index: var(--z-modal);
 	    overflow-y: auto;
 	    -webkit-overflow-scrolling: touch;
 	    padding: 40px 20px 120px 20px; /* extra bottom padding for cart bar */
@@ -1076,7 +1076,7 @@ body.promo-hero-modal-open {
 
 #promoTourMapPopup.tour-map-popup-overlay {
     /* Global `.tour-map-popup-overlay` is 999999 in styles.css, but our promo modals use 10000000+. */
-    z-index: 10000002;
+    z-index: var(--z-modal);
 }
 
 .index-page .promo-modal-overlay.active {
@@ -1785,7 +1785,7 @@ body.promo-hero-modal-open {
     background: linear-gradient(135deg, #E20021 0%, #B8001A 100%);
     border-radius: 0;
     box-shadow: 0 -4px 30px rgba(226, 0, 33, 0.4), 0 -2px 15px rgba(0, 0, 0, 0.1);
-    z-index: 9999998;
+    z-index: var(--z-cart-bar);
     transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 0;
     pointer-events: none;
@@ -1842,7 +1842,7 @@ body.promo-hero-modal-open {
 		    top: 50%;
 		    left: 50%;
 		    transform: translate(-50%, -50%) scale(0.98);
-		    z-index: 10000003; /* above promo modals (10000000/10000001) and map popup (10000002) */
+		    z-index: var(--z-toast);
 		    pointer-events: none;
 		    display: none;
 		    opacity: 0;

@@ -135,7 +135,7 @@ export default function SiteHeader() {
         </a>
 
         {/* Right section — phone + language */}
-        <div className="flex-[0_1_33.333%] flex items-center gap-[30px] justify-end max-lg:gap-5 max-md:flex-none max-md:gap-[15px] max-[375px]:gap-2.5">
+        <div className="flex-[0_1_33.333%] flex items-center gap-2 justify-end max-lg:gap-1.5 max-md:flex-none max-md:gap-[15px] max-[375px]:gap-2.5">
           {/* Customer service — hidden on mobile */}
           <div className="text-white font-sans-semibold text-lg flex items-center gap-2 whitespace-nowrap tracking-tight max-lg:text-sm max-md:hidden">
             <p>T:</p>
@@ -145,7 +145,7 @@ export default function SiteHeader() {
           </div>
 
           {/* Language selector */}
-          <div className="relative flex items-center ml-auto z-[1700]" ref={languageRef}>
+          <div className="relative flex items-center z-[var(--z-dropdown)]" ref={languageRef}>
             <button
               className="bg-transparent border-none p-2 cursor-pointer flex items-center text-white max-md:p-1.5"
               type="button"
@@ -163,7 +163,7 @@ export default function SiteHeader() {
             </button>
 
             <div
-              className={`absolute top-full right-0 bg-white rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.1)] overflow-hidden z-[1700] ${
+              className={`absolute top-full right-0 bg-white rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.1)] overflow-hidden z-[var(--z-dropdown)] ${
                 isLanguageOpen ? "block" : "hidden"
               }`}
             >
@@ -292,7 +292,7 @@ export default function SiteHeader() {
 
       {/* ── Mobile fullscreen menu ── */}
       <div
-        className={`fixed inset-0 w-full h-dvh bg-brand-cream z-[2000] p-5 ${
+        className={`fixed inset-0 w-full h-dvh bg-brand-cream z-[var(--z-nav-overlay)] p-5 ${
           isMobileMenuOpen ? "block" : "hidden"
         }`}
       >

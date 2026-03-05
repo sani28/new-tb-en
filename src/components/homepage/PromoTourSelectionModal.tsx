@@ -248,7 +248,7 @@ export default function PromoTourSelectionModal() {
               {/* Date selector */}
               <div className="mt-4">
                 <h3 className="m-0 mb-3 text-[16px] font-semibold text-[#333]">Select Date</h3>
-                <div className="relative w-full z-[99999]">
+                <div className="relative w-full z-[var(--z-dropdown)]">
                   <button
                     type="button"
                     className="w-full py-3 px-[15px] bg-white border border-[#E5E5E5] rounded-lg flex justify-between items-center cursor-pointer text-[14px] text-left hover:border-brand-red transition-colors"

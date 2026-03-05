@@ -72,7 +72,7 @@ export default function PromoHeroPromotionModal() {
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black/70 z-[10000004] p-5"
+      className="fixed inset-0 flex items-center justify-center bg-black/70 z-[var(--z-modal)] p-5"
       id="promoHeroPromotionModal"
       aria-modal="true"
       onClick={(e) => { if (e.target === e.currentTarget) close(); }}

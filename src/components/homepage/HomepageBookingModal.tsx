@@ -115,7 +115,7 @@ export default function HomepageBookingModal() {
     /* Overlay */
     <div
       id="bookingModal"
-      className="fixed inset-0 bg-black/50 z-[2000] overflow-y-auto flex items-start justify-center pt-6 px-4"
+      className="fixed inset-0 bg-black/50 z-[var(--z-modal)] overflow-y-auto flex items-start justify-center pt-6 px-4"
       onClick={(e) => { if (e.target === e.currentTarget) close(); }}
       aria-modal="true"
     >
@@ -181,11 +181,11 @@ export default function HomepageBookingModal() {
               <>
                 {/* Backdrop */}
                 <div
-                  className="fixed inset-0 bg-black/30 z-[1999]"
+                  className="fixed inset-0 bg-black/30 z-[var(--z-backdrop)]"
                   onClick={() => setCalendarOpen(false)}
                 />
                 <div
-                  className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[350px] bg-white rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.2)] z-[2000]"
+                  className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[350px] bg-white rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.2)] z-[var(--z-modal)]"
                   role="dialog"
                   aria-label="Date picker"
                 >

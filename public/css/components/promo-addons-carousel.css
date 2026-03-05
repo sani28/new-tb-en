@@ -222,8 +222,8 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
-  /* Must sit above promo modals (10000000/1/2/4) */
-  z-index: 10000005;
+  /* Must sit above checkout modals */
+  z-index: var(--z-modal-over);
   justify-content: center;
   align-items: center;
   padding: 20px;

@@ -308,7 +308,7 @@ export default function AddonProductDetailsModal({
 
   return (
     <div
-      className="fixed inset-0 bg-black/70 z-[10000] flex items-center justify-center"
+      className="fixed inset-0 bg-black/70 z-[var(--z-modal-over)] flex items-center justify-center"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}

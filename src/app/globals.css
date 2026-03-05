@@ -22,6 +22,17 @@
 */
 
 @theme {
+  /* Z-index scale — single source of truth for all layering */
+  --z-nav: 100;         /* carousel controls, within-section elements */
+  --z-sticky: 500;      /* fixed header bars */
+  --z-dropdown: 600;    /* dropdowns, calendar pickers */
+  --z-nav-overlay: 700; /* fullscreen mobile nav */
+  --z-cart-bar: 800;    /* floating cart bars */
+  --z-backdrop: 900;    /* modal backdrops */
+  --z-modal: 1000;      /* modals */
+  --z-modal-over: 1100; /* modals stacked above other modals */
+  --z-toast: 1200;      /* toast notifications */
+
   /* Brand colors */
   --color-brand-red: #E20021;
   --color-brand-dark-red: #cc0000;
@@ -36,6 +47,8 @@
   --promo-bar-height: 45px;
   --notification-bar-height: 45px;
   --mobile-header-height: 60px;
+  /* Total height of all fixed headers stacked on mobile */
+  --mobile-total-header-height: calc(var(--promo-bar-height) + var(--notification-bar-height) + var(--mobile-header-height));
 
   /* Custom font families */
   --font-sans-semibold: 'GeneralSans-Semibold', sans-serif;
@@ -69,14 +82,14 @@
   [data-header="promo-bar"] {
     position: fixed;
     top: 0;
-    z-index: 1001;
+    z-index: calc(var(--z-sticky) + 2);
   }
 
   /* Notification bar — sits below promo bar (45px) */
   [data-header="notification-bar"] {
     position: fixed;
     top: 45px;
-    z-index: 1000;
+    z-index: calc(var(--z-sticky) + 1);
     transition: top 0.3s ease;
   }
 
@@ -86,7 +99,7 @@
     top: 90px;
     left: 0;
     right: 0;
-    z-index: 999;
+    z-index: var(--z-sticky);
     transition: top 0.3s ease;
     box-shadow: 0 4px 6px rgba(255, 255, 255, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1);
   }
@@ -156,7 +169,7 @@
       top: 90px;
       left: 0;
       right: 0;
-      z-index: 999;
+      z-index: var(--z-sticky);
       box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
       transition: top 0.3s ease;
     }
@@ -204,6 +217,11 @@
 
     body.index-page:not(.template-page).promo-closed [data-section="hero"] {
       padding-top: calc(var(--notification-bar-height) + var(--mobile-header-height));
+    }
+
+    /* Adjust the total header height token when the promo bar is hidden */
+    body.promo-closed {
+      --mobile-total-header-height: calc(var(--notification-bar-height) + var(--mobile-header-height));
     }
 
   }

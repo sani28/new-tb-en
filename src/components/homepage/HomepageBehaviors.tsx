@@ -15,6 +15,11 @@ import { initDiscoveryMobileCarousel } from "./behaviors/discoveryCarousel";
 
 export default function HomepageBehaviors() {
   useEffect(() => {
+    // Prevent the browser from restoring a previous scroll position on refresh.
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+
     const cleanups: Cleanup[] = [
       initHomepageCourseCarousel(),
       initCoursesScrollVisibility(),

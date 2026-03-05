@@ -118,7 +118,7 @@ export default function BookingStep1({ onContinue }: Props) {
         {/* Tour Map Popup */}
         {mapOpen && (
           <div
-            className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/80"
+            className="fixed inset-0 z-[var(--z-modal-over)] flex items-center justify-center bg-black/80"
             id="tourMapPopup"
             onClick={(e) => { if (e.target === e.currentTarget) setMapOpen(false); }}
           >

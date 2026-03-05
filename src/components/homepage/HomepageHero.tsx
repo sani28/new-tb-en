@@ -39,15 +39,20 @@ export default function HomepageHero() {
   return (
     <>
       {/* ── Hero Section ── */}
-      <header data-section="hero" className="h-[calc(100vh-100px)] pt-[100px] relative overflow-visible z-[50]">
+      <header data-section="hero" className="h-[calc(100vh-100px)] max-md:h-screen pt-[100px] relative overflow-visible z-[50]">
         <HeroSlider />
 
         <div className="pl-10 w-[28%]">
           <img src="/imgs/logo.svg" alt="Seoul City Tour Tiger Bus" />
         </div>
 
-        <PromoTabCarousel />
-        <BookingWidget />
+        {/* On mobile: wrapper is absolute bottom-0 so both elements pin to hero bottom.
+            On desktop: display:contents makes this wrapper transparent so each
+            component's own md:absolute md:bottom-X positioning takes effect. */}
+        <div className="max-md:absolute max-md:bottom-0 max-md:left-0 max-md:right-0 md:contents">
+          <PromoTabCarousel />
+          <BookingWidget />
+        </div>
       </header>
 
       {/* ── Gradient Section — driven by courseCarousel event ── */}

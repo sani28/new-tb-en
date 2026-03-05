@@ -28,8 +28,6 @@ export default function PromoFloatingCart() {
     return { index, item, imageUrl, placeholder, linePrice, metaInfo };
   });
 
-  if (!visible && !toast) return null;
-
   return (
     <>
       {/* Floating cart bar */}

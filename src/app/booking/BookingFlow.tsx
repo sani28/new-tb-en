@@ -111,50 +111,52 @@ export default function BookingFlow() {
   };
 
   return (
-    <main className="relative z-1 mx-auto max-w-[800px] p-5 pt-[120px] max-md:p-2.5 max-md:pt-20">
-      <BodyClass className="template-page booking-page" />
-      <div className="overflow-hidden rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.1)]">
-        <div className="flex items-center justify-between bg-brand-red px-6 py-5">
-          <h1 className="m-0 text-2xl font-semibold text-white">Book Your Tour</h1>
+    <>
+      <main className="relative mx-auto max-w-[800px] p-5 pt-[120px] max-md:p-2.5 max-md:pt-20">
+        <BodyClass className="template-page booking-page" />
+        <div className="overflow-hidden rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.1)]">
+          <div className="flex items-center justify-between bg-brand-red px-6 py-5">
+            <h1 className="m-0 text-2xl font-semibold text-white">Book Your Tour</h1>
+          </div>
+
+          {step === 1 && (
+            <div id="step1">
+              <BookingStep1 onContinue={goToStep2} />
+            </div>
+          )}
+
+          {step === 2 && (
+            <div id="step2">
+              <BookingStep2
+                contact={contact}
+                onContactChange={setContact}
+                onBack={() => { setStep(1); scrollTop(); }}
+                onContinue={goToStep3}
+              />
+            </div>
+          )}
+
+          {step === 3 && (
+            <div id="step3">
+              <BookingStep3
+                isSubmitting={isSubmitting}
+                error={submitError}
+                onBack={() => { setStep(2); scrollTop(); }}
+                onMakePayment={handleMakePayment}
+              />
+            </div>
+          )}
+
+          {step === 4 && (
+            <div id="step4">
+              <BookingStep4 referenceCode={bookingRef} />
+            </div>
+          )}
         </div>
+      </main>
 
-        {step === 1 && (
-          <div id="step1">
-            <BookingStep1 onContinue={goToStep2} />
-          </div>
-        )}
-
-        {step === 2 && (
-          <div id="step2">
-            <BookingStep2
-              contact={contact}
-              onContactChange={setContact}
-              onBack={() => { setStep(1); scrollTop(); }}
-              onContinue={goToStep3}
-            />
-          </div>
-        )}
-
-        {step === 3 && (
-          <div id="step3">
-            <BookingStep3
-              isSubmitting={isSubmitting}
-              error={submitError}
-              onBack={() => { setStep(2); scrollTop(); }}
-              onMakePayment={handleMakePayment}
-            />
-          </div>
-        )}
-
-        {step === 4 && (
-          <div id="step4">
-            <BookingStep4 referenceCode={bookingRef} />
-          </div>
-        )}
-      </div>
-
-      {/* Cart bar floats at bottom on step 1 only */}
+      {/* Cart bar floats at bottom on step 1 only — rendered outside <main> to avoid stacking context */}
       {step === 1 && <BookingCartBar onContinue={goToStep2} />}
-    </main>
+    </>
   );
 }
