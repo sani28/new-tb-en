@@ -13,8 +13,8 @@ const eslintConfig = defineConfig([
 	  "**/build/**",
     "next-env.d.ts",
 
-	  // Ignore legacy / nested workspace copy (apps/web)
-	  "apps/**",
+	  // Ignore legacy / nested workspace copy (legacy-website/web)
+	  "legacy-website/**",
 
     // macOS AppleDouble + filesystem metadata (can appear on external drives)
     "**/._*",

@@ -54,7 +54,7 @@ export default function PromoAddonProductModal() {
             </span>
           </div>
 
-          {/* promo-product-variant-tabs kept — home.css scopes variant UI rules to this parent */}
+          {/* promo-product-variant-tabs kept — globals.css @layer components scopes variant UI rules to this parent */}
           <div className="promo-product-variant-tabs" id="promoProductVariantTabs">
             {/* Populated by JS */}
           </div>

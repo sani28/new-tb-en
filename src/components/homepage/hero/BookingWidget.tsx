@@ -118,7 +118,7 @@ export default function BookingWidget() {
     <div
       className={
         "w-full relative z-[var(--z-nav)] flex flex-wrap items-stretch gap-2 rounded-none bg-white/95 px-5 py-4 shadow-none backdrop-blur-xl " +
-        "md:absolute md:bottom-20 md:left-1/2 md:w-auto md:max-w-[95vw] md:-translate-x-1/2 md:flex-nowrap md:items-center md:gap-3 md:rounded-[20px] md:border md:border-white/60 " +
+        "md:absolute md:bottom-10 md:left-1/2 md:w-auto md:max-w-[95vw] md:-translate-x-1/2 md:flex-nowrap md:items-center md:gap-3 md:rounded-[20px] md:border md:border-white/60 " +
         "md:bg-gradient-to-br md:from-white/98 md:to-white/95 md:px-5 md:py-4 " +
         "md:shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.8)] " +
         "md:hover:shadow-[0_12px_40px_rgba(0,0,0,0.15),0_4px_12px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.9)] md:transition-shadow"

@@ -4,6 +4,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { getMarqueeNotice } from "@/lib/data/notices";
 
 /* ── Desktop nav buttons (booking + my-booking) ── */
 function DesktopNavButtons() {
@@ -69,6 +70,7 @@ export default function SiteHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const languageRef = useRef<HTMLDivElement | null>(null);
+  const marqueeNotice = getMarqueeNotice();
 
   useEffect(() => {
     const onDocumentClick = (e: MouseEvent) => {
@@ -84,22 +86,24 @@ export default function SiteHeader() {
 
   return (
     <>
-      {/* ── Promo notification bar (marquee) ── */}
-      <div
-        data-header="promo-bar"
-        className="w-full bg-[#ff0000] text-white p-0 text-center font-bold text-base flex justify-center items-center h-[45px] overflow-hidden max-md:text-sm"
-      >
-        <div className="w-full overflow-hidden">
-          <div className="inline-block whitespace-nowrap animate-marquee pl-[100%] max-md:animate-marquee-mobile">
-            <span className="inline-block pr-[50px]">
-              🚨 IMPORTANT NOTICE: Saturday, Dec 19, Service disruption.{" "}
-              <a href="/notices" className="text-white underline hover:text-[#cccccc]">
-                Please see full announcement details
-              </a>
-            </span>
+      {/* ── Promo notification bar (marquee) — driven by notices data ── */}
+      {marqueeNotice && (
+        <div
+          data-header="promo-bar"
+          className="w-full bg-[#ff0000] text-white p-0 text-center font-bold text-base flex justify-center items-center h-[45px] overflow-hidden max-md:text-sm"
+        >
+          <div className="w-full overflow-hidden">
+            <div className="inline-block whitespace-nowrap animate-marquee pl-[100%] max-md:animate-marquee-mobile">
+              <span className="inline-block pr-[50px]">
+                🚨 IMPORTANT NOTICE: {marqueeNotice.marqueeText ?? marqueeNotice.title}{" "}
+                <a href={marqueeNotice.link ?? "/notices"} className="text-white underline hover:text-[#cccccc]">
+                  Please see full announcement details
+                </a>
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* ── Top notification bar (red bar with directions + phone) ── */}
       <div

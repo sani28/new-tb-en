@@ -102,7 +102,7 @@ export default function HeroSlider() {
       {SLIDES.map((src, i) => (
         <div
           key={i}
-          className={`absolute top-[-150px] max-md:top-[var(--mobile-total-header-height)] left-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ease-in-out ${i === activeSlide ? "opacity-100" : "opacity-0"}`}
+          className={`absolute top-0 left-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ease-in-out ${i === activeSlide ? "opacity-100" : "opacity-0"}`}
           style={{ backgroundImage: `url('${src}')` }}
           role="group"
           aria-roledescription="slide"

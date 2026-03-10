@@ -39,7 +39,7 @@ export default function HomepageHero() {
   return (
     <>
       {/* ── Hero Section ── */}
-      <header data-section="hero" className="h-[calc(100vh-100px)] max-md:h-screen pt-[100px] relative overflow-visible z-[50]">
+      <header data-section="hero" className="h-[calc(100vh-135px)] max-md:h-screen relative overflow-visible z-[50]">
         <HeroSlider />
 
         <div className="pl-10 w-[28%]">

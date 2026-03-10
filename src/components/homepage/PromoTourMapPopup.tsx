@@ -5,7 +5,7 @@ export default function PromoTourMapPopup() {
         <button className="tour-map-popup-close" id="promoTourMapClose" type="button" aria-label="Close">
           &times;
         </button>
-        {/* tour-map-content kept for styles.css rules; Tailwind overrides CSS defaults */}
+        {/* tour-map-content kept — globals.css @layer components scopes the tour-map popup rules to this class */}
         <div className="tour-map-content justify-start p-5 gap-3.5" id="promoTourMapContent">
           <div className="flex items-center gap-2.5">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D40004" strokeWidth="1.5" aria-hidden="true">
