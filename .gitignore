@@ -52,3 +52,4 @@ yarn-error.log*
 /*.html
 /*.css
 /*.js
+legacy-website/
