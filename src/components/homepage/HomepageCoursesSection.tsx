@@ -35,16 +35,14 @@ function PriceRow({
   sale: string;
 }) {
   return (
-    <div className="flex justify-between items-center w-full gap-2 text-[13px] text-white">
-      <span className="shrink-0">{label}</span>
-      <div className="flex flex-col gap-0.5 shrink-0 text-right">
-        <span className="text-[11px] text-white/60">
+    <div className="flex justify-end items-end gap-4 text-white">
+      <span className="shrink-0 text-[17px] font-semibold">{label}</span>
+      <div className="flex flex-col gap-0.5">
+        <span className="text-[12px] text-white/60">
           <span>from </span>
           <span className="line-through">{original}</span>
         </span>
-        <span className="text-[19px] text-white font-semibold flex items-center gap-1">
-          <span className="bg-brand-red px-1.5 py-0.5 rounded text-sm whitespace-nowrap">{sale}</span>
-        </span>
+        <span className="bg-brand-red px-2.5 py-1 rounded text-[17px] font-semibold whitespace-nowrap">{sale}</span>
       </div>
     </div>
   );
@@ -261,7 +259,7 @@ export default function HomepageCoursesSection() {
                         <InfoItem icon="fas fa-route" text="Total Course Time: 1hr 30 min" />
                       </div>
                       <PricingBlock adultOriginal="$45.00" adultSale="$32.00" childOriginal="$32.00" childSale="$23.00" />
-                      <ActionButtons moreInfoHref="/tours" bookHref="/booking?tour=tour01" />
+                      <ActionButtons moreInfoHref="/tours" bookHref="/booking" />
                     </ContentPanel>
                   </div>
 
@@ -293,7 +291,7 @@ export default function HomepageCoursesSection() {
                         <InfoItem icon="fas fa-hourglass-half" text="Total time: ~1 hour" />
                       </div>
                       <PricingBlock adultOriginal="$36.00" adultSale="$26.00" childOriginal="$22.00" childSale="$16.00" />
-                      <ActionButtons moreInfoHref="/tour04" bookHref="/booking?tour=tour04" />
+                      <ActionButtons moreInfoHref="/tour04" bookHref="/booking" />
                     </ContentPanel>
                   </div>
 
@@ -327,7 +325,7 @@ export default function HomepageCoursesSection() {
                       <PricingBlock adultOriginal="$50.00" adultSale="$38.00" childOriginal="$38.00" childSale="$28.00" />
                       <ActionButtons
                         moreInfoHref="#"
-                        bookHref="/booking?tour=tour02"
+                        bookHref="/booking"
                         bookClass="max-md:!bg-[#8B0000] max-md:!border-[#8B0000]"
                       />
                     </ContentPanel>

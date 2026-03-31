@@ -1,17 +1,21 @@
 "use client";
 
-import { usePromoCheckout } from "./checkout/PromoCheckoutContext";
+import { usePromoCheckout, TOUR_META, TOUR_NAMES } from "./checkout/PromoCheckoutContext";
 import { promoProductData } from "@/lib/data/promoProducts";
 
 export default function PromoFloatingCart() {
   const {
     cartItems, count, total, origTotal,
     timerText, timerExpiring, cartExpanded, toast,
+    step, selectedTourId, selectedDate, adultQty, childQty,
+    tourReservedAt, reservationTimeLeft, reservationExpiring,
     removeFromCart, setCartExpanded, openTourSelection,
+    resumeFromReservation, cancelReservation,
   } = usePromoCheckout();
 
   const savings = origTotal - total;
   const visible = count > 0;
+  const reservationVisible = !!tourReservedAt && step === "idle";
 
   const cartItemRows = cartItems.map((item, index) => {
     const product = promoProductData[item.productId] as { image?: string | null; placeholder?: string | null } | undefined;
@@ -28,8 +32,57 @@ export default function PromoFloatingCart() {
     return { index, item, imageUrl, placeholder, linePrice, metaInfo };
   });
 
+  const tourMeta = TOUR_META[selectedTourId];
+  const tourName = TOUR_NAMES[selectedTourId] ?? selectedTourId;
+  const reservationDateLabel = selectedDate
+    ? selectedDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })
+    : "";
+
   return (
     <>
+      {/* Tour reservation bar — shows when tour selected but modal closed */}
+      {reservationVisible && (
+        <div className="fixed inset-x-0 bottom-0 z-[var(--z-cart-bar)] bg-[#1a1a2e] text-white shadow-[0_-4px_20px_rgba(0,0,0,0.25)] transition-transform duration-300">
+          <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-4 px-5 py-3 max-md:flex-col max-md:items-start max-md:gap-2">
+            <div className="flex items-center gap-4 min-w-0">
+              {tourMeta && (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img src={tourMeta.image} alt="" className="h-10 w-14 shrink-0 rounded-lg object-cover" />
+              )}
+              <div className="min-w-0">
+                <div className="truncate text-[14px] font-bold">{tourName}</div>
+                <div className="flex flex-wrap items-center gap-2 text-[12px] text-white/70">
+                  {reservationDateLabel && <span>{reservationDateLabel}</span>}
+                  {adultQty > 0 && <span>{adultQty} Adult{adultQty > 1 ? "s" : ""}</span>}
+                  {childQty > 0 && <span>{childQty} Child{childQty > 1 ? "ren" : ""}</span>}
+                </div>
+              </div>
+              {reservationTimeLeft && (
+                <span className={`shrink-0 rounded-full px-3 py-1 text-[12px] font-bold ${reservationExpiring ? "bg-[#E20021] text-white" : "bg-white/20 text-white"}`}>
+                  ⏱ {reservationTimeLeft}
+                </span>
+              )}
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              <button
+                type="button"
+                className="rounded-lg border border-white/30 bg-transparent px-4 py-2 text-[13px] font-semibold text-white/80 hover:bg-white/10 transition-colors"
+                onClick={cancelReservation}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="rounded-lg bg-brand-red px-5 py-2 text-[13px] font-bold text-white hover:bg-[#C4001C] transition-colors"
+                onClick={resumeFromReservation}
+              >
+                Continue Booking →
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Floating cart bar */}
       <div
         className={`promo-upsell-cart-bar ${visible ? "visible" : ""}`}

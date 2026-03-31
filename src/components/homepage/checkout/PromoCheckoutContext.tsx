@@ -40,7 +40,9 @@ export const TOUR_META: Record<
 
 const CART_TTL_MS = 15 * 60 * 1000;
 const CART_WARN_MS = 5 * 60 * 1000;
-const SESSION_KEY = "tb_promo_cart_session_v1";
+const TOUR_RESERVATION_TTL_MS = 10 * 60 * 1000;
+const TOUR_RESERVATION_WARN_MS = 2 * 60 * 1000;
+const SESSION_KEY = "tb_promo_cart_session_v2";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -141,6 +143,9 @@ type PromoCheckoutContextValue = {
   cartExpanded: boolean;
   toast: string | null;
   step: CheckoutStep;
+  tourReservedAt: number | null;
+  reservationTimeLeft: string;
+  reservationExpiring: boolean;
   selectedTourId: string;
   tourSkipped: boolean;
   selectedDate: Date | null;
@@ -169,6 +174,8 @@ type PromoCheckoutContextValue = {
   proceedFromTourSelection: () => void;
   skipTourSelection: () => void;
   closeCheckout: () => void;
+  resumeFromReservation: () => void;
+  cancelReservation: () => void;
   proceedFromBookingInfo: () => boolean;
   goBackFromBookingInfo: () => void;
   goBackFromPayment: () => void;
@@ -222,6 +229,12 @@ export function PromoCheckoutProvider({ children }: { children: React.ReactNode 
   const [timerText, setTimerText] = useState("");
   const [timerExpiring, setTimerExpiring] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Tour reservation
+  const [tourReservedAt, setTourReservedAt] = useState<number | null>(null);
+  const [reservationTimeLeft, setReservationTimeLeft] = useState("");
+  const [reservationExpiring, setReservationExpiring] = useState(false);
+  const reservationTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Derived
   const count = useMemo(() => cartCount(cartItems), [cartItems]);
@@ -279,6 +292,43 @@ export function PromoCheckoutProvider({ children }: { children: React.ReactNode 
     return () => { if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; } };
   }, [count, cartExpiresAt, tickTimer]);
 
+  // ── Tour reservation timer ─────────────────────────────────────────────────
+
+  const tickReservation = useCallback(() => {
+    setTourReservedAt((reservedAt) => {
+      if (!reservedAt) return reservedAt;
+      const expiresAt = reservedAt + TOUR_RESERVATION_TTL_MS;
+      const msLeft = expiresAt - Date.now();
+      if (msLeft <= 0) {
+        setReservationTimeLeft("");
+        setReservationExpiring(false);
+        setSelectedDate(null);
+        setStep("idle");
+        if (reservationTimerRef.current) { clearInterval(reservationTimerRef.current); reservationTimerRef.current = null; }
+        setTimeout(() => alert("Your tour reservation expired. Please start your booking again."), 0);
+        return null;
+      }
+      const totalSec = Math.floor(msLeft / 1000);
+      const mm = String(Math.floor(totalSec / 60)).padStart(2, "0");
+      const ss = String(totalSec % 60).padStart(2, "0");
+      setReservationTimeLeft(`${mm}:${ss}`);
+      setReservationExpiring(msLeft <= TOUR_RESERVATION_WARN_MS);
+      return reservedAt;
+    });
+  }, []);
+
+  useEffect(() => {
+    if (tourReservedAt) {
+      if (!reservationTimerRef.current) reservationTimerRef.current = setInterval(tickReservation, 1000);
+      tickReservation();
+    } else {
+      if (reservationTimerRef.current) { clearInterval(reservationTimerRef.current); reservationTimerRef.current = null; }
+      setReservationTimeLeft("");
+      setReservationExpiring(false);
+    }
+    return () => { if (reservationTimerRef.current) { clearInterval(reservationTimerRef.current); reservationTimerRef.current = null; } };
+  }, [tourReservedAt, tickReservation]);
+
   // ── Session persistence ────────────────────────────────────────────────────
 
   useEffect(() => {
@@ -296,12 +346,16 @@ export function PromoCheckoutProvider({ children }: { children: React.ReactNode 
       if (typeof data.selectedDate === "string") setSelectedDate(new Date(data.selectedDate));
       if (typeof data.adultQty === "number") setAdultQty(data.adultQty);
       if (typeof data.childQty === "number") setChildQty(data.childQty);
+      if (typeof data.tourReservedAt === "number") {
+        const reservationExpiresAt = data.tourReservedAt + TOUR_RESERVATION_TTL_MS;
+        if (reservationExpiresAt > Date.now()) setTourReservedAt(data.tourReservedAt);
+      }
     } catch {}
   }, []);
 
   useEffect(() => {
     try {
-      if (cartItems.length === 0) { sessionStorage.removeItem(SESSION_KEY); return; }
+      if (cartItems.length === 0 && !tourReservedAt) { sessionStorage.removeItem(SESSION_KEY); return; }
       sessionStorage.setItem(SESSION_KEY, JSON.stringify({
         v: 1,
         savedAt: Date.now(),
@@ -312,9 +366,10 @@ export function PromoCheckoutProvider({ children }: { children: React.ReactNode 
         selectedDate: selectedDate?.toISOString() ?? null,
         adultQty,
         childQty,
+        tourReservedAt,
       }));
     } catch {}
-  }, [cartItems, cartExpiresAt, selectedTourId, tourSkipped, selectedDate, adultQty, childQty]);
+  }, [cartItems, cartExpiresAt, selectedTourId, tourSkipped, selectedDate, adultQty, childQty, tourReservedAt]);
 
   // ── Body overflow lock ─────────────────────────────────────────────────────
 
@@ -362,6 +417,7 @@ export function PromoCheckoutProvider({ children }: { children: React.ReactNode 
     setAdultQty(1);
     setChildQty(0);
     setPendingItems([]);
+    setTourReservedAt(null);
     try { sessionStorage.removeItem(SESSION_KEY); } catch {}
   }, []);
 
@@ -389,7 +445,11 @@ export function PromoCheckoutProvider({ children }: { children: React.ReactNode 
       if (opts?.preferredTour) setSelectedTourId(opts.preferredTour);
       if (opts?.pendingItems?.length) setPendingItems(opts.pendingItems);
       setTourOptional(opts?.tourOptional ?? false);
-      setSelectedDate(null);
+      if (opts?.dateText) {
+        setSelectedDate(new Date(opts.dateText));
+      } else {
+        setSelectedDate(null);
+      }
       setCartItems((prev) => {
         if (prev.length === 0) {
           setAdultQty(opts?.adultCount ?? 1);
@@ -414,6 +474,7 @@ export function PromoCheckoutProvider({ children }: { children: React.ReactNode 
       setPendingItems([]);
     }
     setTourSkipped(false);
+    setTourReservedAt((prev) => prev ?? Date.now());
     setStep("bookingInfo");
   }, [selectedDate, adultQty, childQty, pendingItems]);
 
@@ -431,6 +492,17 @@ export function PromoCheckoutProvider({ children }: { children: React.ReactNode 
   const closeCheckout = useCallback(() => {
     setStep("idle");
     setPendingItems([]);
+    // If a tour has been reserved, keep all state so the cart bar can show the reservation
+  }, []);
+
+  const resumeFromReservation = useCallback(() => {
+    setStep("bookingInfo");
+  }, []);
+
+  const cancelReservation = useCallback(() => {
+    setTourReservedAt(null);
+    setSelectedDate(null);
+    setStep("idle");
   }, []);
 
   // ── Booking info ───────────────────────────────────────────────────────────
@@ -529,9 +601,11 @@ export function PromoCheckoutProvider({ children }: { children: React.ReactNode 
     step, selectedTourId, tourSkipped, selectedDate, adultQty, childQty,
     tourOptional, orderData, contactForm,
     addonModalOpen, addonProductId, addonSourceTour,
+    tourReservedAt, reservationTimeLeft, reservationExpiring,
     addToCart, removeFromCart, clearCart,
     openTourSelection, openAddonModal, closeAddonModal,
     proceedFromTourSelection, skipTourSelection, closeCheckout,
+    resumeFromReservation, cancelReservation,
     proceedFromBookingInfo, goBackFromBookingInfo,
     goBackFromPayment, makePayment,
     setSelectedTourId, setSelectedDate, setAdultQty, setChildQty,

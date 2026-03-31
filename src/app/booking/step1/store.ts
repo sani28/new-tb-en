@@ -2,36 +2,13 @@
 
 import { useSyncExternalStore } from "react";
 
-export type Step1TourId = "tour01" | "tour02" | "tour04";
-
 export type Step1State = {
-  tourId: Step1TourId;
   adultCount: number;
   childCount: number;
   selectedDate: Date | null;
 };
 
-// Backend handoff note (everyday language):
-// These two numbers are the "how many seats are you buying" for the tour itself.
-// One booking purchase will send them as 2 ticket lines:
-// - { kind: "adult", quantity: adultCount, unitPrice: ... }
-// - { kind: "child", quantity: childCount, unitPrice: ... }
-// Total seats = adultCount + childCount.
-
-type TourPricing = {
-  adult: { current: number; original: number };
-  child: { current: number; original: number };
-};
-
-// Mirrors legacy booking.html pricing (and fills tour02 to avoid crashes).
-const TOUR_PRICING: Record<Step1TourId, TourPricing> = {
-  tour01: { adult: { current: 20, original: 25 }, child: { current: 15, original: 20 } },
-  // booking.html doesn't define tour02 pricing yet; keep same as tour01 for now.
-  tour02: { adult: { current: 20, original: 25 }, child: { current: 15, original: 20 } },
-  tour04: { adult: { current: 18, original: 22 }, child: { current: 12, original: 15 } },
-};
-
-let state: Step1State = { tourId: "tour01", adultCount: 0, childCount: 0, selectedDate: null };
+let state: Step1State = { adultCount: 0, childCount: 0, selectedDate: null };
 const listeners = new Set<() => void>();
 
 function emit() {
@@ -50,22 +27,6 @@ export const bookingStep1Store = {
   },
   getSnapshot() {
     return state;
-  },
-
-  getPricing(tourId: Step1TourId) {
-    return TOUR_PRICING[tourId] ?? TOUR_PRICING.tour01;
-  },
-  getTotals(s: Step1State) {
-    const p = this.getPricing(s.tourId);
-    const currentTotal = s.adultCount * p.adult.current + s.childCount * p.child.current;
-    const originalTotal = s.adultCount * p.adult.original + s.childCount * p.child.original;
-    return { currentTotal, originalTotal };
-  },
-
-  setTourId(tourId: Step1TourId) {
-    if (state.tourId === tourId) return;
-    state = { ...state, tourId };
-    emit();
   },
 
   setCounts(adultCount: number, childCount: number) {
@@ -94,4 +55,3 @@ export const bookingStep1Store = {
 export function useBookingStep1() {
   return useSyncExternalStore(bookingStep1Store.subscribe, bookingStep1Store.getSnapshot, bookingStep1Store.getSnapshot);
 }
-

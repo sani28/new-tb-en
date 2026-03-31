@@ -18,6 +18,9 @@ const KEEP_REAL_RASTER_PATHS = new Set([
   "/imgs/bookingicon.png",
   "/imgs/mybookingicon.png",
   "/imgs/myaccounticon.png",
+  "/imgs/footericon-1.png",
+  "/imgs/footericon-2.png",
+  "/imgs/footericon-3.png",
   // Homepage hero slider: keep original photography visible for now
   "/imgs/hero-slider-image-4.jpg",
   "/imgs/hero-slider-image-5.jpg",

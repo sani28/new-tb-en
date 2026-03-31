@@ -10,24 +10,12 @@ const MONTH_NAMES = [
 ];
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-const TOUR_PRICES: Record<string, { adult: number; child: number }> = {
-  tour01: { adult: 27, child: 18 },
-  tour02: { adult: 27, child: 18 },
-  tour04: { adult: 24, child: 15 },
-};
-
-const TOUR_OPTIONS = [
-  { value: "tour01", label: "Tour 01 Downtown Palace Namsan Course (Hop On, Hop Off)" },
-  { value: "tour02", label: "Tour 02 Panorama Course" },
-  { value: "tour04", label: "Tour 04 Night View Course (Non Stop)" },
-];
 
 const clamp = (n: number, min = 0, max = 10) => Math.max(min, Math.min(max, n));
 
 type CalendarCell = { day: number; disabled: boolean; soldOut: boolean } | null;
 
 export default function BookingWidget() {
-  const [tour, setTour] = useState("tour01");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [adultCount, setAdultCount] = useState(0);
@@ -37,8 +25,6 @@ export default function BookingWidget() {
   const now = new Date();
   const [viewMonth, setViewMonth] = useState(now.getMonth());
   const [viewYear, setViewYear] = useState(now.getFullYear());
-
-  const prices = TOUR_PRICES[tour] ?? TOUR_PRICES.tour01;
 
   /* Close calendar on outside click */
   useEffect(() => {
@@ -105,7 +91,6 @@ export default function BookingWidget() {
     document.dispatchEvent(
       new CustomEvent("tb:openPromoTourSelectionFromHero", {
         detail: {
-          preferredTour: tour,
           adultCount,
           childCount,
           dateText: selectedDate?.toISOString(),
@@ -118,7 +103,7 @@ export default function BookingWidget() {
     <div
       className={
         "w-full relative z-[var(--z-nav)] flex flex-wrap items-stretch gap-2 rounded-none bg-white/95 px-5 py-4 shadow-none backdrop-blur-xl " +
-        "md:absolute md:bottom-10 md:left-1/2 md:w-auto md:max-w-[95vw] md:-translate-x-1/2 md:flex-nowrap md:items-center md:gap-3 md:rounded-[20px] md:border md:border-white/60 " +
+        "md:absolute md:bottom-3 md:left-1/2 md:w-auto md:max-w-[95vw] md:-translate-x-1/2 md:flex-nowrap md:items-center md:gap-3 md:rounded-[20px] md:border md:border-white/60 " +
         "md:bg-gradient-to-br md:from-white/98 md:to-white/95 md:px-5 md:py-4 " +
         "md:shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.8)] " +
         "md:hover:shadow-[0_12px_40px_rgba(0,0,0,0.15),0_4px_12px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.9)] md:transition-shadow"
@@ -126,34 +111,10 @@ export default function BookingWidget() {
       role="form"
       aria-label="Tour booking"
     >
-      {/* Tour & Date selectors */}
+      {/* Date selector */}
       <div className="flex basis-full items-center gap-2 md:basis-auto md:flex-1 md:gap-3 max-[400px]:gap-1.5">
-        {/* Tour select */}
-        <div className="min-w-0 flex-1 md:flex-1 md:min-w-0">
-          <select
-            id="booking-tour-select"
-            value={tour}
-            onChange={(e) => setTour(e.target.value)}
-            aria-label="Select tour"
-            className={
-              "w-full min-w-0 min-h-11 cursor-pointer rounded-full border-2 border-[#E8E8E8] bg-gradient-to-b from-white to-[#FAFAFA] " +
-              "px-4 py-3.5 pr-10 text-[14px] font-[var(--font-sans-medium)] text-[var(--color-text-dark)] shadow-sm transition-colors " +
-              "hover:border-[#D40004] focus:border-[#D40004] focus:outline-none focus:ring-4 focus:ring-[#D40004]/15 " +
-              "md:min-w-[180px] " +
-              "max-md:px-3 max-md:py-3 max-md:text-[13px] " +
-              "max-[400px]:min-h-10 max-[400px]:px-2 max-[400px]:py-2 max-[400px]:text-[12px]"
-            }
-          >
-            {TOUR_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
         {/* Date picker */}
-        <div className="relative shrink-0 min-w-[148px] max-[400px]:min-w-[130px] md:shrink md:min-w-[160px] md:w-auto z-[var(--z-dropdown)]" ref={calendarRef}>
+        <div className="relative shrink-0 min-w-[148px] max-[400px]:min-w-[130px] md:flex-1 md:min-w-[220px] z-[var(--z-dropdown)]" ref={calendarRef}>
           <button
             onClick={() => setCalendarOpen((o) => !o)}
             aria-expanded={calendarOpen}
@@ -298,14 +259,12 @@ export default function BookingWidget() {
       <div className="shrink-0 flex items-center gap-1.5 md:flex md:items-center md:gap-2">
         <CounterGroup
           label="Adult"
-          price={prices.adult}
           count={adultCount}
           onDecrement={() => setAdultCount((c) => clamp(c - 1))}
           onIncrement={() => setAdultCount((c) => clamp(c + 1))}
         />
         <CounterGroup
           label="Child"
-          price={prices.child}
           count={childCount}
           onDecrement={() => setChildCount((c) => clamp(c - 1))}
           onIncrement={() => setChildCount((c) => clamp(c + 1))}
@@ -317,7 +276,7 @@ export default function BookingWidget() {
           "flex-1 min-w-0 rounded-[10px] py-3 text-[14px] bg-[var(--color-brand-red)] " +
           "font-[var(--font-copperplate)] font-bold uppercase tracking-[0.3px] text-white transition-colors " +
           "hover:bg-[#C4001C] " +
-          "md:flex-none md:shrink-0 md:min-w-[90px] md:self-stretch md:px-6 md:py-3 md:text-[15px] md:tracking-[0.2px]"
+          "md:flex-none md:shrink-0 md:min-w-[140px] md:self-stretch md:px-8 md:py-3 md:text-[15px] md:tracking-[0.2px]"
         }
         onClick={onBook}
         aria-label="Book tour"
@@ -332,13 +291,12 @@ export default function BookingWidget() {
 /* ── Counter sub-component ── */
 interface CounterGroupProps {
   label: string;
-  price: number;
   count: number;
   onDecrement: () => void;
   onIncrement: () => void;
 }
 
-function CounterGroup({ label, price, count, onDecrement, onIncrement }: CounterGroupProps) {
+function CounterGroup({ label, count, onDecrement, onIncrement }: CounterGroupProps) {
   return (
     <div
       className={
@@ -346,14 +304,9 @@ function CounterGroup({ label, price, count, onDecrement, onIncrement }: Counter
         "md:flex-[0_1_auto] md:gap-2 md:px-[12px] md:py-2.5 md:shadow-[0_2px_6px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.6)] md:hover:bg-[#C4001C] md:transition-colors"
       }
     >
-      <div className="flex flex-col items-start md:flex-row md:items-center md:gap-2">
-        <label className="text-[9px] font-bold uppercase tracking-[0.5px] text-white/90 md:text-[11px] md:font-semibold md:tracking-[0.5px]">
-          {label}
-        </label>
-        <span className="hidden whitespace-nowrap text-white md:inline md:text-[15px] md:font-extrabold">
-          ${price} USD
-        </span>
-      </div>
+      <label className="text-[9px] font-bold uppercase tracking-[0.5px] text-white/90 md:text-[11px] md:font-semibold md:tracking-[0.5px]">
+        {label}
+      </label>
       <div
         className="flex items-center gap-1 rounded-[5px] bg-black/10 p-0.5 md:gap-1.5 md:rounded-[8px] md:bg-black/5 md:px-1.5 md:py-0.5"
         role="group"

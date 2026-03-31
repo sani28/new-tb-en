@@ -9,6 +9,7 @@ import {
   getBookingCartTotal,
   type BookingCartItem,
 } from "@/app/booking/lib/cart";
+import type { SelectedTour } from "@/app/booking/components/BookingPackageStep";
 
 export type ContactInfo = {
   fullName: string;
@@ -21,14 +22,9 @@ export type ContactInfo = {
 type Props = {
   contact: ContactInfo;
   onContactChange: (next: ContactInfo) => void;
+  selectedTour: SelectedTour | null;
   onBack: () => void;
   onContinue: () => void;
-};
-
-const TOUR_NAMES: Record<string, string> = {
-  tour01: "Downtown Palace Namsan Course",
-  tour02: "Panorama Course",
-  tour04: "Night View Course",
 };
 
 function formatUsd(n: number) {
@@ -54,25 +50,22 @@ function buildAddonMeta(item: BookingCartItem) {
   return item.variant || "";
 }
 
-export default function BookingStep2({ contact, onContactChange, onBack, onContinue }: Props) {
+export default function BookingStep2({ contact, onContactChange, selectedTour, onBack, onContinue }: Props) {
   const step1 = useBookingStep1();
   const cart = useBookingCart();
 
-  const pricing = bookingStep1Store.getPricing(step1.tourId);
-  const adultLineTotal = step1.adultCount * pricing.adult.current;
-  const adultLineOriginal = step1.adultCount * pricing.adult.original;
-  const childLineTotal = step1.childCount * pricing.child.current;
-  const childLineOriginal = step1.childCount * pricing.child.original;
-
+  const adultPrice = selectedTour?.adultPrice ?? 0;
+  const childPrice = selectedTour?.childPrice ?? 0;
+  const adultLineTotal = step1.adultCount * adultPrice;
+  const childLineTotal = step1.childCount * childPrice;
   const ticketsTotal = adultLineTotal + childLineTotal;
-  const ticketsOriginal = adultLineOriginal + childLineOriginal;
 
   const addonsTotal = getBookingCartTotal(cart.items);
   const addonsOriginal = getBookingCartOriginalTotal(cart.items);
   const addonsCount = getBookingCartItemCount(cart.items);
 
   const grandTotal = ticketsTotal + addonsTotal;
-  const grandOriginal = ticketsOriginal + addonsOriginal;
+  const grandOriginal = ticketsTotal + addonsOriginal;
   const savings = grandOriginal - grandTotal;
 
   const dateLabel = step1.selectedDate
@@ -86,7 +79,7 @@ export default function BookingStep2({ contact, onContactChange, onBack, onConti
     <>
       {/* Step Title */}
       <div className="flex items-center gap-3 border-b border-[#eee] px-6 py-5">
-        <span className="flex size-8 items-center justify-center rounded-full bg-brand-red text-base font-semibold text-white">2</span>
+        <span className="flex size-8 items-center justify-center rounded-full bg-brand-red text-base font-semibold text-white">3</span>
         <span className="text-lg font-semibold text-text-dark">Your Information</span>
       </div>
       <div className="p-6 max-md:p-4">
@@ -106,7 +99,7 @@ export default function BookingStep2({ contact, onContactChange, onBack, onConti
               <div className="flex items-center justify-between border-b border-[#eee] py-3">
                 <div className="flex items-center gap-3">
                   <div>
-                    <h5 className="mb-1 text-sm font-semibold">{TOUR_NAMES[step1.tourId] ?? step1.tourId}</h5>
+                    <h5 className="mb-1 text-sm font-semibold">{selectedTour?.name ?? "Tour"}</h5>
                     <span className="text-xs text-text-gray">Adult</span>
                   </div>
                 </div>
@@ -127,7 +120,7 @@ export default function BookingStep2({ contact, onContactChange, onBack, onConti
               <div className="flex items-center justify-between border-b border-[#eee] py-3">
                 <div className="flex items-center gap-3">
                   <div>
-                    <h5 className="mb-1 text-sm font-semibold">{TOUR_NAMES[step1.tourId] ?? step1.tourId}</h5>
+                    <h5 className="mb-1 text-sm font-semibold">{selectedTour?.name ?? "Tour"}</h5>
                     <span className="text-xs text-text-gray">Child</span>
                   </div>
                 </div>
@@ -194,10 +187,6 @@ export default function BookingStep2({ contact, onContactChange, onBack, onConti
           )}
 
           <div className="mt-4 border-t-2 border-[#ddd] pt-4">
-            <div className="mb-2 flex justify-between">
-              <span>Subtotal</span>
-              <span>{formatUsd(grandOriginal)}</span>
-            </div>
             {savings > 0 && (
               <div className="mb-2 flex justify-between text-[#4CAF50]">
                 <span>You Save</span>

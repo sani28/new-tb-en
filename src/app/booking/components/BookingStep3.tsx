@@ -1,25 +1,20 @@
 "use client";
 
 import { useBookingStep1 } from "@/app/booking/step1/store";
-import { bookingStep1Store } from "@/app/booking/step1/store";
 import { useBookingCart } from "@/app/booking/cart/useBookingCart";
 import {
   getBookingCartOriginalTotal,
   getBookingCartTotal,
   type BookingCartItem,
 } from "@/app/booking/lib/cart";
+import type { SelectedTour } from "@/app/booking/components/BookingPackageStep";
 
 type Props = {
   isSubmitting: boolean;
   error: string | null;
+  selectedTour: SelectedTour | null;
   onBack: () => void;
   onMakePayment: () => void;
-};
-
-const TOUR_NAMES: Record<string, string> = {
-  tour01: "Downtown Palace Namsan Course",
-  tour02: "Panorama Course",
-  tour04: "Night View Course",
 };
 
 function formatUsd(n: number) {
@@ -45,24 +40,21 @@ function buildAddonMeta(item: BookingCartItem) {
   return item.variant || "";
 }
 
-export default function BookingStep3({ isSubmitting, error, onBack, onMakePayment }: Props) {
+export default function BookingStep3({ isSubmitting, error, selectedTour, onBack, onMakePayment }: Props) {
   const step1 = useBookingStep1();
   const cart = useBookingCart();
 
-  const pricing = bookingStep1Store.getPricing(step1.tourId);
-  const adultLineTotal = step1.adultCount * pricing.adult.current;
-  const adultLineOriginal = step1.adultCount * pricing.adult.original;
-  const childLineTotal = step1.childCount * pricing.child.current;
-  const childLineOriginal = step1.childCount * pricing.child.original;
-
+  const adultPrice = selectedTour?.adultPrice ?? 0;
+  const childPrice = selectedTour?.childPrice ?? 0;
+  const adultLineTotal = step1.adultCount * adultPrice;
+  const childLineTotal = step1.childCount * childPrice;
   const ticketsTotal = adultLineTotal + childLineTotal;
-  const ticketsOriginal = adultLineOriginal + childLineOriginal;
 
   const addonsTotal = getBookingCartTotal(cart.items);
   const addonsOriginal = getBookingCartOriginalTotal(cart.items);
 
   const grandTotal = ticketsTotal + addonsTotal;
-  const grandOriginal = ticketsOriginal + addonsOriginal;
+  const grandOriginal = ticketsTotal + addonsOriginal;
   const savings = grandOriginal - grandTotal;
 
   const dateLabel = step1.selectedDate
@@ -73,7 +65,7 @@ export default function BookingStep3({ isSubmitting, error, onBack, onMakePaymen
     <>
       {/* Step Title */}
       <div className="flex items-center gap-3 border-b border-[#eee] px-6 py-5">
-        <span className="flex size-8 items-center justify-center rounded-full bg-brand-red text-base font-semibold text-white">3</span>
+        <span className="flex size-8 items-center justify-center rounded-full bg-brand-red text-base font-semibold text-white">4</span>
         <span className="text-lg font-semibold text-text-dark">Payment</span>
       </div>
       <div className="p-6 max-md:p-4">
@@ -91,7 +83,7 @@ export default function BookingStep3({ isSubmitting, error, onBack, onMakePaymen
               <div className="flex items-center justify-between border-b border-[#eee] py-3">
                 <div className="flex items-center gap-3">
                   <div>
-                    <h5 className="mb-1 text-sm font-semibold">{TOUR_NAMES[step1.tourId] ?? step1.tourId}</h5>
+                    <h5 className="mb-1 text-sm font-semibold">{selectedTour?.name ?? "Tour"}</h5>
                     <span className="text-xs text-text-gray">Adult</span>
                   </div>
                 </div>
@@ -99,9 +91,6 @@ export default function BookingStep3({ isSubmitting, error, onBack, onMakePaymen
                   <span className="text-sm text-text-gray">× {step1.adultCount}</span>
                   <div className="text-right">
                     <span className="text-base font-semibold text-brand-red">{formatUsd(adultLineTotal)}</span>
-                    {adultLineOriginal > adultLineTotal && (
-                      <span className="ml-2 text-xs text-text-light-gray line-through">{formatUsd(adultLineOriginal)}</span>
-                    )}
                   </div>
                 </div>
               </div>
@@ -111,7 +100,7 @@ export default function BookingStep3({ isSubmitting, error, onBack, onMakePaymen
               <div className="flex items-center justify-between border-b border-[#eee] py-3">
                 <div className="flex items-center gap-3">
                   <div>
-                    <h5 className="mb-1 text-sm font-semibold">{TOUR_NAMES[step1.tourId] ?? step1.tourId}</h5>
+                    <h5 className="mb-1 text-sm font-semibold">{selectedTour?.name ?? "Tour"}</h5>
                     <span className="text-xs text-text-gray">Child</span>
                   </div>
                 </div>
@@ -119,9 +108,6 @@ export default function BookingStep3({ isSubmitting, error, onBack, onMakePaymen
                   <span className="text-sm text-text-gray">× {step1.childCount}</span>
                   <div className="text-right">
                     <span className="text-base font-semibold text-brand-red">{formatUsd(childLineTotal)}</span>
-                    {childLineOriginal > childLineTotal && (
-                      <span className="ml-2 text-xs text-text-light-gray line-through">{formatUsd(childLineOriginal)}</span>
-                    )}
                   </div>
                 </div>
               </div>
@@ -162,10 +148,6 @@ export default function BookingStep3({ isSubmitting, error, onBack, onMakePaymen
           )}
 
           <div className="mt-4 border-t-2 border-[#ddd] pt-4">
-            <div className="mb-2 flex justify-between">
-              <span>Subtotal</span>
-              <span>{formatUsd(grandOriginal)}</span>
-            </div>
             {savings > 0 && (
               <div className="mb-2 flex justify-between text-[#4CAF50]">
                 <span>You Save</span>

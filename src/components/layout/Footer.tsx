@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="max-w-[460px] max-md:text-center max-md:mx-auto">
           <div className="mb-[30px] max-md:flex max-md:justify-center max-md:mb-5">
             <img
-              src="/imgs/redlogo-tigerbus.png"
+              src="/imgs/smalllogo.png"
               alt="Tiger Bus Logo"
               className="h-[50px] w-auto"
             />
@@ -110,11 +110,11 @@ export default function Footer() {
       </div>
 
       <div className="flex justify-between items-end max-w-[1400px] mx-auto mt-[40px] px-10 max-md:text-center max-md:p-5">
-<div className="flex-[0_0_50%] text-right ml-auto max-md:w-full max-md:mt-5 max-md:mx-auto">
+        <div className="flex-[0_0_50%] text-right ml-auto max-md:w-full max-md:mt-5 max-md:mx-auto">
           <img
-            src="/imgs/footerimg.png"
+            src="/imgs/footerimg.webp"
             alt="Seoul City Illustration"
-            className="w-full max-w-[700px] h-auto block ml-auto max-md:mx-auto max-md:max-w-full"
+            className="w-full max-w-[595px] h-auto block ml-auto max-md:mx-auto max-md:max-w-full"
           />
         </div>
       </div>
