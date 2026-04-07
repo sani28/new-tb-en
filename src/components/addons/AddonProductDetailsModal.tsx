@@ -3,6 +3,8 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { useEffect, useMemo, useState } from "react";
+import { useTranslations, useLocale } from "next-intl";
+import { formatPrice, getAddonPrice } from "@/components/homepage/checkout/PromoCheckoutContext";
 
 import { promoProductData } from "@/lib/data/promoProducts";
 import type { PromoCruiseType, PromoProductType, PromoProductWithId } from "@/types/promo";
@@ -38,10 +40,6 @@ export type AddonCartItemPayload = {
   computedLinePrice: number;
 };
 
-function formatUsd(n: number) {
-  return `$${n.toFixed(2)}`;
-}
-
 function slugify(s: string) {
   return (s || "")
     .trim()
@@ -69,6 +67,11 @@ export default function AddonProductDetailsModal({
   onContinueToCheckout?: () => void;
   physicalColorProductIdStrategy?: "base" | "composite";
 }) {
+  const locale = useLocale();
+  const t = useTranslations("AddonModal");
+  const tc = useTranslations("Common");
+  const tt = useTranslations("TicketCard");
+
   const product: PromoProductWithId | null = useMemo(() => {
     if (!productId) return null;
     const p = (promoProductData as Record<string, unknown>)[productId];
@@ -89,7 +92,6 @@ export default function AddonProductDetailsModal({
   const [timeSlot, setTimeSlot] = useState<string | null>(initialTimeSlot);
   const [colorQtyByIndex, setColorQtyByIndex] = useState<Record<number, number>>({});
 
-  // Scroll lock while open.
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
@@ -109,62 +111,78 @@ export default function AddonProductDetailsModal({
     return list.find((c) => c.id === cruiseType) || list[0] || null;
   }, [product, cruiseType]);
 
+  // Helper to get locale-aware price for this product
+  const lp = (field: "price" | "originalPrice" | "adultPrice" | "childPrice", usd: number) =>
+    product ? getAddonPrice(product.id, field, usd, locale) : usd;
+
   const { total, valid } = useMemo(() => {
     if (!product) return { total: 0, valid: false };
+
+    const pPrice = lp("price", product.price || 0);
 
     if (product.type === "physical") {
       if (hasPhysicalColors) {
         const sumQty = Object.values(colorQtyByIndex).reduce((s, v) => s + (v || 0), 0);
-        return { total: sumQty * (product.price || 0), valid: sumQty > 0 };
+        return { total: sumQty * pPrice, valid: sumQty > 0 };
       }
-      return { total: (product.price || 0) * Math.max(1, quantity), valid: quantity >= 1 };
+      return { total: pPrice * Math.max(1, quantity), valid: quantity >= 1 };
     }
 
     if (product.type === "scheduled") {
       const a = adultQty || 0;
       const c = childQty || 0;
-      const adultUnit = product.adultPrice ?? product.price ?? 0;
-      const childUnit = product.childPrice ?? product.price ?? 0;
+      const adultUnit = lp("adultPrice", product.adultPrice ?? product.price ?? 0);
+      const childUnit = lp("childPrice", product.childPrice ?? product.price ?? 0);
       const hasTickets = a + c > 0;
       const hasDate = !!selectedDate;
-      const hasTime = !requiresTime || !!selectedTime;
-      return { total: a * adultUnit + c * childUnit, valid: hasTickets && hasDate && hasTime };
+      if (requiresTime) {
+        return { total: a * adultUnit + c * childUnit, valid: hasTickets && hasDate && !!selectedTime };
+      }
+      return { total: a * adultUnit + c * childUnit, valid: hasTickets && hasDate };
     }
 
     if (product.type === "validityPass") {
       const a = adultQty || 0;
       const c = childQty || 0;
-      const adultUnit = product.adultPrice ?? product.price ?? 0;
-      const childUnit = product.childPrice ?? product.price ?? 0;
-      const hasTickets = a + c > 0;
-      return { total: a * adultUnit + c * childUnit, valid: hasTickets };
+      const adultUnit = lp("adultPrice", product.adultPrice ?? product.price ?? 0);
+      const childUnit = lp("childPrice", product.childPrice ?? product.price ?? 0);
+      return { total: a * adultUnit + c * childUnit, valid: a + c > 0 };
     }
 
     if (product.type === "cruise") {
       const a = adultQty || 0;
       const c = childQty || 0;
-      const adultUnit = selectedCruise?.adultPrice ?? product.adultPrice ?? 0;
-      const childUnit = selectedCruise?.childPrice ?? product.childPrice ?? 0;
-      const hasTickets = a + c > 0;
+      const adultUnit = lp("adultPrice", selectedCruise?.adultPrice ?? product.adultPrice ?? 0);
+      const childUnit = lp("childPrice", selectedCruise?.childPrice ?? product.childPrice ?? 0);
       const hasCruise = !!cruiseType;
       const hasDate = !!selectedDate;
       const hasSlot = !!timeSlot;
-      return { total: a * adultUnit + c * childUnit, valid: hasTickets && hasCruise && hasDate && hasSlot };
+      return { total: a * adultUnit + c * childUnit, valid: (a + c > 0) && hasCruise && hasDate && hasSlot };
     }
 
     return { total: 0, valid: false };
-  }, [product, hasPhysicalColors, colorQtyByIndex, quantity, adultQty, childQty, selectedDate, selectedTime, requiresTime, cruiseType, timeSlot, selectedCruise]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product, hasPhysicalColors, colorQtyByIndex, quantity, adultQty, childQty, selectedDate, selectedTime, requiresTime, cruiseType, timeSlot, selectedCruise, locale]);
 
   if (!open || !product) return null;
 
-  const isHanbokRental = product.id === "hanbok-rental";
+  // Translated product name/description
+  const PRODUCT_KEYS = ["kwangjuyo", "sejong-backstage", "museum-pass", "han-river-cruise", "hanbok-rental"];
+  const hasProductTranslation = PRODUCT_KEYS.includes(product.id);
+  const productName = hasProductTranslation ? tt(`${product.id}.name`) : product.name;
+  const productDescription = hasProductTranslation ? tt(`${product.id}.description`) : product.description;
 
+  const isHanbokRental = product.id === "hanbok-rental";
   const showQtyCounter = product.type === "physical" && !hasPhysicalColors;
   const displayImage = product.type === "cruise" ? selectedCruise?.image || product.image : product.image;
   const placeholder = product.placeholder || "📦";
 
   const onAdd = () => {
     if (!valid) return;
+
+    // Locale-aware price helpers for this product
+    const pPrice = lp("price", product.price);
+    const pOriginal = lp("originalPrice", product.originalPrice);
 
     const base = {
       type: product.type,
@@ -190,14 +208,14 @@ export default function AddonProductDetailsModal({
           items.push({
             ...base,
             productId: productIdOut,
-            name: `${product.name} - ${variantName} (${colorName})`,
-            price: product.price,
-            originalPrice: product.originalPrice,
+            name: `${productName} - ${variantName} (${colorName})`,
+            price: pPrice,
+            originalPrice: pOriginal,
             image: product.colors?.[idx]?.image || product.image,
             variant: variantName,
             color: colorName,
             quantity: qty,
-            computedLinePrice: product.price * qty,
+            computedLinePrice: pPrice * qty,
           });
         });
 
@@ -209,31 +227,31 @@ export default function AddonProductDetailsModal({
         {
           ...base,
           productId: product.id,
-          name: product.name,
-          price: product.price,
-          originalPrice: product.originalPrice,
+          name: productName,
+          price: pPrice,
+          originalPrice: pOriginal,
           image: product.image,
           variant: currentVariantName,
           color: null,
           quantity,
-          computedLinePrice: product.price * quantity,
+          computedLinePrice: pPrice * quantity,
         },
       ]);
       return;
     }
 
     if (product.type === "scheduled") {
-      const adultUnit = product.adultPrice ?? product.price;
-      const childUnit = product.childPrice ?? product.price;
+      const adultUnit = lp("adultPrice", product.adultPrice ?? product.price);
+      const childUnit = lp("childPrice", product.childPrice ?? product.price);
       const a = adultQty || 0;
       const c = childQty || 0;
       onAddItems([
         {
           ...base,
           productId: product.id,
-          name: product.name,
-          price: product.price,
-          originalPrice: product.originalPrice,
+          name: productName,
+          price: pPrice,
+          originalPrice: pOriginal,
           image: product.image,
           adultPrice: adultUnit,
           childPrice: childUnit,
@@ -250,22 +268,20 @@ export default function AddonProductDetailsModal({
     }
 
     if (product.type === "validityPass") {
-      const adultUnit = product.adultPrice ?? product.price;
-      const childUnit = product.childPrice ?? product.price;
+      const adultUnit = lp("adultPrice", product.adultPrice ?? product.price);
+      const childUnit = lp("childPrice", product.childPrice ?? product.price);
       const a = adultQty || 0;
       const c = childQty || 0;
       onAddItems([
         {
           ...base,
           productId: product.id,
-          name: product.name,
-          price: product.price,
-          originalPrice: product.originalPrice,
+          name: productName,
+          price: pPrice,
+          originalPrice: pOriginal,
           image: product.image,
-          adultPrice: adultUnit,
-          childPrice: childUnit,
           variant: currentVariantName,
-          validUntil: product.validUntil || null,
+          validUntil: product.validUntil ?? null,
           adultQty: a,
           childQty: c,
           quantity: a + c,
@@ -276,25 +292,25 @@ export default function AddonProductDetailsModal({
     }
 
     if (product.type === "cruise") {
-      const cruise = selectedCruise;
-      const adultUnit = cruise?.adultPrice ?? product.adultPrice ?? 0;
-      const childUnit = cruise?.childPrice ?? product.childPrice ?? 0;
+      const adultUnit = lp("adultPrice", selectedCruise?.adultPrice ?? product.adultPrice ?? 0);
+      const childUnit = lp("childPrice", selectedCruise?.childPrice ?? product.childPrice ?? 0);
+      const cruisePrice = lp("price", selectedCruise?.price ?? product.price);
+      const cruiseOrig = lp("originalPrice", selectedCruise?.originalPrice ?? product.originalPrice);
       const a = adultQty || 0;
       const c = childQty || 0;
-
       onAddItems([
         {
           ...base,
           productId: product.id,
-          name: `${product.name} - ${cruise?.name || "Cruise"}`,
-          price: cruise?.price ?? product.price,
-          originalPrice: cruise?.originalPrice ?? product.originalPrice,
-          image: cruise?.image || product.image,
+          name: productName,
+          price: cruisePrice,
+          originalPrice: cruiseOrig,
+          image: selectedCruise?.image ?? product.image,
           adultPrice: adultUnit,
           childPrice: childUnit,
-          variant: cruise?.name || currentVariantName,
-          cruiseType: cruiseType || null,
-          cruiseTypeName: cruise?.name || null,
+          variant: selectedCruise?.name ?? "Cruise",
+          cruiseType: selectedCruise?.id ?? null,
+          cruiseTypeName: selectedCruise?.name ?? null,
           selectedDate,
           selectedTimeSlot: timeSlot,
           adultQty: a,
@@ -318,7 +334,7 @@ export default function AddonProductDetailsModal({
         className="bg-white w-[90%] max-w-[600px] h-[90vh] rounded-xl relative flex flex-col overflow-hidden"
         role="dialog"
         aria-modal="true"
-        aria-label={`${product.name} details`}
+        aria-label={`${productName} details`}
         onMouseDown={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center px-5 py-4 border-b border-[#eee] bg-white shrink-0">
@@ -332,11 +348,11 @@ export default function AddonProductDetailsModal({
               }
               onClose();
             }}
-            aria-label={isHanbokRental && showHanbokInfo ? "Back" : "Close"}
+            aria-label={isHanbokRental && showHanbokInfo ? t("back") : "Close"}
           >
             ←
           </button>
-          <h3 className="m-0 text-base font-semibold">{isHanbokRental && showHanbokInfo ? "Hanbok Rental Info" : "Product Details"}</h3>
+          <h3 className="m-0 text-base font-semibold">{isHanbokRental && showHanbokInfo ? t("hanbokRentalInfo") : t("productDetails")}</h3>
           <button className="bg-transparent border-none text-xl cursor-pointer p-2 text-[#333]" type="button" onClick={onClose} aria-label="Close">
             ×
           </button>
@@ -345,7 +361,7 @@ export default function AddonProductDetailsModal({
         <div className="flex-1 overflow-y-auto">
           <div className={`w-full h-[300px] overflow-hidden${displayImage ? "" : " bg-gradient-to-br from-[#f5f5f5] to-[#e0e0e0] flex items-center justify-center"}`}>
             {displayImage ? (
-              <img src={displayImage} alt={product.name} className="size-full object-cover" />
+              <img src={displayImage} alt={productName} className="size-full object-cover" />
             ) : (
               <span className="text-[120px] opacity-70">{placeholder}</span>
             )}
@@ -354,47 +370,47 @@ export default function AddonProductDetailsModal({
           {isHanbokRental && showHanbokInfo ? (
             <div className="p-5">
               <div className="text-center mb-7">
-                <h2 className="text-xl font-bold text-[#333] mb-2">Hanbok Rental - Important Information</h2>
-                <p className="text-sm text-[#666]">Please review the following information to make the most of your Hanbok experience.</p>
+                <h2 className="text-xl font-bold text-[#333] mb-2">{t("hanbokTitle")}</h2>
+                <p className="text-sm text-[#666]">{t("hanbokSubtitle")}</p>
               </div>
 
               <div className="flex gap-4 bg-[#f8f9fa] rounded-xl p-5 mb-4 border border-[#e9ecef]">
                 <div className="shrink-0 text-3xl" aria-hidden="true">📍</div>
                 <div className="flex-1">
-                  <h3 className="text-base font-bold text-[#333] mb-3">How to Get There</h3>
-                  <p className="text-sm text-[#555] leading-relaxed mb-2"><strong>Address:</strong> 23 Bukchon-ro 11-gil, Jongno-gu, Seoul</p>
-                  <p className="text-sm text-[#555] leading-relaxed mb-2"><strong>Subway:</strong> Anguk Station (Line 3), Exit 2 - 5 min walk</p>
-                  <p className="text-sm text-[#555] leading-relaxed mb-2"><strong>Nearby:</strong> Bukchon Hanok Village, Gyeongbokgung Palace</p>
-                  <p className="bg-[#fff3cd] px-3 py-2.5 rounded-lg text-[13px] text-[#856404] mt-3">Look for the traditional hanok building with the pink sign.</p>
+                  <h3 className="text-base font-bold text-[#333] mb-3">{t("howToGetThere")}</h3>
+                  <p className="text-sm text-[#555] leading-relaxed mb-2"><strong>{t("address")}</strong> {t("addressDetail")}</p>
+                  <p className="text-sm text-[#555] leading-relaxed mb-2"><strong>{t("subway")}</strong> {t("subwayDetail")}</p>
+                  <p className="text-sm text-[#555] leading-relaxed mb-2"><strong>{t("nearby")}</strong> {t("nearbyDetail")}</p>
+                  <p className="bg-[#fff3cd] px-3 py-2.5 rounded-lg text-[13px] text-[#856404] mt-3">{t("lookForSign")}</p>
                 </div>
               </div>
 
               <div className="flex gap-4 bg-[#f8f9fa] rounded-xl p-5 mb-4 border border-[#e9ecef]">
                 <div className="shrink-0 text-3xl" aria-hidden="true">✅</div>
                 <div className="flex-1">
-                  <h3 className="text-base font-bold text-[#333] mb-3">How to Confirm Your Reservation</h3>
+                  <h3 className="text-base font-bold text-[#333] mb-3">{t("howToConfirm")}</h3>
                   <ul className="mt-2 mb-2 pl-4 list-disc text-sm text-[#555] leading-relaxed space-y-1">
-                    <li>A confirmation email with your reservation details</li>
-                    <li>A QR code to present at the rental shop</li>
-                    <li>Contact details for the rental shop</li>
+                    <li>{t("confirmEmail")}</li>
+                    <li>{t("confirmQr")}</li>
+                    <li>{t("confirmContact")}</li>
                   </ul>
-                  <p className="text-sm text-[#555] leading-relaxed mb-2"><strong>Check-in time:</strong> Please arrive 15 minutes before your selected date.</p>
+                  <p className="text-sm text-[#555] leading-relaxed mb-2"><strong>{t("checkInTime")}</strong> {t("checkInDetail")}</p>
                 </div>
               </div>
 
               <div className="flex gap-4 bg-[#f8f9fa] rounded-xl p-5 mb-0 border border-[#e9ecef]">
                 <div className="shrink-0 text-3xl" aria-hidden="true">⏱️</div>
                 <div className="flex-1">
-                  <h3 className="text-base font-bold text-[#333] mb-3">How to Use the Rental Service & Returns</h3>
-                  <p className="text-sm text-[#555] leading-relaxed mb-2"><strong>Rental period:</strong> 4 hours from check-in</p>
-                  <p className="text-sm text-[#555] leading-relaxed mb-1"><strong>Included:</strong></p>
+                  <h3 className="text-base font-bold text-[#333] mb-3">{t("howToUse")}</h3>
+                  <p className="text-sm text-[#555] leading-relaxed mb-2"><strong>{t("rentalPeriod")}</strong> {t("rentalPeriodDetail")}</p>
+                  <p className="text-sm text-[#555] leading-relaxed mb-1"><strong>{t("included")}</strong></p>
                   <ul className="mt-2 mb-2 pl-4 list-disc text-sm text-[#555] leading-relaxed space-y-1">
-                    <li>Traditional Hanbok outfit (top + skirt/pants)</li>
-                    <li>Hair accessories and traditional bag</li>
-                    <li>Secure locker for your belongings</li>
-                    <li>Basic hairstyling assistance</li>
+                    <li>{t("includeHanbok")}</li>
+                    <li>{t("includeAccessories")}</li>
+                    <li>{t("includeLocker")}</li>
+                    <li>{t("includeHairstyling")}</li>
                   </ul>
-                  <p className="text-sm text-[#555] leading-relaxed mb-2"><strong>Return policy:</strong> Please return by the scheduled time to avoid late fees ($10/hour)</p>
+                  <p className="text-sm text-[#555] leading-relaxed mb-2"><strong>{t("returnPolicy")}</strong> {t("returnPolicyDetail")}</p>
                 </div>
               </div>
             </div>
@@ -416,12 +432,12 @@ export default function AddonProductDetailsModal({
               )}
 
               <div className="p-5">
-                <h2 className="text-2xl mb-4">{product.name}</h2>
-                <p className="text-sm text-[#666] leading-relaxed mb-5">{product.description}</p>
+                <h2 className="text-2xl mb-4">{productName}</h2>
+                <p className="text-sm text-[#666] leading-relaxed mb-5">{productDescription}</p>
 
                 {hasPhysicalColors && product.colors && (
                   <div className="mt-4">
-                    <h3 className="text-base font-semibold mb-3">Select Color & Quantity</h3>
+                    <h3 className="text-base font-semibold mb-3">{t("selectColorQty")}</h3>
                     <div className="flex flex-col gap-2.5">
                       {product.colors.map((c, idx) => {
                         const qty = colorQtyByIndex[idx] || 0;
@@ -432,24 +448,11 @@ export default function AddonProductDetailsModal({
                               <span className="text-sm font-medium">{c.name}</span>
                             </div>
                             <div className="flex items-center gap-2">
-                              <button
-                                type="button"
-                                className="size-8 border border-[#ddd] bg-white rounded-md cursor-pointer disabled:opacity-40"
-                                aria-label={`Decrease ${c.name} quantity`}
-                                disabled={qty <= 0}
-                                onClick={() => setColorQtyByIndex((prev) => ({ ...prev, [idx]: Math.max(0, (prev[idx] || 0) - 1) }))}
-                              >
-                                -
-                              </button>
-                              <span className="w-8 text-center font-medium" aria-label={`${c.name} quantity`}>{qty}</span>
-                              <button
-                                type="button"
-                                className="size-8 border border-[#ddd] bg-white rounded-md cursor-pointer"
-                                aria-label={`Increase ${c.name} quantity`}
-                                onClick={() => setColorQtyByIndex((prev) => ({ ...prev, [idx]: (prev[idx] || 0) + 1 }))}
-                              >
-                                +
-                              </button>
+                              <button type="button" className="size-8 border border-[#ddd] bg-white rounded-md cursor-pointer disabled:opacity-40" disabled={qty <= 0}
+                                onClick={() => setColorQtyByIndex((prev) => ({ ...prev, [idx]: Math.max(0, (prev[idx] || 0) - 1) }))}>-</button>
+                              <span className="w-8 text-center font-medium">{qty}</span>
+                              <button type="button" className="size-8 border border-[#ddd] bg-white rounded-md cursor-pointer"
+                                onClick={() => setColorQtyByIndex((prev) => ({ ...prev, [idx]: (prev[idx] || 0) + 1 }))}>+</button>
                             </div>
                           </div>
                         );
@@ -460,7 +463,7 @@ export default function AddonProductDetailsModal({
 
                 {product.type === "cruise" && (product.cruiseTypes || []).length > 0 && (
                   <div className="mt-4">
-                    <h3 className="text-base font-semibold mb-3">Choose Cruise Type</h3>
+                    <h3 className="text-base font-semibold mb-3">{t("chooseCruiseType")}</h3>
                     <div className="flex gap-2.5 flex-wrap">
                       {(product.cruiseTypes || []).map((c) => (
                         <button
@@ -472,7 +475,7 @@ export default function AddonProductDetailsModal({
                           <img src={c.image} alt={c.name} className="w-14 h-10 object-cover rounded-md" />
                           <div className="text-left">
                             <div className="font-semibold text-sm">{c.name}</div>
-                            <div className="text-[13px] text-[#666]">{formatUsd(c.price)}</div>
+                            <div className="text-[13px] text-[#666]">{formatPrice(lp("price", c.price), locale)}</div>
                           </div>
                         </button>
                       ))}
@@ -482,7 +485,7 @@ export default function AddonProductDetailsModal({
 
                 {(product.type === "scheduled" || product.type === "cruise") && (
                   <div className="mt-4">
-                    <h3 className="text-base font-semibold mb-3">Select Date{product.type === "scheduled" && requiresTime ? " & Time" : ""}</h3>
+                    <h3 className="text-base font-semibold mb-3">{product.type === "scheduled" && requiresTime ? t("selectDateAndTime") : t("selectDate")}</h3>
                     <div className="flex gap-3 flex-wrap items-center">
                       <input
                         type="date"
@@ -498,16 +501,16 @@ export default function AddonProductDetailsModal({
                           onChange={(e) => setSelectedTime(e.target.value || null)}
                           className="flex-1 min-w-[120px] px-3 py-3 border border-[#ddd] rounded-lg text-base bg-white"
                         >
-                          <option value="">Select Time</option>
-                          {(product.availableTimes || []).map((t) => (
-                            <option key={t} value={t}>{t}</option>
+                          <option value="">{t("selectTime")}</option>
+                          {(product.availableTimes || []).map((time) => (
+                            <option key={time} value={time}>{time}</option>
                           ))}
                         </select>
                       )}
 
                       {product.type === "scheduled" && !requiresTime && product.operationHours && (
                         <div className="flex-1 min-w-[150px] px-3 py-3 border border-[#ddd] rounded-lg text-base bg-[#f5f5f5] text-[#333]">
-                          All day, operation hours &quot;{product.operationHours}&quot;
+                          {t("allDay")} &quot;{product.operationHours}&quot;
                         </div>
                       )}
                     </div>
@@ -516,7 +519,7 @@ export default function AddonProductDetailsModal({
 
                 {product.type === "cruise" && (product.timeSlots || []).length > 0 && (
                   <div className="mt-4">
-                    <h3 className="text-base font-semibold mb-3">Select Time Slot</h3>
+                    <h3 className="text-base font-semibold mb-3">{t("selectTimeSlot")}</h3>
                     <div className="flex gap-2.5 flex-wrap">
                       {(product.timeSlots || []).map((s) => (
                         <button
@@ -534,74 +537,48 @@ export default function AddonProductDetailsModal({
 
                 {product.type === "validityPass" && product.validUntil && (
                   <div className="mt-4 p-3 bg-[#f0f9ff] rounded-lg border-l-4 border-[#0ea5e9]">
-                    <p className="m-0 text-[#0369a1] font-medium">Valid until {product.validUntil}</p>
+                    <p className="m-0 text-[#0369a1] font-medium">{t("validUntil", { date: product.validUntil })}</p>
                   </div>
                 )}
 
                 {(product.type === "scheduled" || product.type === "validityPass" || product.type === "cruise") && (
                   <div className="mt-4">
-                    <h3 className="text-base font-semibold mb-3">Select Tickets</h3>
+                    <h3 className="text-base font-semibold mb-3">{t("selectTickets")}</h3>
                     {(() => {
-                      const adultUnit =
+                      const adultUnit = lp("adultPrice",
                         product.type === "cruise"
                           ? selectedCruise?.adultPrice ?? product.adultPrice ?? 0
-                          : product.adultPrice ?? product.price;
-                      const childUnit =
+                          : product.adultPrice ?? product.price);
+                      const childUnit = lp("childPrice",
                         product.type === "cruise"
                           ? selectedCruise?.childPrice ?? product.childPrice ?? 0
-                          : product.childPrice ?? product.price;
+                          : product.childPrice ?? product.price);
                       return (
                         <>
                           <div className="flex justify-between items-center py-3 border-b border-[#eee]">
                             <div>
-                              <span className="font-medium">Adult</span>
-                              <span className="text-[#666] text-sm ml-2">{formatUsd(adultUnit)}</span>
+                              <span className="font-medium">{tc("adult")}</span>
+                              <span className="text-[#666] text-sm ml-2">{formatPrice(adultUnit, locale)}</span>
                             </div>
                             <div className="flex items-center gap-2">
-                              <button
-                                type="button"
-                                className="size-8 border border-[#ddd] bg-white rounded-md cursor-pointer disabled:opacity-40"
-                                aria-label="Decrease adult tickets"
-                                disabled={adultQty <= 0}
-                                onClick={() => setAdultQty((v) => Math.max(0, v - 1))}
-                              >
-                                -
-                              </button>
-                              <span className="w-8 text-center font-medium" aria-label="Adult ticket quantity">{adultQty}</span>
-                              <button
-                                type="button"
-                                className="size-8 border border-[#ddd] bg-white rounded-md cursor-pointer"
-                                aria-label="Increase adult tickets"
-                                onClick={() => setAdultQty((v) => v + 1)}
-                              >
-                                +
-                              </button>
+                              <button type="button" className="size-8 border border-[#ddd] bg-white rounded-md cursor-pointer disabled:opacity-40" disabled={adultQty <= 0}
+                                onClick={() => setAdultQty((v) => Math.max(0, v - 1))}>-</button>
+                              <span className="w-8 text-center font-medium">{adultQty}</span>
+                              <button type="button" className="size-8 border border-[#ddd] bg-white rounded-md cursor-pointer"
+                                onClick={() => setAdultQty((v) => v + 1)}>+</button>
                             </div>
                           </div>
                           <div className="flex justify-between items-center py-3">
                             <div>
-                              <span className="font-medium">Child</span>
-                              <span className="text-[#666] text-sm ml-2">{formatUsd(childUnit)}</span>
+                              <span className="font-medium">{tc("child")}</span>
+                              <span className="text-[#666] text-sm ml-2">{formatPrice(childUnit, locale)}</span>
                             </div>
                             <div className="flex items-center gap-2">
-                              <button
-                                type="button"
-                                className="size-8 border border-[#ddd] bg-white rounded-md cursor-pointer disabled:opacity-40"
-                                aria-label="Decrease child tickets"
-                                disabled={childQty <= 0}
-                                onClick={() => setChildQty((v) => Math.max(0, v - 1))}
-                              >
-                                -
-                              </button>
-                              <span className="w-8 text-center font-medium" aria-label="Child ticket quantity">{childQty}</span>
-                              <button
-                                type="button"
-                                className="size-8 border border-[#ddd] bg-white rounded-md cursor-pointer"
-                                aria-label="Increase child tickets"
-                                onClick={() => setChildQty((v) => v + 1)}
-                              >
-                                +
-                              </button>
+                              <button type="button" className="size-8 border border-[#ddd] bg-white rounded-md cursor-pointer disabled:opacity-40" disabled={childQty <= 0}
+                                onClick={() => setChildQty((v) => Math.max(0, v - 1))}>-</button>
+                              <span className="w-8 text-center font-medium">{childQty}</span>
+                              <button type="button" className="size-8 border border-[#ddd] bg-white rounded-md cursor-pointer"
+                                onClick={() => setChildQty((v) => v + 1)}>+</button>
                             </div>
                           </div>
                         </>
@@ -618,13 +595,9 @@ export default function AddonProductDetailsModal({
           {showQtyCounter && (
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
-                <button className="size-8 border border-[#ddd] bg-white rounded-md cursor-pointer" type="button" onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
-                  -
-                </button>
+                <button className="size-8 border border-[#ddd] bg-white rounded-md cursor-pointer" type="button" onClick={() => setQuantity((q) => Math.max(1, q - 1))}>-</button>
                 <input className="w-10 h-8 text-center border border-[#ddd] rounded-md" type="text" value={quantity} readOnly />
-                <button className="size-8 border border-[#ddd] bg-white rounded-md cursor-pointer" type="button" onClick={() => setQuantity((q) => q + 1)}>
-                  +
-                </button>
+                <button className="size-8 border border-[#ddd] bg-white rounded-md cursor-pointer" type="button" onClick={() => setQuantity((q) => q + 1)}>+</button>
               </div>
             </div>
           )}
@@ -633,12 +606,12 @@ export default function AddonProductDetailsModal({
             <>
               {!showHanbokInfo ? (
                 <button className="flex-1 px-5 py-3.5 bg-brand-red text-white border-none rounded-lg text-base font-semibold cursor-pointer" type="button" onClick={() => setShowHanbokInfo(true)}>
-                  Continue - {formatUsd(total)}
+                  {t("continue")} - {formatPrice(total, locale)}
                 </button>
               ) : (
                 <div className="flex gap-3 w-full">
                   <button className="shrink-0 px-6 py-3.5 bg-[#f5f5f5] text-[#333] border-none rounded-lg text-base font-semibold cursor-pointer hover:bg-[#e0e0e0]" type="button" onClick={() => setShowHanbokInfo(false)}>
-                    Back
+                    {t("back")}
                   </button>
                   <button
                     className="flex-1 px-5 py-3.5 bg-brand-red text-white border-none rounded-lg text-base font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
@@ -650,14 +623,14 @@ export default function AddonProductDetailsModal({
                       window.setTimeout(() => onContinueToCheckout?.(), 0);
                     }}
                   >
-                    Continue - {formatUsd(total)}
+                    {t("continue")} - {formatPrice(total, locale)}
                   </button>
                 </div>
               )}
             </>
           ) : (
             <button className="flex-1 px-5 py-3.5 bg-brand-red text-white border-none rounded-lg text-base font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" type="button" onClick={onAdd} disabled={!valid}>
-              Add to Cart - {formatUsd(total)}
+              {t("addToCart")} - {formatPrice(total, locale)}
             </button>
           )}
         </div>

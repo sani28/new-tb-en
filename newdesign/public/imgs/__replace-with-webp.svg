@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect x="0" y="0" width="800" height="500" fill="#f1f5f9"/>
+  <rect x="14" y="14" width="772" height="472" rx="18" fill="none" stroke="#94a3b8" stroke-width="4" stroke-dasharray="10 10"/>
+
+  <!-- Light repeating label so it still reads when cropped (e.g. CSS background-image cover) -->
+  <g opacity="0.14" fill="#0f172a" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="700"
+     transform="rotate(-18 400 250)">
+    <text x="400" y="120" font-size="28" text-anchor="middle">TO REPLACE WITH WEBP</text>
+    <text x="400" y="190" font-size="28" text-anchor="middle">TO REPLACE WITH WEBP</text>
+    <text x="400" y="260" font-size="28" text-anchor="middle">TO REPLACE WITH WEBP</text>
+    <text x="400" y="330" font-size="28" text-anchor="middle">TO REPLACE WITH WEBP</text>
+    <text x="400" y="400" font-size="28" text-anchor="middle">TO REPLACE WITH WEBP</text>
+  </g>
+
+  <g fill="#0f172a" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial" text-anchor="middle">
+    <text x="400" y="230" font-size="34" font-weight="800">IMAGE PLACEHOLDER</text>
+    <text x="400" y="275" font-size="26" font-weight="700">TO REPLACE WITH WEBP</text>
+  </g>
+</svg>
+

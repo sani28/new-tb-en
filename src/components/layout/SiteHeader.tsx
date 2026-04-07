@@ -1,46 +1,48 @@
 /* eslint-disable @next/next/no-img-element */
-/* eslint-disable @next/next/no-html-link-for-pages */
 
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { getMarqueeNotice } from "@/lib/data/notices";
+import { useLocale, useTranslations } from "next-intl";
+import { Link, useRouter, usePathname } from "@/i18n/navigation";
 
 /* ── Desktop nav buttons (booking + my-booking) ── */
 function DesktopNavButtons() {
+  const t = useTranslations("Nav");
   return (
-    <div className="flex gap-[clamp(8px,1.2vw,15px)] pr-[clamp(16px,2.5vw,40px)] max-lg:gap-[clamp(6px,0.8vw,12px)]">
-      <a
+    <div className="flex gap-[clamp(5px,0.8vw,10px)] pr-[clamp(16px,2.5vw,40px)] max-lg:gap-[clamp(4px,0.6vw,8px)]">
+      <Link
         href="/booking"
-        className="flex items-center gap-2 no-underline py-[0.55em] px-[1.1em] rounded-[10px] font-copperplate font-bold text-[clamp(14px,1.4vw,20px)] whitespace-nowrap bg-brand-red text-white max-lg:text-[clamp(11px,1.1vw,14px)] max-lg:py-[0.4em] max-lg:px-[0.7em] max-lg:gap-[5px] max-lg:rounded-lg"
+        className="flex items-center gap-1.5 no-underline py-[0.35em] px-[0.75em] rounded-[7px] font-copperplate font-bold text-[clamp(12px,1.2vw,16px)] whitespace-nowrap bg-brand-red text-white max-lg:text-[clamp(8px,0.8vw,10px)] max-lg:py-[0.3em] max-lg:px-[0.5em] max-lg:gap-1 max-lg:rounded-md"
       >
         <img
           src="/imgs/bookingicon.png"
           alt="Booking"
-          className="w-5 h-5 object-contain max-lg:w-[15px] max-lg:h-[15px]"
+          className="w-3.5 h-3.5 object-contain max-lg:w-[11px] max-lg:h-[11px]"
         />
-        BOOKING
-      </a>
-      <a
+        {t("booking")}
+      </Link>
+      <Link
         href="/my-booking"
-        className="flex items-center gap-2 no-underline py-[0.55em] px-[1.1em] rounded-[10px] font-copperplate font-bold text-[clamp(14px,1.4vw,20px)] whitespace-nowrap text-text-dark max-lg:text-[clamp(11px,1.1vw,14px)] max-lg:py-[0.4em] max-lg:px-[0.7em] max-lg:gap-[5px] max-lg:rounded-lg"
+        className="flex items-center gap-1.5 no-underline py-[0.35em] px-[0.75em] rounded-[7px] font-copperplate font-bold text-[clamp(12px,1.2vw,16px)] whitespace-nowrap text-text-dark max-lg:text-[clamp(8px,0.8vw,10px)] max-lg:py-[0.3em] max-lg:px-[0.5em] max-lg:gap-1 max-lg:rounded-md"
       >
         <img
           src="/imgs/myaccounticon.png"
           alt="My Account"
-          className="w-5 h-5 object-contain max-lg:w-[15px] max-lg:h-[15px]"
+          className="w-3.5 h-3.5 object-contain max-lg:w-[11px] max-lg:h-[11px]"
         />
-        MY BOOKING
-      </a>
+        {t("myBooking")}
+      </Link>
     </div>
   );
 }
 
 /* ── Mobile nav buttons (compact) ── */
 function MobileNavButtons() {
+  const t = useTranslations("Nav");
   return (
     <div className="flex gap-2">
-      <a
+      <Link
         href="/booking"
         className="flex items-center gap-1 no-underline py-1.5 px-2 rounded-[5px] font-copperplate font-bold text-xs whitespace-nowrap bg-brand-red text-white"
       >
@@ -49,9 +51,9 @@ function MobileNavButtons() {
           alt="Booking"
           className="w-3.5 h-3.5 object-contain"
         />
-        BOOKING
-      </a>
-      <a
+        {t("booking")}
+      </Link>
+      <Link
         href="/my-booking"
         className="flex items-center gap-1 no-underline py-1.5 px-2 rounded-[5px] font-copperplate font-bold text-xs whitespace-nowrap bg-[#FFF6D6] text-text-dark"
       >
@@ -60,8 +62,8 @@ function MobileNavButtons() {
           alt="My Account"
           className="w-3.5 h-3.5 object-contain"
         />
-        MY BOOKING
-      </a>
+        {t("myBooking")}
+      </Link>
     </div>
   );
 }
@@ -70,7 +72,26 @@ export default function SiteHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const languageRef = useRef<HTMLDivElement | null>(null);
-  const marqueeNotice = getMarqueeNotice();
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+  const t = useTranslations("Nav");
+  const tNotif = useTranslations("NotificationBar");
+  const tLang = useTranslations("LanguageSwitcher");
+
+  const navLinks = [
+    { href: "/tours" as const, label: t("tours") },
+    { href: "/map" as const, label: t("map") },
+    { href: "/notices" as const, label: t("notices") },
+    { href: "/things-to-do" as const, label: t("thingsToDo") },
+    { href: "/discounts" as const, label: t("discounts") },
+    { href: "/help" as const, label: t("help") },
+  ];
+
+  function switchLocale(newLocale: "en" | "ko") {
+    router.replace(pathname, { locale: newLocale });
+    setIsLanguageOpen(false);
+  }
 
   useEffect(() => {
     const onDocumentClick = (e: MouseEvent) => {
@@ -86,29 +107,27 @@ export default function SiteHeader() {
 
   return (
     <>
-      {/* ── Promo notification bar (marquee) — driven by notices data ── */}
-      {marqueeNotice && (
-        <div
-          data-header="promo-bar"
-          className="w-full bg-[#ff0000] text-white p-0 text-center font-bold text-base flex justify-center items-center h-[45px] overflow-hidden max-md:text-sm"
-        >
-          <div className="w-full overflow-hidden">
-            <div className="inline-block whitespace-nowrap animate-marquee pl-[100%] max-md:animate-marquee-mobile">
-              <span className="inline-block pr-[50px]">
-                🚨 IMPORTANT NOTICE: {marqueeNotice.marqueeText ?? marqueeNotice.title}{" "}
-                <a href={marqueeNotice.link ?? "/notices"} className="text-white underline hover:text-[#cccccc]">
-                  Please see full announcement details
-                </a>
-              </span>
-            </div>
+      {/* ── Promo notification bar (marquee) — mobile only ── */}
+      <div
+        data-header="promo-bar"
+        className="hidden max-md:flex w-full bg-[#ff0000] text-white p-0 text-center font-medium text-base justify-center items-center h-[45px] overflow-hidden max-md:text-sm"
+      >
+        <div className="w-full overflow-hidden">
+          <div className="inline-block whitespace-nowrap animate-marquee-mobile pl-[100%]">
+            <span className="inline-block pr-[50px]">
+              {tNotif("noticeText")}{" "}
+              <Link href="/notices" className="text-white underline hover:text-[#cccccc]">
+                {tNotif("noticeLink")}
+              </Link>
+            </span>
           </div>
         </div>
-      )}
+      </div>
 
-      {/* ── Top notification bar (red bar with directions + phone) ── */}
+      {/* ── Top notification bar (red bar with directions + marquee + phone) ── */}
       <div
         data-header="notification-bar"
-        className="bg-brand-red text-white py-2.5 px-10 flex justify-between items-center w-full h-[45px] max-lg:px-5 max-md:px-[15px] max-md:h-[45px] max-[375px]:px-2.5 max-[375px]:h-[45px]"
+        className="bg-brand-red text-white py-2 px-10 flex justify-between items-center w-full h-[40px] max-lg:px-5 max-md:px-[15px] max-md:h-[40px] max-[375px]:px-2.5 max-[375px]:h-[40px]"
       >
         {/* Hamburger — visible on mobile only */}
         <button
@@ -123,30 +142,43 @@ export default function SiteHeader() {
         {/* Directions link — left column */}
         <a
           href="#"
-          className="flex-[0_1_33.333%] text-left font-bold text-white text-sm whitespace-nowrap pl-10 pr-2.5 flex items-center no-underline max-md:flex-none max-md:font-medium"
+          className="shrink-0 text-left font-normal text-white text-xs whitespace-nowrap pl-10 pr-2.5 flex items-center no-underline max-md:pl-0 max-md:pr-1 max-md:text-[13px]"
         >
-          Directions to Gwanghwamun ticket office{" "}
+          <span className="max-md:hidden">{tNotif("directions")}</span>
+          <span className="hidden max-md:inline">{tNotif("directionsMobile")}</span>{" "}
           <img
             src="/imgs/googleicon.png"
             alt="Google"
-            className="w-[25px] h-5 ml-1"
+            className="w-[20px] h-4 ml-1 max-md:w-[14px] max-md:h-3 max-md:ml-0.5"
           />
           <img
             src="/imgs/navericon.png"
             alt="Naver"
-            className="w-[22px] h-5 ml-1"
+            className="w-[18px] h-4 ml-1 max-md:w-[12px] max-md:h-3 max-md:ml-0.5"
           />
         </a>
 
-        {/* Right section — phone + language */}
-        <div className="flex-[0_1_33.333%] flex items-center gap-2 justify-end max-lg:gap-1.5 max-md:flex-none max-md:gap-[15px] max-[375px]:gap-2.5">
-          {/* Customer service — hidden on mobile */}
-          <div className="text-white font-sans-semibold text-lg flex items-center gap-2 whitespace-nowrap tracking-tight max-lg:text-sm max-md:hidden">
-            <p>T:</p>
-            <span className="font-sans-semibold text-[22px] text-white font-semibold">
-              02 777 6090
+        {/* Marquee announcement — desktop only, sits between directions and phone */}
+        <div className="flex-1 mx-4 overflow-hidden max-md:hidden">
+          <div className="inline-block whitespace-nowrap animate-marquee pl-[100%] text-[15px] font-medium">
+            <span className="inline-block pr-[50px]">
+              {tNotif("noticeText")}{" "}
+              <Link href="/notices" className="text-white underline hover:text-[#cccccc]">
+                {tNotif("noticeLink")}
+              </Link>
             </span>
           </div>
+        </div>
+
+        {/* Right section — phone + language */}
+        <div className="shrink-0 flex items-center gap-2 justify-end max-lg:gap-1.5 max-md:gap-2 max-[375px]:gap-1.5">
+          {/* Customer service */}
+          <a href="tel:+8227776090" className="text-white no-underline font-semibold text-sm flex items-center gap-1.5 whitespace-nowrap tracking-tight max-lg:text-xs max-md:text-[13px] max-md:gap-1 hover:text-white/80 transition-colors">
+            <p>T:</p>
+            <span className="font-semibold text-[17px] text-white max-md:text-[14px]">
+              {tNotif("phone")}
+            </span>
+          </a>
 
           {/* Language selector */}
           <div className="relative flex items-center z-[var(--z-dropdown)]" ref={languageRef}>
@@ -171,50 +203,30 @@ export default function SiteHeader() {
                 isLanguageOpen ? "block" : "hidden"
               }`}
             >
-              <a
-                href="https://tb-en.netlify.app/"
-                data-lang="en"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setIsLanguageOpen(false)}
-                className="block py-3 px-5 text-text-dark no-underline whitespace-nowrap hover:bg-[#f5f5f5]"
+              <button
+                type="button"
+                onClick={() => switchLocale("en")}
+                className="w-full text-left block py-3 px-5 text-text-dark whitespace-nowrap hover:bg-[#f5f5f5] bg-transparent border-none cursor-pointer text-sm"
               >
-                English
-              </a>
-              <a
-                href="https://tb-kr.netlify.app/"
-                data-lang="kr"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setIsLanguageOpen(false)}
-                className="block py-3 px-5 text-text-dark no-underline whitespace-nowrap hover:bg-[#f5f5f5]"
+                {tLang("english")} {locale === "en" && "✓"}
+              </button>
+              <button
+                type="button"
+                onClick={() => switchLocale("ko")}
+                className="w-full text-left block py-3 px-5 text-text-dark whitespace-nowrap hover:bg-[#f5f5f5] bg-transparent border-none cursor-pointer text-sm"
               >
-                한국어
-              </a>
-              <a
-                href="#"
-                data-lang="ja"
-                aria-disabled="true"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIsLanguageOpen(false);
-                }}
-                className="block py-3 px-5 text-text-dark no-underline whitespace-nowrap hover:bg-[#f5f5f5]"
+                {tLang("korean")} {locale === "ko" && "✓"}
+              </button>
+              <span
+                className="block py-3 px-5 text-text-dark/40 whitespace-nowrap cursor-not-allowed text-sm"
               >
-                日本語
-              </a>
-              <a
-                href="#"
-                data-lang="zh"
-                aria-disabled="true"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIsLanguageOpen(false);
-                }}
-                className="block py-3 px-5 text-text-dark no-underline whitespace-nowrap hover:bg-[#f5f5f5]"
+                {tLang("japanese")}
+              </span>
+              <span
+                className="block py-3 px-5 text-text-dark/40 whitespace-nowrap cursor-not-allowed text-sm"
               >
-                中文
-              </a>
+                {tLang("chinese")}
+              </span>
             </div>
           </div>
         </div>
@@ -223,16 +235,16 @@ export default function SiteHeader() {
       {/* ── Mobile header (logo + compact nav buttons) ── */}
       <div
         data-header="mobile-header"
-        className="bg-brand-cream items-center justify-between py-3 px-[15px]"
+        className="bg-brand-cream items-center justify-between py-2 px-3"
       >
-        <div className="w-[200px] p-0">
-          <a href="/">
+        <div className="w-[140px] p-0">
+          <Link href="/">
             <img
               src="/imgs/smalllogo.png"
               alt="Seoul City Tour Tiger Bus"
-              className="h-auto w-[200px]"
+              className="h-auto w-[140px]"
             />
-          </a>
+          </Link>
         </div>
         <MobileNavButtons />
       </div>
@@ -240,12 +252,12 @@ export default function SiteHeader() {
       {/* ── Desktop navigation bar ── */}
       <nav
         data-header="main-nav"
-        className="bg-brand-cream py-[15px] px-0 flex justify-between items-center h-auto max-lg:py-[15px] max-lg:px-5"
+        className="bg-brand-cream py-1.5 px-0 flex justify-between items-center h-auto max-lg:py-1.5 max-lg:px-5"
         aria-label="Primary"
       >
-        <ul className="flex list-none gap-[clamp(12px,2.2vw,30px)] pl-[clamp(20px,5vw,80px)] items-center">
+        <ul className="flex list-none gap-0 pl-[clamp(20px,5vw,80px)] items-center">
           <li>
-            <a
+            <Link
               href="/"
               className="inline-flex items-center leading-none hover:bg-transparent focus-visible:outline-2 focus-visible:outline-[rgba(165,0,0,0.55)] focus-visible:outline-offset-2"
               aria-label="Home"
@@ -253,43 +265,21 @@ export default function SiteHeader() {
               <img
                 src="/imgs/smalllogo.png"
                 alt="Seoul City Tour Bus"
-                className="h-[clamp(32px,3.5vw,46px)] w-auto object-contain block"
+                className="h-[clamp(22px,2.5vw,32px)] w-auto object-contain block"
                 onError={(e) => {
                   (e.currentTarget as HTMLImageElement).src = "/imgs/smalllogo.png";
                 }}
               />
-            </a>
+            </Link>
           </li>
-          <li>
-            <a href="/tours" className="text-[#A50000] no-underline font-semibold text-[clamp(14px,1.4vw,20px)] whitespace-nowrap">
-              Tours
-            </a>
-          </li>
-          <li>
-            <a href="/map" className="text-[#A50000] no-underline font-semibold text-[clamp(14px,1.4vw,20px)] whitespace-nowrap">
-              Map
-            </a>
-          </li>
-          <li>
-            <a href="/notices" className="text-[#A50000] no-underline font-semibold text-[clamp(14px,1.4vw,20px)] whitespace-nowrap">
-              Notices
-            </a>
-          </li>
-          <li>
-            <a href="/blog" className="text-[#A50000] no-underline font-semibold text-[clamp(14px,1.4vw,20px)] whitespace-nowrap">
-              Discover
-            </a>
-          </li>
-          <li>
-            <a href="/discounts" className="text-[#A50000] no-underline font-semibold text-[clamp(14px,1.4vw,20px)] whitespace-nowrap">
-              Discounts
-            </a>
-          </li>
-          <li>
-            <a href="/help" className="text-[#A50000] no-underline font-semibold text-[clamp(14px,1.4vw,20px)] whitespace-nowrap">
-              Help
-            </a>
-          </li>
+          {navLinks.map((link, i) => (
+            <li key={link.href} className="flex items-center">
+              <span className="text-[#A50000]/30 mx-[clamp(8px,1.2vw,20px)] text-[clamp(12px,1.2vw,16px)] font-light select-none">|</span>
+              <Link href={link.href} className="text-[#A50000] no-underline font-semibold text-[clamp(12px,1.2vw,16px)] whitespace-nowrap">
+                {link.label}
+              </Link>
+            </li>
+          ))}
         </ul>
         <DesktopNavButtons />
       </nav>
@@ -309,29 +299,22 @@ export default function SiteHeader() {
           &times;
         </button>
         <ul className="list-none p-0 m-0 mt-15">
-          {[
-            { href: "/tours", label: "Tours" },
-            { href: "/map", label: "Map" },
-            { href: "/notices", label: "Notices" },
-            { href: "/blog", label: "Discover" },
-            { href: "/discounts", label: "Discounts" },
-            { href: "/help", label: "Help" },
-          ].map((link) => (
+          {navLinks.map((link) => (
             <li key={link.href} className="py-[5px] text-center">
-              <a
+              <Link
                 href={link.href}
                 className="text-[#A50000] no-underline text-2xl block py-[3px] transition-colors duration-300 font-semibold max-md:text-lg max-md:py-3"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[150px]">
-          <a href="/">
+          <Link href="/">
             <img src="/imgs/redlogo-tigerbus.png" alt="Seoul City Tour Tiger Bus" />
-          </a>
+          </Link>
         </div>
       </div>
     </>

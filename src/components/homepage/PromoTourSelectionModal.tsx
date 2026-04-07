@@ -1,58 +1,58 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useState } from "react";
-import { usePromoCheckout, TOUR_PRICES, TOUR_META } from "./checkout/PromoCheckoutContext";
-import PromoEnhanceSeoulAddonsCarousel from "@/components/homepage/PromoEnhanceSeoulAddonsCarousel";
+import { useRef, useState } from "react";
+import { useTranslations, useLocale } from "next-intl";
+import { usePromoCheckout, TOUR_PRICES, TOUR_META, getTourPrices, getTourMeta, formatPrice } from "./checkout/PromoCheckoutContext";
+
+const useIsKo = () => useLocale() === "ko";
+import { promoProductData } from "@/lib/data/promoProducts";
+import TicketCard from "@/components/shared/TicketCard";
+import BookingCalendar from "@/app/[locale]/booking/components/BookingCalendar";
 
 /* ── Progress indicator ──────────────────────────────────────────────────────── */
 type StepStatus = "completed" | "active" | "pending";
 function ProgressIndicator({ statuses }: { statuses: StepStatus[] }) {
+  const t = useTranslations("PromoModal");
+  const labels = [t("progressSelect"), t("progressInfo"), t("progressPayment")];
   return (
-    <div className="flex items-center justify-center gap-[10px] py-[18px] px-[18px] border-b border-[#eee] bg-white shrink-0" aria-hidden="true">
+    <div className="flex items-center justify-center gap-[10px] py-[18px] px-[18px] bg-[#001e53] shrink-0" aria-hidden="true">
       {statuses.map((status, i) => (
         <div key={i} className="flex items-center gap-[10px]">
-          <div className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-[14px] border-2 bg-white ${
-            status === "completed" ? "border-[#2e7d32] text-[#2e7d32]"
-            : status === "active"  ? "border-brand-red text-brand-red"
-            :                        "border-[#ddd] text-[#666]"
-          }`}>
-            {i + 1}
+          <div className="flex items-center gap-2">
+            <div className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-[13px] border-2 ${
+              status === "completed" ? "border-white bg-white text-[#001e53]"
+              : status === "active"  ? "border-[#FF0000] bg-[#FF0000] text-white"
+              :                        "border-white/30 text-white/40"
+            }`}>
+              {status === "completed" ? "\u2713" : i + 1}
+            </div>
+            <span className={`text-[11px] uppercase tracking-wider hidden sm:inline ${
+              status === "active" ? "text-white font-bold" : "text-white/40"
+            }`}>{labels[i]}</span>
           </div>
-          {i < statuses.length - 1 && <div className="w-12 h-0.5 bg-[#e5e5e5]" />}
+          {i < statuses.length - 1 && <div className="w-8 h-px bg-white/20" />}
         </div>
       ))}
     </div>
   );
 }
 
-// ─── Exclusive packages data ──────────────────────────────────────────────────
-const EXCLUSIVE_PACKAGES = [
-  {
-    tourId: "pkg-kculture",
-    name: "K-Culture Explorer",
-    tagline: "BTS filming spots + museum pass combo",
-    image: "/imgs/tour01__.png",
-    badge: "Exclusive",
-    baseRoute: "Based on Tour 01",
-    highlights: ["BTS Filming Locations", "K-Pop Museum Entry", "Han River Cruise", "Hanbok Experience"],
-    pricing: { adult: 45, child: 35 },
-  },
-  {
-    tourId: "pkg-kbeauty",
-    name: "K-Beauty & Style Tour",
-    tagline: "Shopping districts + beauty experience",
-    image: "/imgs/panorama.png",
-    badge: "Popular",
-    baseRoute: "Based on Tour 02",
-    highlights: ["Myeongdong Beauty Market", "Hongdae Shopping", "Skin Care Workshop", "Style Photo Shoot"],
-    pricing: { adult: 40, child: 30 },
-  },
-];
+/* ── Tour data ────────────────────────────────────────────────────────────────── */
 
 const CLASSIC_TOUR_IDS = ["tour01", "tour02", "tour04"] as const;
+const EXCLUSIVE_PACKAGE_IDS = ["pkg-kculture", "pkg-kbeauty"] as const;
 
-// ─── Carousel helpers ─────────────────────────────────────────────────────────
+const TOUR_HIGHLIGHT_KEYS: Record<string, string> = {
+  tour01: "tour01Highlights",
+  tour02: "tour02Highlights",
+  tour04: "tour04Highlights",
+  "pkg-kculture": "pkgKcultureHighlights",
+  "pkg-kbeauty": "pkgKbeautyHighlights",
+};
+
+/* ── Carousel hook ────────────────────────────────────────────────────────────── */
+
 function useCarousel(total: number) {
   const [index, setIndex] = useState(0);
   const prev = () => setIndex((i) => Math.max(0, i - 1));
@@ -60,12 +60,83 @@ function useCarousel(total: number) {
   return { index, prev, next };
 }
 
+/* ── Selection card ───────────────────────────────────────────────────────────── */
+
+function TourSelectionCard({
+  id,
+  isActive,
+  onSelect,
+}: {
+  id: string;
+  isActive: boolean;
+  onSelect: () => void;
+}) {
+  const locale = useLocale();
+  const isKo = locale === "ko";
+  const meta = getTourMeta(id, locale);
+  const prices = getTourPrices(locale)[id];
+  const tc = useTranslations("Common");
+  if (!meta || !prices) return null;
+
+  return (
+    <button
+      type="button"
+      className={`w-full flex flex-col text-left transition-all overflow-hidden ${
+        isActive
+          ? "ring-2 ring-[#FF0000] bg-white shadow-md"
+          : "border border-white/15 hover:border-white/30"
+      }`}
+      style={{ borderRadius: "4px" }}
+      onClick={onSelect}
+    >
+      <div className={`relative w-full ${isKo ? "h-[140px] max-md:h-[120px]" : "h-[120px] max-md:h-[100px]"} overflow-hidden`}>
+        <img src={meta.image} alt={meta.title} className="size-full object-cover" />
+        <span
+          className={`absolute left-2 top-2 px-2 py-0.5 ${isKo ? "text-[11px]" : "text-[10px]"} font-extrabold tracking-wide ${
+            meta.labelColor === "#FFD700" ? "text-black" : "text-white"
+          }`}
+          style={{ background: meta.labelColor, borderRadius: "2px" }}
+        >
+          {meta.label}
+        </span>
+        {isActive && (
+          <span className="absolute right-2 top-2 flex size-5 items-center justify-center rounded-full bg-[#FF0000] text-white">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </span>
+        )}
+      </div>
+
+      <div className={`${isKo ? "p-4" : "p-3"} flex-1 flex flex-col`}>
+        <div className={`${isKo ? "text-[14px]" : "text-[12px]"} font-bold leading-tight ${isActive ? "text-black" : "text-white"}`}>
+          {meta.title}
+        </div>
+
+        <div className="mt-auto flex items-baseline gap-2 pt-2 border-t border-white/10">
+          <div className="flex items-baseline gap-1">
+            <span className={`${isKo ? "text-[10px]" : "text-[9px]"} ${isActive ? "text-black/30" : "text-white/30"}`}>{tc("adult")}</span>
+            <span className={`${isKo ? "text-[11px]" : "text-[10px]"} line-through ${isActive ? "text-black/25" : "text-white/25"}`}>{formatPrice(prices.adultOrig, locale)}</span>
+            <span className={`${isKo ? "text-[15px]" : "text-[13px]"} font-bold ${isActive ? "text-[#FF0000]" : "text-white"}`}>{formatPrice(prices.adult, locale)}</span>
+          </div>
+          <div className="flex items-baseline gap-1">
+            <span className={`${isKo ? "text-[10px]" : "text-[9px]"} ${isActive ? "text-black/30" : "text-white/30"}`}>{tc("child")}</span>
+            <span className={`${isKo ? "text-[13px]" : "text-[11px]"} font-bold ${isActive ? "text-[#FF0000]" : "text-white"}`}>{formatPrice(prices.child, locale)}</span>
+          </div>
+        </div>
+      </div>
+    </button>
+  );
+}
+
+/* ── Carousel nav dots ────────────────────────────────────────────────────────── */
+
 function CarouselDots({ total, active }: { total: number; active: number }) {
   if (total <= 1) return null;
   return (
-    <div className="mt-3 flex justify-center gap-1.5">
+    <div className="flex justify-center gap-1.5 mt-2">
       {Array.from({ length: total }).map((_, i) => (
-        <span key={i} className={`block size-2 rounded-full transition-colors ${i === active ? "bg-brand-red" : "bg-[#ddd]"}`} />
+        <span key={i} className={`block size-1.5 rounded-full transition-colors ${i === active ? "bg-[#FF0000]" : "bg-white/25"}`} />
       ))}
     </div>
   );
@@ -74,252 +145,15 @@ function CarouselDots({ total, active }: { total: number; active: number }) {
 function CarouselArrows({ onPrev, onNext, prevDisabled, nextDisabled }: { onPrev: () => void; onNext: () => void; prevDisabled: boolean; nextDisabled: boolean }) {
   return (
     <>
-      <button className="absolute -left-3 top-1/2 z-10 flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-brand-red text-white shadow-md disabled:opacity-40" onClick={onPrev} disabled={prevDisabled} aria-label="Previous" type="button">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="15 18 9 12 15 6" /></svg>
+      <button type="button" className="absolute -left-2 top-1/2 z-10 flex size-7 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-md disabled:opacity-30"
+        onClick={(e) => { e.stopPropagation(); onPrev(); }} disabled={prevDisabled} aria-label="Previous">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="15 18 9 12 15 6" /></svg>
       </button>
-      <button className="absolute -right-3 top-1/2 z-10 flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-brand-red text-white shadow-md disabled:opacity-40" onClick={onNext} disabled={nextDisabled} aria-label="Next" type="button">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6" /></svg>
+      <button type="button" className="absolute -right-2 top-1/2 z-10 flex size-7 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-md disabled:opacity-30"
+        onClick={(e) => { e.stopPropagation(); onNext(); }} disabled={nextDisabled} aria-label="Next">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6" /></svg>
       </button>
     </>
-  );
-}
-
-// ─── Classic tour card ────────────────────────────────────────────────────────
-function ClassicTourCard({
-  tourId, isSelected, adultQty, childQty, onSelect, compact = false,
-}: { tourId: string; isSelected: boolean; adultQty: number; childQty: number; onSelect: () => void; compact?: boolean }) {
-  const meta = TOUR_META[tourId]!;
-  const prices = TOUR_PRICES[tourId]!;
-  const total = adultQty * prices.adult + childQty * prices.child;
-  const showTotal = adultQty + childQty > 0;
-
-  return (
-    <div
-      className={`overflow-hidden rounded-xl border-2 bg-white shadow-sm transition-all cursor-pointer hover:shadow-md ${isSelected ? "border-brand-red" : "border-[#e5e5e5] hover:border-brand-red/40"}`}
-      onClick={onSelect}
-    >
-      <div className={`relative overflow-hidden ${compact ? "h-[120px]" : "h-[150px]"}`}>
-        <img src={meta.image} alt={meta.title} className="size-full object-cover" />
-        <span className="absolute left-2.5 top-2.5 rounded-full px-2.5 py-0.5 text-[10px] font-extrabold tracking-wide text-white" style={{ background: meta.labelColor }}>
-          {meta.label}
-        </span>
-        {meta.isPopular && (
-          <span className="absolute right-2.5 top-2.5 rounded-full bg-black px-2.5 py-0.5 text-[10px] font-extrabold text-white">POPULAR</span>
-        )}
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 py-2 text-[11px] font-bold tracking-wide text-white leading-tight">
-          {meta.title}
-        </div>
-      </div>
-      <div className="p-3">
-        <div className="mb-1.5 flex justify-between text-[12px]">
-          <span className="text-[#666]">Adult</span>
-          <span className="font-semibold text-brand-red">${prices.adult.toFixed(2)}</span>
-        </div>
-        <div className={`flex justify-between text-[12px] ${showTotal ? "mb-1.5" : "mb-3"}`}>
-          <span className="text-[#666]">Child</span>
-          <span className="font-semibold text-brand-red">${prices.child.toFixed(2)}</span>
-        </div>
-        {showTotal && (
-          <div className="mb-2.5 flex justify-between text-[12px] font-bold border-t border-[#eee] pt-1.5">
-            <span>Total</span>
-            <span className="text-brand-red">${total.toFixed(2)}</span>
-          </div>
-        )}
-        <button
-          type="button"
-          className={`w-full rounded-lg py-2 text-[12px] font-semibold transition-colors ${isSelected ? "bg-brand-red text-white" : "border border-brand-red bg-white text-brand-red hover:bg-brand-red hover:text-white"}`}
-          onClick={(e) => { e.stopPropagation(); onSelect(); }}
-        >
-          {isSelected ? "Selected ✓" : "Select"}
-        </button>
-      </div>
-    </div>
-  );
-}
-
-// ─── Exclusive package card ───────────────────────────────────────────────────
-function ExclusivePackageCard({
-  pkg, adultQty, childQty, onSelect,
-}: { pkg: (typeof EXCLUSIVE_PACKAGES)[number]; adultQty: number; childQty: number; onSelect: () => void }) {
-  const total = adultQty * pkg.pricing.adult + childQty * pkg.pricing.child;
-  const showTotal = adultQty + childQty > 0;
-
-  return (
-    <div
-      className="overflow-hidden rounded-xl border-2 border-brand-red bg-white shadow-sm transition-shadow cursor-pointer hover:shadow-md"
-      onClick={onSelect}
-    >
-      <div className="relative h-[150px] overflow-hidden">
-        <img src={pkg.image} alt={pkg.name} className="size-full object-cover" />
-        <span className="absolute left-2.5 top-2.5 rounded-full bg-brand-red px-2.5 py-0.5 text-[10px] font-extrabold text-white">{pkg.badge}</span>
-      </div>
-      <div className="p-3">
-        <div className="mb-0.5 text-[13px] font-bold text-text-dark">{pkg.name}</div>
-        <div className="mb-2 text-[11px] italic text-[#666]">{pkg.tagline}</div>
-        <div className="mb-2 text-[10px] text-[#999]">{pkg.baseRoute}</div>
-        <ul className="mb-2 space-y-0.5">
-          {pkg.highlights.slice(0, 3).map((h) => (
-            <li key={h} className="flex items-center gap-1 text-[11px] text-text-dark">
-              <span className="text-brand-red">★</span> {h}
-            </li>
-          ))}
-        </ul>
-        <div className="border-t border-[#eee] pt-2">
-          <div className="mb-1 flex justify-between text-[12px]">
-            <span className="text-[#666]">Adult</span>
-            <span className="font-semibold text-brand-red">${pkg.pricing.adult.toFixed(2)}</span>
-          </div>
-          <div className={`flex justify-between text-[12px] ${showTotal ? "mb-1.5" : "mb-2.5"}`}>
-            <span className="text-[#666]">Child</span>
-            <span className="font-semibold text-brand-red">${pkg.pricing.child.toFixed(2)}</span>
-          </div>
-          {showTotal && (
-            <div className="mb-2.5 flex justify-between text-[12px] font-bold">
-              <span>Total</span>
-              <span className="text-brand-red">${total.toFixed(2)}</span>
-            </div>
-          )}
-          <button
-            type="button"
-            className="w-full rounded-lg bg-brand-red py-2 text-[12px] font-semibold text-white transition-colors hover:bg-[#C4001C]"
-            onClick={(e) => { e.stopPropagation(); onSelect(); }}
-          >
-            Select
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── Section header ───────────────────────────────────────────────────────────
-function SectionHeader({ title, description, fixedHeight = false }: { title: string; description: string; fixedHeight?: boolean }) {
-  return (
-    <div className={`mb-3 ${fixedHeight ? "min-h-[56px]" : ""}`}>
-      <h3 className="text-[15px] font-bold text-text-dark">{title}</h3>
-      <p className="mt-0.5 text-[12px] text-[#666]">{description}</p>
-    </div>
-  );
-}
-
-function chunk<T>(arr: T[], size: number): T[][] {
-  const out: T[][] = [];
-  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
-  return out;
-}
-
-// ─── Design A layout ─────────────────────────────────────────────────────────
-function DesignA({ adultQty, childQty, selectedTourId, onSelect }: {
-  adultQty: number; childQty: number; selectedTourId: string;
-  onSelect: (tourId: string, name: string, adultPrice: number, childPrice: number) => void;
-}) {
-  const classicCarousel = useCarousel(CLASSIC_TOUR_IDS.length);
-  const exclusiveCarousel = useCarousel(EXCLUSIVE_PACKAGES.length);
-
-  return (
-    <div className="grid gap-6 lg:grid-cols-2">
-      {/* Classic tours */}
-      <div>
-        <SectionHeader title="Classic Seoul Tours" description="Hop-on hop-off routes covering Seoul's iconic landmarks." fixedHeight />
-        <div className="hidden space-y-3 lg:block">
-          {CLASSIC_TOUR_IDS.map((id) => (
-            <ClassicTourCard key={id} tourId={id} isSelected={selectedTourId === id} adultQty={adultQty} childQty={childQty}
-              onSelect={() => onSelect(id, TOUR_META[id]!.title, TOUR_PRICES[id]!.adult, TOUR_PRICES[id]!.child)} />
-          ))}
-        </div>
-        <div className="relative px-4 lg:hidden">
-          <ClassicTourCard tourId={CLASSIC_TOUR_IDS[classicCarousel.index]} isSelected={selectedTourId === CLASSIC_TOUR_IDS[classicCarousel.index]}
-            adultQty={adultQty} childQty={childQty}
-            onSelect={() => { const id = CLASSIC_TOUR_IDS[classicCarousel.index]; onSelect(id, TOUR_META[id]!.title, TOUR_PRICES[id]!.adult, TOUR_PRICES[id]!.child); }} />
-          <CarouselArrows onPrev={classicCarousel.prev} onNext={classicCarousel.next} prevDisabled={classicCarousel.index === 0} nextDisabled={classicCarousel.index === CLASSIC_TOUR_IDS.length - 1} />
-          <CarouselDots total={CLASSIC_TOUR_IDS.length} active={classicCarousel.index} />
-        </div>
-      </div>
-
-      {/* Exclusive packages */}
-      <div>
-        <SectionHeader title="Exclusive Packages" description="Curated experiences combining tours with unique Seoul activities." fixedHeight />
-        <div className="hidden space-y-3 lg:block">
-          {EXCLUSIVE_PACKAGES.map((pkg) => (
-            <ExclusivePackageCard key={pkg.tourId} pkg={pkg} adultQty={adultQty} childQty={childQty}
-              onSelect={() => onSelect(pkg.tourId, pkg.name, pkg.pricing.adult, pkg.pricing.child)} />
-          ))}
-        </div>
-        <div className="relative px-4 lg:hidden">
-          <ExclusivePackageCard pkg={EXCLUSIVE_PACKAGES[exclusiveCarousel.index]} adultQty={adultQty} childQty={childQty}
-            onSelect={() => { const pkg = EXCLUSIVE_PACKAGES[exclusiveCarousel.index]; onSelect(pkg.tourId, pkg.name, pkg.pricing.adult, pkg.pricing.child); }} />
-          <CarouselArrows onPrev={exclusiveCarousel.prev} onNext={exclusiveCarousel.next} prevDisabled={exclusiveCarousel.index === 0} nextDisabled={exclusiveCarousel.index === EXCLUSIVE_PACKAGES.length - 1} />
-          <CarouselDots total={EXCLUSIVE_PACKAGES.length} active={exclusiveCarousel.index} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── Design C layout ─────────────────────────────────────────────────────────
-function DesignC({ adultQty, childQty, selectedTourId, onSelect }: {
-  adultQty: number; childQty: number; selectedTourId: string;
-  onSelect: (tourId: string, name: string, adultPrice: number, childPrice: number) => void;
-}) {
-  const classicSlides = chunk([...CLASSIC_TOUR_IDS], 2);
-  const classicDesktopCarousel = useCarousel(classicSlides.length);
-  const exclusiveDesktopCarousel = useCarousel(EXCLUSIVE_PACKAGES.length);
-  const classicMobileCarousel = useCarousel(CLASSIC_TOUR_IDS.length);
-  const exclusiveMobileCarousel = useCarousel(EXCLUSIVE_PACKAGES.length);
-
-  return (
-    <div>
-      {/* Desktop: asymmetric 1:2 */}
-      <div className="hidden lg:grid lg:grid-cols-[1fr_2fr] lg:gap-6">
-        <div>
-          <SectionHeader title="Exclusive Packages" description="Unique curated Seoul experiences." />
-          <div className="relative px-4">
-            <ExclusivePackageCard pkg={EXCLUSIVE_PACKAGES[exclusiveDesktopCarousel.index]} adultQty={adultQty} childQty={childQty}
-              onSelect={() => { const pkg = EXCLUSIVE_PACKAGES[exclusiveDesktopCarousel.index]; onSelect(pkg.tourId, pkg.name, pkg.pricing.adult, pkg.pricing.child); }} />
-            <CarouselArrows onPrev={exclusiveDesktopCarousel.prev} onNext={exclusiveDesktopCarousel.next} prevDisabled={exclusiveDesktopCarousel.index === 0} nextDisabled={exclusiveDesktopCarousel.index === EXCLUSIVE_PACKAGES.length - 1} />
-            <CarouselDots total={EXCLUSIVE_PACKAGES.length} active={exclusiveDesktopCarousel.index} />
-          </div>
-        </div>
-        <div>
-          <SectionHeader title="Classic Seoul Tours" description="Hop-on hop-off routes covering Seoul's iconic landmarks." />
-          <div className="relative px-4">
-            <div className="grid grid-cols-2 gap-3">
-              {classicSlides[classicDesktopCarousel.index].map((id) => (
-                <ClassicTourCard key={id} tourId={id} isSelected={selectedTourId === id} adultQty={adultQty} childQty={childQty} compact
-                  onSelect={() => onSelect(id, TOUR_META[id]!.title, TOUR_PRICES[id]!.adult, TOUR_PRICES[id]!.child)} />
-              ))}
-            </div>
-            {classicSlides.length > 1 && (
-              <CarouselArrows onPrev={classicDesktopCarousel.prev} onNext={classicDesktopCarousel.next} prevDisabled={classicDesktopCarousel.index === 0} nextDisabled={classicDesktopCarousel.index === classicSlides.length - 1} />
-            )}
-            <CarouselDots total={classicSlides.length} active={classicDesktopCarousel.index} />
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile: stacked carousels */}
-      <div className="space-y-6 lg:hidden">
-        <div>
-          <SectionHeader title="Classic Seoul Tours" description="Hop-on hop-off routes covering Seoul's iconic landmarks." />
-          <div className="relative px-4">
-            <ClassicTourCard tourId={CLASSIC_TOUR_IDS[classicMobileCarousel.index]} isSelected={selectedTourId === CLASSIC_TOUR_IDS[classicMobileCarousel.index]}
-              adultQty={adultQty} childQty={childQty}
-              onSelect={() => { const id = CLASSIC_TOUR_IDS[classicMobileCarousel.index]; onSelect(id, TOUR_META[id]!.title, TOUR_PRICES[id]!.adult, TOUR_PRICES[id]!.child); }} />
-            <CarouselArrows onPrev={classicMobileCarousel.prev} onNext={classicMobileCarousel.next} prevDisabled={classicMobileCarousel.index === 0} nextDisabled={classicMobileCarousel.index === CLASSIC_TOUR_IDS.length - 1} />
-            <CarouselDots total={CLASSIC_TOUR_IDS.length} active={classicMobileCarousel.index} />
-          </div>
-        </div>
-        <div>
-          <SectionHeader title="Exclusive Packages" description="Unique curated Seoul experiences." />
-          <div className="relative px-4">
-            <ExclusivePackageCard pkg={EXCLUSIVE_PACKAGES[exclusiveMobileCarousel.index]} adultQty={adultQty} childQty={childQty}
-              onSelect={() => { const pkg = EXCLUSIVE_PACKAGES[exclusiveMobileCarousel.index]; onSelect(pkg.tourId, pkg.name, pkg.pricing.adult, pkg.pricing.child); }} />
-            <CarouselArrows onPrev={exclusiveMobileCarousel.prev} onNext={exclusiveMobileCarousel.next} prevDisabled={exclusiveMobileCarousel.index === 0} nextDisabled={exclusiveMobileCarousel.index === EXCLUSIVE_PACKAGES.length - 1} />
-            <CarouselDots total={EXCLUSIVE_PACKAGES.length} active={exclusiveMobileCarousel.index} />
-          </div>
-        </div>
-      </div>
-    </div>
   );
 }
 
@@ -327,100 +161,229 @@ function DesignC({ adultQty, childQty, selectedTourId, onSelect }: {
 export default function PromoTourSelectionModal() {
   const {
     step, selectedTourId, selectedDate, adultQty, childQty,
-    setSelectedTourId, proceedFromTourSelection, closeCheckout,
+    setSelectedTourId, setSelectedDate, setAdultQty, setChildQty,
+    proceedFromTourSelection, closeCheckout, openAddonModal,
   } = usePromoCheckout();
 
-  const [variant, setVariant] = useState<"A" | "C">("C");
+  const t = useTranslations("PromoModal");
+  const tc = useTranslations("Common");
+  const ts1 = useTranslations("BookingStep1");
+  const isKo = useIsKo();
+
+  const [addonIndex, setAddonIndex] = useState(0);
+  const [mapOpen, setMapOpen] = useState(false);
+  const classicCarousel = useCarousel(CLASSIC_TOUR_IDS.length);
+  const exclusiveCarousel = useCarousel(EXCLUSIVE_PACKAGE_IDS.length);
+  const addonEntries = Object.entries(promoProductData);
 
   if (step !== "tourSelection") return null;
 
+  const locale = useLocale();
   const canContinue = !!selectedDate && adultQty + childQty >= 1;
-
-  const dateLabel = selectedDate
-    ? selectedDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" })
-    : "No date selected";
-
-  const handleSelect = (tourId: string) => {
-    setSelectedTourId(tourId);
-  };
+  const selectedPrices = getTourPrices(locale)[selectedTourId];
+  const selectedMeta = getTourMeta(selectedTourId, locale);
+  const highlightKey = TOUR_HIGHLIGHT_KEYS[selectedTourId];
 
   return (
     <div className="promo-modal-overlay active" onClick={(e) => { if (e.target === e.currentTarget) closeCheckout(); }}>
       <div
-        className={`promo-tour-modal bg-white w-[95%] max-h-[90vh] rounded-xl overflow-hidden flex flex-col relative shadow-[0_20px_60px_rgba(0,0,0,0.35)] ${variant === "A" ? "max-w-[780px]" : "max-w-[900px]"}`}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="promoTourModalTitle"
+        className="promo-tour-modal bg-white w-[95%] max-w-[780px] max-h-[90vh] overflow-hidden flex flex-col relative shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
+        style={{ borderRadius: "4px", fontFamily: "'SUIT-Bold', sans-serif" }}
+        role="dialog" aria-modal="true" aria-labelledby="promoTourModalTitle"
       >
-        <button
-          className="absolute top-[10px] right-[10px] w-[42px] h-[42px] rounded-full border-none bg-black/[0.06] text-[#333] text-[28px] leading-none cursor-pointer z-[2] flex items-center justify-center hover:bg-black/[0.10]"
-          type="button" aria-label="Close" onClick={closeCheckout}
-        >
-          &times;
-        </button>
+        <button className="absolute top-[10px] right-[10px] w-[42px] h-[42px] border-none bg-white/10 text-white text-[28px] leading-none cursor-pointer z-[2] flex items-center justify-center hover:bg-white/20"
+          type="button" aria-label="Close" onClick={closeCheckout}>&times;</button>
 
         <div className="flex flex-col h-full min-h-0">
           <ProgressIndicator statuses={["active", "pending", "pending"]} />
 
-          {/* Sub-header: title + variant toggle */}
-          <div className="flex items-center justify-between border-b border-[#eee] px-6 py-4 shrink-0">
-            <div>
-              <h2 id="promoTourModalTitle" className="m-0 text-[18px] font-bold text-[#111]">Select Your Tour</h2>
-            </div>
-            <div className="flex overflow-hidden rounded-lg border border-[#ddd]">
-              {(["A", "C"] as const).map((v) => (
-                <button
-                  key={v}
-                  type="button"
-                  className={`px-3 py-1.5 text-xs font-semibold transition-colors ${variant === v ? "bg-brand-red text-white" : "bg-white text-[#666] hover:bg-[#f5f5f5]"}`}
-                  onClick={() => setVariant(v)}
-                >
-                  {v}
-                </button>
-              ))}
-            </div>
-          </div>
-
           <div className="popup-scrollable-content">
-            {/* Read-only summary bar */}
-            <div className="mb-5 rounded-xl bg-[#f8f9fa] px-5 py-3">
-              <div className="flex flex-wrap items-center gap-2 text-sm">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0 text-[#666]">
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
-                </svg>
-                <span className={`font-semibold ${selectedDate ? "text-text-dark" : "text-[#999]"}`}>{dateLabel}</span>
-                {adultQty > 0 && <span className="rounded-full border border-[#e5e5e5] bg-white px-2.5 py-0.5 text-[11px] text-[#666]">{adultQty} Adult{adultQty > 1 ? "s" : ""}</span>}
-                {childQty > 0 && <span className="rounded-full border border-[#e5e5e5] bg-white px-2.5 py-0.5 text-[11px] text-[#666]">{childQty} Child{childQty > 1 ? "ren" : ""}</span>}
+            {/* ── 2-column tour selection ── */}
+            <div className="bg-[#001e53] px-6 py-6 max-md:px-4">
+              <h2 id="promoTourModalTitle" className={`${isKo ? "text-[28px]" : "text-[20px]"} text-white mb-5`} style={{ fontFamily: isKo ? "'SUIT-SemiBold', sans-serif" : "'SUIT-Heavy', sans-serif" }}>
+                {t("chooseYourTour")}
+              </h2>
+
+              {/* Desktop: 2-column grid */}
+              <div className="hidden md:grid md:grid-cols-[1fr_auto_1fr] md:gap-4">
+                <div>
+                  <h3 className={`${isKo ? "text-[19px]" : "text-[11px]"} uppercase tracking-[0.15em] text-white/50 mb-3`} style={{ fontFamily: isKo ? "'SUIT-SemiBold', sans-serif" : "'SUIT-Heavy', sans-serif" }}>
+                    {t("exclusivePackages")}
+                  </h3>
+                  <div className="relative px-3">
+                    <TourSelectionCard id={EXCLUSIVE_PACKAGE_IDS[exclusiveCarousel.index]} isActive={selectedTourId === EXCLUSIVE_PACKAGE_IDS[exclusiveCarousel.index]} onSelect={() => setSelectedTourId(EXCLUSIVE_PACKAGE_IDS[exclusiveCarousel.index])} />
+                    {EXCLUSIVE_PACKAGE_IDS.length > 1 && <CarouselArrows onPrev={exclusiveCarousel.prev} onNext={exclusiveCarousel.next} prevDisabled={exclusiveCarousel.index === 0} nextDisabled={exclusiveCarousel.index === EXCLUSIVE_PACKAGE_IDS.length - 1} />}
+                    <CarouselDots total={EXCLUSIVE_PACKAGE_IDS.length} active={exclusiveCarousel.index} />
+                  </div>
+                </div>
+                <div className="w-px self-stretch bg-white/15" />
+                <div>
+                  <h3 className={`${isKo ? "text-[19px]" : "text-[11px]"} uppercase tracking-[0.15em] text-white/50 mb-3`} style={{ fontFamily: isKo ? "'SUIT-SemiBold', sans-serif" : "'SUIT-Heavy', sans-serif" }}>
+                    {t("classicTours")}
+                  </h3>
+                  <div className="relative px-3">
+                    <TourSelectionCard id={CLASSIC_TOUR_IDS[classicCarousel.index]} isActive={selectedTourId === CLASSIC_TOUR_IDS[classicCarousel.index]} onSelect={() => setSelectedTourId(CLASSIC_TOUR_IDS[classicCarousel.index])} />
+                    <CarouselArrows onPrev={classicCarousel.prev} onNext={classicCarousel.next} prevDisabled={classicCarousel.index === 0} nextDisabled={classicCarousel.index === CLASSIC_TOUR_IDS.length - 1} />
+                    <CarouselDots total={CLASSIC_TOUR_IDS.length} active={classicCarousel.index} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Mobile: stacked carousels */}
+              <div className="space-y-5 md:hidden">
+                <div>
+                  <h3 className={`${isKo ? "text-[19px]" : "text-[11px]"} uppercase tracking-[0.15em] text-white/50 mb-3`} style={{ fontFamily: isKo ? "'SUIT-SemiBold', sans-serif" : "'SUIT-Heavy', sans-serif" }}>{t("exclusivePackages")}</h3>
+                  <div className="relative px-4">
+                    <TourSelectionCard id={EXCLUSIVE_PACKAGE_IDS[exclusiveCarousel.index]} isActive={selectedTourId === EXCLUSIVE_PACKAGE_IDS[exclusiveCarousel.index]} onSelect={() => setSelectedTourId(EXCLUSIVE_PACKAGE_IDS[exclusiveCarousel.index])} />
+                    {EXCLUSIVE_PACKAGE_IDS.length > 1 && <CarouselArrows onPrev={exclusiveCarousel.prev} onNext={exclusiveCarousel.next} prevDisabled={exclusiveCarousel.index === 0} nextDisabled={exclusiveCarousel.index === EXCLUSIVE_PACKAGE_IDS.length - 1} />}
+                    <CarouselDots total={EXCLUSIVE_PACKAGE_IDS.length} active={exclusiveCarousel.index} />
+                  </div>
+                </div>
+                <div>
+                  <h3 className={`${isKo ? "text-[19px]" : "text-[11px]"} uppercase tracking-[0.15em] text-white/50 mb-3`} style={{ fontFamily: isKo ? "'SUIT-SemiBold', sans-serif" : "'SUIT-Heavy', sans-serif" }}>{t("classicTours")}</h3>
+                  <div className="relative px-4">
+                    <TourSelectionCard id={CLASSIC_TOUR_IDS[classicCarousel.index]} isActive={selectedTourId === CLASSIC_TOUR_IDS[classicCarousel.index]} onSelect={() => setSelectedTourId(CLASSIC_TOUR_IDS[classicCarousel.index])} />
+                    <CarouselArrows onPrev={classicCarousel.prev} onNext={classicCarousel.next} prevDisabled={classicCarousel.index === 0} nextDisabled={classicCarousel.index === CLASSIC_TOUR_IDS.length - 1} />
+                    <CarouselDots total={CLASSIC_TOUR_IDS.length} active={classicCarousel.index} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Selected tour info */}
+              {highlightKey && (
+                <div className="border-t border-white/10 pt-4 mt-5 flex flex-col items-center text-center">
+                  <ul className="space-y-1.5 mb-4 inline-block text-left">
+                    {[0, 1, 2, 3].map((i) => (
+                      <li key={i} className="flex items-start gap-2 text-[11px] text-white/60 leading-[1.5]">
+                        <span className="text-[#FF0000] mt-0.5 shrink-0">&bull;</span>
+                        {t(`${highlightKey}.${i}`)}
+                      </li>
+                    ))}
+                  </ul>
+                  <button type="button" className="flex items-center gap-2 px-4 py-2 border border-white/20 text-white text-[12px] hover:bg-white/10 transition-colors" style={{ borderRadius: "3px" }} onClick={() => setMapOpen(true)}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                    {t("viewRouteMap")}
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* ── Date selection ── */}
+            <div className="px-6 py-6 max-md:px-4 border-b border-[#eee]">
+              <h3 className={`${isKo ? "text-[22px]" : "text-[14px]"} uppercase tracking-[0.15em] text-black mb-4`} style={{ fontFamily: isKo ? "'SUIT-SemiBold', sans-serif" : "'SUIT-Heavy', sans-serif" }}>
+                {t("selectDate")}
+              </h3>
+              <BookingCalendar selectedDate={selectedDate} onDateSelect={(d) => setSelectedDate(d)} />
+            </div>
+
+            {/* ── Ticket counters ── */}
+            <div className="px-6 py-6 max-md:px-4 border-b border-[#eee]">
+              <h3 className={`${isKo ? "text-[22px]" : "text-[14px]"} uppercase tracking-[0.15em] text-black mb-4`} style={{ fontFamily: isKo ? "'SUIT-SemiBold', sans-serif" : "'SUIT-Heavy', sans-serif" }}>
+                {t("numberOfTickets")}
+              </h3>
+              <div className={`${isKo ? "space-y-4" : "space-y-3"}`}>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className={`${isKo ? "text-[15px]" : "text-[13px]"} font-bold text-black`}>{tc("adult")}</div>
+                    <div className={`${isKo ? "text-[12px]" : "text-[11px]"} text-black/40`}>{ts1("agesAdult")}</div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {selectedPrices && (
+                      <div className="flex items-baseline gap-1 mr-2">
+                        <span className={`${isKo ? "text-[11px]" : "text-[10px]"} text-black/30 line-through`}>{formatPrice(selectedPrices.adultOrig, locale)}</span>
+                        <span className={`${isKo ? "text-[16px]" : "text-[14px]"} font-bold text-[#FF0000]`}>{formatPrice(selectedPrices.adult, locale)}</span>
+                      </div>
+                    )}
+                    <button type="button" className={`${isKo ? "w-9 h-9" : "w-8 h-8"} flex items-center justify-center border border-black/15 text-black/50 hover:border-black/30 transition-colors`} style={{ borderRadius: "3px" }} onClick={() => setAdultQty(Math.max(0, adultQty - 1))}>&#8722;</button>
+                    <span className={`w-6 text-center ${isKo ? "text-[16px]" : "text-[14px]"} font-bold`}>{adultQty}</span>
+                    <button type="button" className={`${isKo ? "w-9 h-9" : "w-8 h-8"} flex items-center justify-center border border-black/15 text-black/50 hover:border-black/30 transition-colors`} style={{ borderRadius: "3px" }} onClick={() => setAdultQty(adultQty + 1)}>+</button>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className={`${isKo ? "text-[15px]" : "text-[13px]"} font-bold text-black`}>{tc("child")}</div>
+                    <div className={`${isKo ? "text-[12px]" : "text-[11px]"} text-black/40`}>{ts1("agesChild")}</div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {selectedPrices && (
+                      <div className="flex items-baseline gap-1 mr-2">
+                        <span className={`${isKo ? "text-[11px]" : "text-[10px]"} text-black/30 line-through`}>{formatPrice(selectedPrices.childOrig, locale)}</span>
+                        <span className={`${isKo ? "text-[16px]" : "text-[14px]"} font-bold text-[#FF0000]`}>{formatPrice(selectedPrices.child, locale)}</span>
+                      </div>
+                    )}
+                    <button type="button" className={`${isKo ? "w-9 h-9" : "w-8 h-8"} flex items-center justify-center border border-black/15 text-black/50 hover:border-black/30 transition-colors`} style={{ borderRadius: "3px" }} onClick={() => setChildQty(Math.max(0, childQty - 1))}>&#8722;</button>
+                    <span className={`w-6 text-center ${isKo ? "text-[16px]" : "text-[14px]"} font-bold`}>{childQty}</span>
+                    <button type="button" className={`${isKo ? "w-9 h-9" : "w-8 h-8"} flex items-center justify-center border border-black/15 text-black/50 hover:border-black/30 transition-colors`} style={{ borderRadius: "3px" }} onClick={() => setChildQty(childQty + 1)}>+</button>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Tour cards — Design A or C */}
-            {variant === "A" ? (
-              <DesignA adultQty={adultQty} childQty={childQty} selectedTourId={selectedTourId} onSelect={handleSelect} />
-            ) : (
-              <DesignC adultQty={adultQty} childQty={childQty} selectedTourId={selectedTourId} onSelect={handleSelect} />
-            )}
+            {/* ── Add-ons section ── */}
+            <div className="bg-brand-cream px-6 py-8 max-md:px-4">
+              <div className="mb-4">
+                <div className="h-px bg-black/10" />
+                <h3 className={`py-2.5 text-center ${isKo ? "text-[22px]" : "text-[14px]"} uppercase tracking-[0.2em] text-black`} style={{ fontFamily: isKo ? "'SUIT-SemiBold', sans-serif" : "'SUIT-Heavy', sans-serif" }}>
+                  {t("enhanceExperience")}
+                </h3>
+                <div className="h-px bg-black/10" />
+              </div>
 
-            {/* Add-on carousel */}
-            <div className="mt-8 lg:max-w-[580px] lg:mx-auto">
-              <h3 className="mb-3 text-[15px] font-semibold text-[#333]">Enhance Your Visit</h3>
-              <PromoEnhanceSeoulAddonsCarousel />
+              {(() => {
+                const ticket = addonEntries[addonIndex];
+                if (!ticket) return null;
+                const [id, product] = ticket;
+                const hasMultiple = addonEntries.length > 1;
+                return (
+                  <div className="mx-auto max-w-[620px]">
+                    <TicketCard id={id} product={product} onBook={(pid: string) => openAddonModal(pid, selectedTourId)} bgColor="bg-brand-cream" compact>
+                      {hasMultiple && (
+                        <div className="flex items-center gap-3 pt-3 border-t border-black/5">
+                          <button type="button" className="size-7 flex items-center justify-center rounded-full border border-black/10 text-black/30 hover:text-black hover:border-black/30 transition-colors"
+                            onClick={() => setAddonIndex((i) => (i - 1 + addonEntries.length) % addonEntries.length)}>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
+                          </button>
+                          <div className="flex gap-1.5">
+                            {addonEntries.map((_, i) => (
+                              <span key={i} className={`block size-1.5 rounded-full cursor-pointer transition-colors ${i === addonIndex ? "bg-[#FF0000]" : "bg-black/15"}`} onClick={() => setAddonIndex(i)} />
+                            ))}
+                          </div>
+                          <button type="button" className="size-7 flex items-center justify-center rounded-full border border-black/10 text-black/30 hover:text-black hover:border-black/30 transition-colors"
+                            onClick={() => setAddonIndex((i) => (i + 1) % addonEntries.length)}>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
+                          </button>
+                          <span className="ml-auto text-[10px] text-black/30">{addonIndex + 1} / {addonEntries.length}</span>
+                        </div>
+                      )}
+                    </TicketCard>
+                  </div>
+                );
+              })()}
             </div>
           </div>
 
-          {/* Sticky footer — fallback Continue button */}
-          <div className="sticky bottom-0 bg-white border-t border-[#eee] py-[14px] px-[18px] shrink-0">
+          {/* ── Sticky footer ── */}
+          <div className="sticky bottom-0 bg-[#001e53] border-t border-white/10 py-[14px] px-[18px] shrink-0">
             <button
-              className="w-full border-none rounded-xl px-4 py-[14px] text-[15px] font-extrabold cursor-pointer bg-brand-red text-white disabled:opacity-50 disabled:cursor-not-allowed"
-              type="button"
-              disabled={!canContinue}
-              onClick={proceedFromTourSelection}
+              className="w-full border-none px-4 py-[14px] text-[14px] font-bold cursor-pointer uppercase tracking-wide bg-[#FF0000] text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors hover:bg-[#E00000]"
+              style={{ borderRadius: "2px" }}
+              type="button" disabled={!canContinue} onClick={proceedFromTourSelection}
             >
-              Continue with {TOUR_META[selectedTourId]?.title ?? "selected tour"} →
+              {t("continueWith", { tour: selectedMeta?.title ?? "" })}
             </button>
           </div>
         </div>
       </div>
+
+      {/* ── Route map popup ── */}
+      {mapOpen && (
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/70 p-4" onClick={() => setMapOpen(false)}>
+          <div className="relative bg-white max-w-[700px] w-full max-h-[85vh] overflow-auto" style={{ borderRadius: "4px" }} onClick={(e) => e.stopPropagation()}>
+            <button type="button" className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-black/60 text-white text-[18px] hover:bg-black/80 z-10" style={{ borderRadius: "2px" }} onClick={() => setMapOpen(false)}>&times;</button>
+            <img src="/imgs/tour01-timetable-en.png" alt="Route Map" className="w-full h-auto" />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -16,7 +16,9 @@ export default function PromoAddonModalPortal() {
     addonProductId,
     closeAddonModal,
     step,
+    selectedTourId,
     proceedFromTourSelection,
+    openTourSelection,
   } = usePromoCheckout();
 
   const { handleAddItems } = usePromoAddonHandler();
@@ -30,9 +32,13 @@ export default function PromoAddonModalPortal() {
   );
 
   const onContinueToCheckout = useCallback(() => {
-    if (step === "tourSelection") proceedFromTourSelection();
-    // If outside tour selection, the cart bar "Continue to Booking" handles it
-  }, [step, proceedFromTourSelection]);
+    if (step === "tourSelection") {
+      proceedFromTourSelection();
+    } else {
+      // If opened from homepage (idle state), launch the new promo booking modal
+      openTourSelection({ preferredTour: selectedTourId, tourOptional: true });
+    }
+  }, [step, proceedFromTourSelection, openTourSelection, selectedTourId]);
 
   const portalRoot = typeof document !== "undefined" ? document.body : null;
   if (!portalRoot) return null;

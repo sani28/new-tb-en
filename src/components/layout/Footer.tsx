@@ -1,6 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
+"use client";
+
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 export default function Footer() {
+  const t = useTranslations("Footer");
+  const tNotif = useTranslations("NotificationBar");
+
   return (
     <footer className="bg-brand-cream pt-[60px] max-md:pt-10 relative overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-10 grid grid-cols-[1fr_auto_1fr] gap-[60px] items-start max-md:grid-cols-1 max-md:gap-[30px] max-md:px-5 max-md:text-center">
@@ -15,14 +22,12 @@ export default function Footer() {
           </div>
           <div className="text-[#666] text-sm leading-relaxed text-left max-md:text-center">
             <p>
-              302, 135-7, Sejong-daero, Jung-gu, Seoul
+              {t("address")}
               <br />
-              Jinyong Kil, CEO of Seoul City Tour Bus Co., Ltd.
+              {t("ceo")}
             </p>
-            <p>Business registration number 104-81-27542</p>
-            <p>
-              Telecommunication sales report number 2005-Jung-gu, Seoul-03675
-            </p>
+            <p>{t("businessReg")}</p>
+            <p>{t("telecomReg")}</p>
           </div>
         </div>
 
@@ -30,36 +35,36 @@ export default function Footer() {
         <div className="max-md:text-center">
           <ul className="list-none p-0 m-0 flex flex-col gap-5 max-md:items-center">
             <li>
-              <a
+              <Link
                 href="/privacy-policy"
                 className="text-brand-maroon text-xl font-sans-medium font-light max-md:text-lg max-md:leading-tight"
               >
-                Privacy Policy
-              </a>
+                {t("privacyPolicy")}
+              </Link>
             </li>
             <li>
-              <a
+              <Link
                 href="/contact-us"
                 className="text-brand-maroon text-xl font-sans-medium font-light max-md:text-lg max-md:leading-tight"
               >
-                Contact Us
-              </a>
+                {t("contactUs")}
+              </Link>
             </li>
             <li>
-              <a
+              <Link
                 href="/about-us"
                 className="text-brand-maroon text-xl font-sans-medium font-light max-md:text-lg max-md:leading-tight"
               >
-                About Us
-              </a>
+                {t("aboutUs")}
+              </Link>
             </li>
             <li>
-              <a
+              <Link
                 href="/business-inquiry"
                 className="text-brand-maroon text-xl font-sans-medium font-light max-md:text-lg max-md:leading-tight"
               >
-                Business Inquiry
-              </a>
+                {t("businessInquiry")}
+              </Link>
             </li>
           </ul>
         </div>
@@ -100,10 +105,10 @@ export default function Footer() {
           </div>
           <div className="text-right max-md:text-center">
             <p className="text-text-gray text-base mb-[5px] max-md:text-lg">
-              Gwanghwamun Main Office Customer Inquiries
+              {t("customerInquiries")}
             </p>
             <p className="text-[32px] text-text-dark font-semibold max-md:text-[32px]">
-              02-777-6090
+              {tNotif("phone")}
             </p>
           </div>
         </div>

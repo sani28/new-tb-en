@@ -70,3 +70,83 @@ export interface BookingResponse {
   payment: BookingPaymentSummary;
 }
 
+/* ── Refund system types ── */
+
+export type RefundStatus =
+  | "none"
+  | "requested"
+  | "approved"
+  | "denied"
+  | "refunded";
+
+export type BookingLineItemKind =
+  | "tour"
+  | "exclusive"
+  | "physical"
+  | "scheduled"
+  | "validityPass"
+  | "cruise";
+
+export type ItemStatus = "active" | "used" | "expired" | "cancelled";
+export type PickupStatus = "not_picked_up" | "picked_up" | "unknown";
+export type UsageStatus = "unused" | "partially_used" | "fully_used";
+
+export interface BookingLineItem {
+  lineItemId: string;
+  kind: BookingLineItemKind;
+  productId: string;
+  productName: string;
+
+  // Pricing
+  unitPrice: number;
+  quantity: number;
+  lineTotal: number;
+  currency: string;
+
+  // Ticket split (tours, exclusives, scheduled, cruise, validityPass)
+  adultQty?: number;
+  childQty?: number;
+
+  // Physical product details
+  variant?: string;
+  color?: string;
+
+  // Scheduled / cruise details
+  selectedDate?: string; // ISO yyyy-mm-dd
+  selectedTime?: string; // e.g. "14:00"
+  selectedTimeSlot?: string; // e.g. "10:00-17:00"
+  cruiseType?: string;
+  cruiseTypeName?: string;
+
+  // Validity pass
+  validUntil?: string; // ISO date
+  usageStatus?: UsageStatus;
+
+  // Physical pickup
+  pickupStatus?: PickupStatus;
+
+  // Tour/exclusive scheduling
+  tourDate?: string; // ISO datetime of tour departure
+  basedOnTourId?: string; // for exclusives: which tour it maps to
+  tourOptional?: boolean; // whether this addon can exist without a tour
+
+  // Item-level status
+  status: ItemStatus;
+
+  // Refund tracking
+  refundStatus: RefundStatus;
+  refundPercentage?: number;
+  refundAmount?: number;
+  refundDeniedReason?: string;
+  refundRequestedAt?: string; // ISO datetime
+  refundResolvedAt?: string; // ISO datetime
+}
+
+export interface BookingResponseExpanded extends BookingResponse {
+  tourId: string | null;
+  tourName: string | null;
+  tourDate: string | null; // ISO datetime
+  purchasedAt: string; // ISO datetime
+  lineItems: BookingLineItem[];
+}
+

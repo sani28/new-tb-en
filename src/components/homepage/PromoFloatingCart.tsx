@@ -1,6 +1,7 @@
 "use client";
 
-import { usePromoCheckout, TOUR_META, TOUR_NAMES } from "./checkout/PromoCheckoutContext";
+import { useTranslations, useLocale } from "next-intl";
+import { usePromoCheckout, TOUR_META, TOUR_NAMES, getTourMeta, getTourName, formatPrice } from "./checkout/PromoCheckoutContext";
 import { promoProductData } from "@/lib/data/promoProducts";
 
 export default function PromoFloatingCart() {
@@ -13,9 +14,16 @@ export default function PromoFloatingCart() {
     resumeFromReservation, cancelReservation,
   } = usePromoCheckout();
 
+  const tc = useTranslations("Common");
+  const locale = useLocale();
+  const localeTag = locale === "ko" ? "ko-KR" : "en-US";
+
   const savings = origTotal - total;
   const visible = count > 0;
   const reservationVisible = !!tourReservedAt && step === "idle";
+
+  // Show the new-style bar for both reservation state AND when cart has items from homepage
+  const showNewBar = reservationVisible || (visible && step === "idle");
 
   const cartItemRows = cartItems.map((item, index) => {
     const product = promoProductData[item.productId] as { image?: string | null; placeholder?: string | null } | undefined;
@@ -32,29 +40,43 @@ export default function PromoFloatingCart() {
     return { index, item, imageUrl, placeholder, linePrice, metaInfo };
   });
 
-  const tourMeta = TOUR_META[selectedTourId];
-  const tourName = TOUR_NAMES[selectedTourId] ?? selectedTourId;
+  const tourMeta = getTourMeta(selectedTourId, locale);
+  const tourName = getTourName(selectedTourId, locale);
   const reservationDateLabel = selectedDate
-    ? selectedDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })
+    ? selectedDate.toLocaleDateString(localeTag, { weekday: "short", month: "short", day: "numeric" })
     : "";
+
+  // Use first cart item image as fallback when no tour is reserved
+  const barImage = tourMeta?.image ?? cartItems[0]?.image ?? null;
+  const barTitle = reservationVisible
+    ? tourName
+    : `${count} ${count !== 1 ? (locale === "ko" ? "개 상품" : "items") : (locale === "ko" ? "개 상품" : "item")}`;
 
   return (
     <>
-      {/* Tour reservation bar — shows when tour selected but modal closed */}
-      {reservationVisible && (
+      {/* New-style dark bar — shows for both reservation and cart-with-items */}
+      {showNewBar && (
         <div className="fixed inset-x-0 bottom-0 z-[var(--z-cart-bar)] bg-[#1a1a2e] text-white shadow-[0_-4px_20px_rgba(0,0,0,0.25)] transition-transform duration-300">
           <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-4 px-5 py-3 max-md:flex-col max-md:items-start max-md:gap-2">
             <div className="flex items-center gap-4 min-w-0">
-              {tourMeta && (
+              {reservationVisible && barImage ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
-                <img src={tourMeta.image} alt="" className="h-10 w-14 shrink-0 rounded-lg object-cover" />
+                <img src={barImage} alt="" className="h-10 w-14 shrink-0 rounded-lg object-cover" />
+              ) : (
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-white/10">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/80">
+                    <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                  </svg>
+                </div>
               )}
               <div className="min-w-0">
-                <div className="truncate text-[14px] font-bold">{tourName}</div>
+                <div className="truncate text-[14px] font-bold">{barTitle}</div>
                 <div className="flex flex-wrap items-center gap-2 text-[12px] text-white/70">
                   {reservationDateLabel && <span>{reservationDateLabel}</span>}
-                  {adultQty > 0 && <span>{adultQty} Adult{adultQty > 1 ? "s" : ""}</span>}
-                  {childQty > 0 && <span>{childQty} Child{childQty > 1 ? "ren" : ""}</span>}
+                  {reservationVisible && adultQty > 0 && <span>{adultQty} {adultQty > 1 ? tc("adults") : tc("adult")}</span>}
+                  {reservationVisible && childQty > 0 && <span>{childQty} {childQty > 1 ? tc("children") : tc("child")}</span>}
+                  {!reservationVisible && <span>{tc("total")}: {formatPrice(total, locale)}</span>}
                 </div>
               </div>
               {reservationTimeLeft && (
@@ -62,151 +84,99 @@ export default function PromoFloatingCart() {
                   ⏱ {reservationTimeLeft}
                 </span>
               )}
+              {!reservationVisible && timerText && (
+                <span className={`shrink-0 rounded-full px-3 py-1 text-[12px] font-bold ${timerExpiring ? "bg-[#E20021] text-white" : "bg-white/20 text-white"}`}>
+                  ⏱ {timerText}
+                </span>
+              )}
             </div>
             <div className="flex shrink-0 items-center gap-2">
-              <button
-                type="button"
-                className="rounded-lg border border-white/30 bg-transparent px-4 py-2 text-[13px] font-semibold text-white/80 hover:bg-white/10 transition-colors"
-                onClick={cancelReservation}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="rounded-lg bg-brand-red px-5 py-2 text-[13px] font-bold text-white hover:bg-[#C4001C] transition-colors"
-                onClick={resumeFromReservation}
-              >
-                Continue Booking →
-              </button>
+              {reservationVisible ? (
+                <>
+                  <button
+                    type="button"
+                    className="rounded-lg border border-white/30 bg-transparent px-4 py-2 text-[13px] font-semibold text-white/80 hover:bg-white/10 transition-colors"
+                    onClick={cancelReservation}
+                  >
+                    {locale === "ko" ? "취소" : "Cancel"}
+                  </button>
+                  <button
+                    type="button"
+                    className="rounded-lg bg-brand-red px-5 py-2 text-[13px] font-bold text-white hover:bg-[#C4001C] transition-colors"
+                    onClick={resumeFromReservation}
+                  >
+                    {locale === "ko" ? "예약 계속하기 →" : "Continue Booking →"}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    className="rounded-lg border border-white/30 bg-transparent px-4 py-2 text-[13px] font-semibold text-white/80 hover:bg-white/10 transition-colors"
+                    onClick={() => setCartExpanded(!cartExpanded)}
+                  >
+                    {cartExpanded
+                      ? (locale === "ko" ? "카트 닫기" : "Hide Cart")
+                      : (locale === "ko" ? "카트 보기" : "View Cart")}
+                  </button>
+                  <button
+                    type="button"
+                    className="rounded-lg bg-brand-red px-5 py-2 text-[13px] font-bold text-white hover:bg-[#C4001C] transition-colors"
+                    onClick={() => {
+                      setCartExpanded(false);
+                      openTourSelection({ tourOptional: true, pendingItems: [] });
+                    }}
+                  >
+                    {locale === "ko" ? "예약 계속하기 →" : "Continue Booking →"}
+                  </button>
+                </>
+              )}
             </div>
           </div>
+
+          {/* Expanded cart panel */}
+          {cartExpanded && !reservationVisible && cartItemRows.length > 0 && (
+            <div className="border-t border-white/10 bg-[#111827]">
+              <div className="mx-auto max-w-[1200px] px-5 py-4">
+                <div className="space-y-3 max-h-[300px] overflow-y-auto">
+                  {cartItemRows.map(({ index, item, imageUrl, placeholder, linePrice, metaInfo }) => (
+                    <div key={index} className="flex items-center gap-3 rounded-lg bg-white/5 p-3">
+                      <div className="size-12 shrink-0 overflow-hidden rounded-lg">
+                        {imageUrl
+                          ? <img src={imageUrl} alt={item.name} className="size-full object-cover" /> /* eslint-disable-line @next/next/no-img-element */
+                          : <div className="size-full flex items-center justify-center bg-white/10 text-lg">{placeholder}</div>
+                        }
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-[13px] font-semibold text-white truncate">{item.name}</div>
+                        {metaInfo && <div className="text-[11px] text-white/50">{metaInfo}</div>}
+                      </div>
+                      <div className="text-[14px] font-bold text-white">{formatPrice(linePrice, locale)}</div>
+                      <button
+                        type="button"
+                        className="shrink-0 size-7 flex items-center justify-center rounded-full bg-white/10 text-white/60 hover:bg-white/20 hover:text-white text-sm"
+                        onClick={() => removeFromCart(index)}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-between items-center mt-3 pt-3 border-t border-white/10">
+                  {savings > 0.005 && origTotal > 0 && (
+                    <span className="text-[13px] text-[#4CAF50] font-semibold">
+                      {tc("youSave")}: {Math.round((savings / origTotal) * 100)}%
+                    </span>
+                  )}
+                  <span className="text-[15px] font-bold text-white ml-auto">
+                    {tc("total")}: {formatPrice(total, locale)}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
-
-      {/* Floating cart bar */}
-      <div
-        className={`promo-upsell-cart-bar ${visible ? "visible" : ""}`}
-        aria-hidden={visible ? "false" : "true"}
-      >
-        {/* Expanded panel — always in DOM, .show class drives the CSS max-height transition */}
-        <div className={`cart-bar-expanded${cartExpanded ? " show" : ""}`}>
-          <div className="flex items-center justify-between px-5 py-4 border-b border-[#eee]">
-            <h4 className="m-0 text-[16px] font-semibold text-[#333]">Your Cart</h4>
-            <button
-              className="collapse-cart-btn bg-transparent border-none cursor-pointer text-[#666] p-1 flex items-center justify-center rounded hover:bg-[#f5f5f5] transition-colors"
-              type="button"
-              aria-label="Collapse cart"
-              onClick={() => setCartExpanded(false)}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polyline points="18 15 12 9 6 15" />
-              </svg>
-            </button>
-          </div>
-
-          <div className="cart-items-list">
-            {cartItemRows.length === 0 ? (
-              <div className="p-5 text-center text-[#666]">Your cart is empty</div>
-            ) : (
-              cartItemRows.map(({ index, item, imageUrl, placeholder, linePrice, metaInfo }) => (
-                <div key={index} className="cart-item">
-                  <div className="cart-item-image">
-                    {imageUrl
-                      ? <img src={imageUrl} alt={item.name} /> /* eslint-disable-line @next/next/no-img-element */
-                      : <div className="cart-item-placeholder">{placeholder}</div>
-                    }
-                  </div>
-                  <div className="cart-item-details">
-                    <div className="cart-item-name">{item.name}</div>
-                    {metaInfo && (
-                      <div className="cart-item-meta">
-                        <div className="cart-item-meta-line">{metaInfo}</div>
-                      </div>
-                    )}
-                    <div className="cart-item-price">${linePrice.toFixed(2)}</div>
-                  </div>
-                  <button
-                    className="cart-item-remove"
-                    type="button"
-                    aria-label="Remove"
-                    onClick={() => removeFromCart(index)}
-                  >
-                    ×
-                  </button>
-                </div>
-              ))
-            )}
-          </div>
-
-          <div className="px-5 py-3 border-t border-[#eee]">
-            {savings > 0.005 && (
-              <div className="flex justify-between text-[14px] mb-1">
-                <span className="text-[#666]">You Save</span>
-                <span className="text-[#2e7d32] font-semibold">${savings.toFixed(2)}</span>
-              </div>
-            )}
-            <div className="flex justify-between text-[15px] font-bold">
-              <span>Cart Total</span>
-              <span>${total.toFixed(2)}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Bar row */}
-        <div className="cart-bar-content">
-          <div className="cart-bar-left">
-            {timerText && (
-              <span
-                className={`promo-cart-timer show${timerExpiring ? " expiring" : ""}`}
-                aria-live="polite"
-              >
-                {timerText}
-              </span>
-            )}
-          </div>
-          <div className="cart-bar-right">
-            <div className="cart-bar-right-summary">
-              <div className="cart-bar-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
-                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-                </svg>
-                <span className="cart-badge">{count}</span>
-              </div>
-              <div className="cart-bar-right-meta">
-                <span className="cart-bar-total">
-                  Total: <strong>${total.toFixed(2)}</strong> USD
-                </span>
-              </div>
-            </div>
-            <div className="cart-bar-right-actions">
-              <button
-                className="view-cart-btn"
-                type="button"
-                onClick={() => setCartExpanded(!cartExpanded)}
-              >
-                {cartExpanded ? "Hide Cart" : "View Cart"}
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points={cartExpanded ? "18 15 12 9 6 15" : "6 9 12 15 18 9"} />
-                </svg>
-              </button>
-              <button
-                className="view-cart-btn"
-                type="button"
-                onClick={() => {
-                  setCartExpanded(false);
-                  openTourSelection({ tourOptional: true, pendingItems: [] });
-                }}
-              >
-                Continue to Booking
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="9 18 15 12 9 6" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Toast */}
       {toast && (

@@ -103,7 +103,7 @@ export default function PromoTabCarousel() {
     <div
       ref={containerRef}
       className={
-        "w-full relative z-[101] md:absolute md:bottom-[130px] md:left-1/2 md:-translate-x-1/2 md:z-[50] md:w-[45%] max-[1200px]:md:w-[55%] max-[992px]:md:w-[65%]"
+        "w-full relative z-[101] md:absolute md:bottom-[115px] md:left-1/2 md:-translate-x-1/2 md:z-[50] md:w-[45%] max-[1200px]:md:w-[55%] max-[992px]:md:w-[65%]"
       }
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
@@ -194,9 +194,8 @@ export default function PromoTabCarousel() {
               aria-hidden={i !== currentIndex}
             >
               <div
-                className="w-full h-full flex flex-col justify-center items-center text-center text-white rounded-xl box-border cursor-pointer max-md:px-3 max-md:py-1.5"
+                className="w-full h-full flex items-center justify-center cursor-pointer max-md:px-2 max-md:py-1.5"
                 data-promo-popup={String(slide.id)}
-                style={{ cursor: "pointer" }}
                 onClick={() => onPromoClick(slide.id)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
@@ -207,17 +206,12 @@ export default function PromoTabCarousel() {
                 role="button"
                 tabIndex={i === currentIndex ? 0 : -1}
               >
-                <div className="relative">
-                  <img
-                    src={slide.image}
-                    alt={slide.alt}
-                    loading="lazy"
-                    className="w-[90%] max-w-full h-auto max-h-[110px] object-contain max-[1200px]:max-h-[95px] max-[992px]:max-h-[80px] max-md:w-full max-md:max-h-[80px] max-md:rounded-lg"
-                  />
-                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 bg-black/60 text-white/90 text-xs font-mono px-2 py-0.5 rounded pointer-events-none z-10 select-none">
-                    640×110px
-                  </span>
-                </div>
+                <img
+                  src={slide.image}
+                  alt={slide.alt}
+                  loading="lazy"
+                  className="max-w-[85%] max-h-[75%] object-contain max-md:max-w-full max-md:max-h-[70px] max-md:rounded-lg"
+                />
               </div>
             </div>
           ))}

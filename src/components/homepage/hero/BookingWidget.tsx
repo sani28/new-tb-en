@@ -1,14 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 
 /* eslint-disable @next/next/no-img-element */
-
-const MONTH_NAMES = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
-];
-const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 
 const clamp = (n: number, min = 0, max = 10) => Math.max(min, Math.min(max, n));
@@ -21,6 +16,17 @@ export default function BookingWidget() {
   const [adultCount, setAdultCount] = useState(0);
   const [childCount, setChildCount] = useState(0);
   const calendarRef = useRef<HTMLDivElement>(null);
+  const locale = useLocale();
+  const t = useTranslations("BookingWidget");
+  const tc = useTranslations("Common");
+
+  const localeTag = locale === "ko" ? "ko-KR" : "en-US";
+  const MONTH_NAMES = Array.from({ length: 12 }, (_, i) =>
+    new Intl.DateTimeFormat(localeTag, { month: "long" }).format(new Date(2024, i, 1))
+  );
+  const WEEKDAYS = Array.from({ length: 7 }, (_, i) =>
+    new Intl.DateTimeFormat(localeTag, { weekday: "short" }).format(new Date(2024, 0, i))
+  );
 
   const now = new Date();
   const [viewMonth, setViewMonth] = useState(now.getMonth());
@@ -62,8 +68,8 @@ export default function BookingWidget() {
   }
 
   const dateDisplay = selectedDate
-    ? selectedDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
-    : "Select a date";
+    ? selectedDate.toLocaleDateString(localeTag, { year: "numeric", month: "long", day: "numeric" })
+    : t("selectDate");
 
   const prevMonth = () => {
     if (viewMonth === 0) { setViewYear((y) => y - 1); setViewMonth(11); }
@@ -99,12 +105,15 @@ export default function BookingWidget() {
     );
   };
 
+  const isKo = locale === "ko";
+
   return (
     <div
       className={
         "w-full relative z-[var(--z-nav)] flex flex-wrap items-stretch gap-2 rounded-none bg-white/95 px-5 py-4 shadow-none backdrop-blur-xl " +
         "md:absolute md:bottom-3 md:left-1/2 md:w-auto md:max-w-[95vw] md:-translate-x-1/2 md:flex-nowrap md:items-center md:gap-3 md:rounded-[20px] md:border md:border-white/60 " +
-        "md:bg-gradient-to-br md:from-white/98 md:to-white/95 md:px-5 md:py-4 " +
+        "md:bg-gradient-to-br md:from-white/98 md:to-white/95 md:py-4 " +
+        (isKo ? "md:px-[35px] " : "md:px-5 ") +
         "md:shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.8)] " +
         "md:hover:shadow-[0_12px_40px_rgba(0,0,0,0.15),0_4px_12px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.9)] md:transition-shadow"
       }
@@ -112,9 +121,9 @@ export default function BookingWidget() {
       aria-label="Tour booking"
     >
       {/* Date selector */}
-      <div className="flex basis-full items-center gap-2 md:basis-auto md:flex-1 md:gap-3 max-[400px]:gap-1.5">
+      <div className="flex flex-1 items-center gap-2 md:basis-auto md:flex-1 md:gap-3 max-[400px]:gap-1.5">
         {/* Date picker */}
-        <div className="relative shrink-0 min-w-[148px] max-[400px]:min-w-[130px] md:flex-1 md:min-w-[220px] z-[var(--z-dropdown)]" ref={calendarRef}>
+        <div className="relative flex-1 min-w-0 md:min-w-[220px] z-[var(--z-dropdown)]" ref={calendarRef}>
           <button
             onClick={() => setCalendarOpen((o) => !o)}
             aria-expanded={calendarOpen}
@@ -211,7 +220,7 @@ export default function BookingWidget() {
                         aria-selected={sel}
                         title={
                           new Date(viewYear, viewMonth, cell.day).getDay() === 1
-                            ? "Closed on Mondays"
+                            ? t("closedMondays")
                             : undefined
                         }
                         tabIndex={!cell.disabled && !cell.soldOut ? 0 : -1}
@@ -243,11 +252,11 @@ export default function BookingWidget() {
               <div className="flex justify-center gap-[30px] mt-5 pt-[15px] border-t border-[#eee]">
                 <div className="flex items-center gap-2 text-[14px] text-[#666]">
                   <span className="w-2 h-2 rounded-full inline-block bg-[#4CAF50]" />
-                  <span>Available</span>
+                  <span>{t("available")}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[14px] text-[#666]">
                   <span className="w-2 h-2 rounded-full inline-block bg-brand-red" />
-                  <span>Sold Out</span>
+                  <span>{t("soldOut")}</span>
                 </div>
               </div>
             </div>
@@ -258,13 +267,13 @@ export default function BookingWidget() {
       {/* Passenger counters */}
       <div className="shrink-0 flex items-center gap-1.5 md:flex md:items-center md:gap-2">
         <CounterGroup
-          label="Adult"
+          label={tc("adult")}
           count={adultCount}
           onDecrement={() => setAdultCount((c) => clamp(c - 1))}
           onIncrement={() => setAdultCount((c) => clamp(c + 1))}
         />
         <CounterGroup
-          label="Child"
+          label={tc("child")}
           count={childCount}
           onDecrement={() => setChildCount((c) => clamp(c - 1))}
           onIncrement={() => setChildCount((c) => clamp(c + 1))}
@@ -273,16 +282,19 @@ export default function BookingWidget() {
 
       <button
         className={
-          "flex-1 min-w-0 rounded-[10px] py-3 text-[14px] bg-[var(--color-brand-red)] " +
-          "font-[var(--font-copperplate)] font-bold uppercase tracking-[0.3px] text-white transition-colors " +
+          "basis-full rounded-[10px] py-3 bg-[var(--color-brand-red)] " +
+          "font-bold uppercase tracking-[0.3px] text-white transition-colors " +
           "hover:bg-[#C4001C] " +
-          "md:flex-none md:shrink-0 md:min-w-[140px] md:self-stretch md:px-8 md:py-3 md:text-[15px] md:tracking-[0.2px]"
+          (isKo
+            ? "text-[18px] font-[var(--font-sans-bold)] md:text-[19px] "
+            : "text-[14px] font-[var(--font-copperplate)] md:text-[15px] ") +
+          "md:basis-auto md:flex-none md:shrink-0 md:min-w-[140px] md:self-stretch md:px-8 md:py-3 md:tracking-[0.2px]"
         }
         onClick={onBook}
         aria-label="Book tour"
         type="button"
       >
-        Book
+        {t("bookTour")}
       </button>
     </div>
   );

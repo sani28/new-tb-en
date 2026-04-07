@@ -9,33 +9,117 @@ import {
   useRef,
   useState,
 } from "react";
+import { useLocale } from "next-intl";
 import type { AddonCartItemPayload } from "@/components/addons/AddonProductDetailsModal";
 import { promoProductData } from "@/lib/data/promoProducts";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
+// USD pricing (default)
 export const TOUR_PRICES: Record<
   string,
   { adult: number; adultOrig: number; child: number; childOrig: number }
 > = {
-  tour01: { adult: 20, adultOrig: 27, child: 14, childOrig: 18 },
+  tour01: { adult: 22, adultOrig: 27, child: 16, childOrig: 19 },
   tour02: { adult: 22, adultOrig: 29, child: 15, childOrig: 20 },
-  tour04: { adult: 18, adultOrig: 24, child: 12, childOrig: 16 },
+  tour04: { adult: 20, adultOrig: 24, child: 14, childOrig: 16 },
+  "pkg-kculture": { adult: 45, adultOrig: 60, child: 35, childOrig: 45 },
+  "pkg-kbeauty": { adult: 40, adultOrig: 55, child: 30, childOrig: 40 },
 };
+
+// KRW pricing — sourced from product tree (static, not converted)
+export const TOUR_PRICES_KRW: Record<
+  string,
+  { adult: number; adultOrig: number; child: number; childOrig: number }
+> = {
+  tour01: { adult: 27000, adultOrig: 33000, child: 19000, childOrig: 23000 },
+  tour02: { adult: 25000, adultOrig: 33000, child: 16000, childOrig: 23000 },
+  tour04: { adult: 24000, adultOrig: 29000, child: 16000, childOrig: 19000 },
+  "pkg-kculture": { adult: 28000, adultOrig: 34000, child: 20000, childOrig: 21000 },
+  "pkg-kbeauty": { adult: 49000, adultOrig: 67000, child: 37000, childOrig: 49000 },
+};
+
+// KRW pricing for add-on products — sourced from product tree
+export const ADDON_PRICES_KRW: Record<string, { price: number; originalPrice: number; adultPrice?: number; childPrice?: number }> = {
+  kwangjuyo: { price: 31000, originalPrice: 43000 },
+  "sejong-backstage": { price: 10000, originalPrice: 15000, adultPrice: 10000, childPrice: 6000 },
+  "museum-pass": { price: 31000, originalPrice: 43000, adultPrice: 31000, childPrice: 18000 },
+  "han-river-cruise": { price: 31000, originalPrice: 43000, adultPrice: 31000, childPrice: 25000 },
+  "hanbok-rental": { price: 25000, originalPrice: 37000, adultPrice: 25000, childPrice: 15000 },
+};
+
+/** Get tour prices for the given locale */
+export function getTourPrices(locale: string) {
+  return locale === "ko" ? TOUR_PRICES_KRW : TOUR_PRICES;
+}
+
+/** Get addon price/originalPrice for the given locale */
+export function getAddonPrice(productId: string, field: "price" | "originalPrice" | "adultPrice" | "childPrice", usdValue: number, locale: string): number {
+  if (locale !== "ko") return usdValue;
+  const krw = ADDON_PRICES_KRW[productId];
+  if (!krw) return usdValue;
+  return (krw as Record<string, number | undefined>)[field] ?? usdValue;
+}
+
+/** Format a price for the given locale */
+export function formatPrice(amount: number, locale: string): string {
+  if (locale === "ko") return `₩${amount.toLocaleString()}`;
+  return `$${amount.toFixed(2)}`;
+}
 
 export const TOUR_NAMES: Record<string, string> = {
   tour01: "Tour 01 Downtown Palace Namsan Course",
   tour02: "Tour 02 Panorama Course",
   tour04: "Tour 04 Night View Course",
+  "pkg-kculture": "BTS THE CITY SEOUL",
+  "pkg-kbeauty": "Glow Up in Seoul",
 };
+
+export const TOUR_NAMES_KO: Record<string, string> = {
+  tour01: "투어 01 도심고궁남산 코스",
+  tour02: "투어 02 파노라마 코스",
+  tour04: "투어 04 야경 코스",
+  "pkg-kculture": "BTS 더 시티 서울",
+  "pkg-kbeauty": "서울 뷰티 투어",
+};
+
+/** Get tour name for the given locale */
+export function getTourName(id: string, locale: string): string {
+  if (locale === "ko") return TOUR_NAMES_KO[id] ?? TOUR_NAMES[id] ?? id;
+  return TOUR_NAMES[id] ?? id;
+}
 
 export const TOUR_META: Record<
   string,
   { image: string; label: string; labelColor: string; title: string; isPopular: boolean }
 > = {
-  tour01: { image: "/imgs/tour01__.png", label: "TOUR 01", labelColor: "#000080", title: "DOWNTOWN PALACE NAMSAN COURSE", isPopular: false },
+  tour01: { image: "/imgs/tour01home.png", label: "TOUR 01", labelColor: "#000080", title: "DOWNTOWN PALACE NAMSAN COURSE", isPopular: false },
   tour02: { image: "/imgs/panorama.png", label: "TOUR 02", labelColor: "#C41E3A", title: "PANORAMA COURSE", isPopular: false },
-  tour04: { image: "/imgs/tour04home.png", label: "TOUR 04", labelColor: "#FFD700", title: "NIGHT VIEW COURSE", isPopular: true },
+  tour04: { image: "/imgs/tour04home.png", label: "TOUR 04", labelColor: "#FFD700", title: "NIGHT VIEW COURSE", isPopular: false },
+  "pkg-kculture": { image: "/imgs/exclusive-package-bts.png", label: "EXCLUSIVE", labelColor: "#E20021", title: "BTS THE CITY SEOUL", isPopular: false },
+  "pkg-kbeauty": { image: "/imgs/t01-a.png", label: "POPULAR", labelColor: "#ff9f00", title: "GLOW UP IN SEOUL", isPopular: true },
+};
+
+export const TOUR_META_KO: Record<
+  string,
+  { title: string; label: string }
+> = {
+  tour01: { title: "도심고궁남산 코스", label: "투어 01" },
+  tour02: { title: "파노라마 코스", label: "투어 02" },
+  tour04: { title: "야경 코스", label: "투어 04" },
+  "pkg-kculture": { title: "BTS 더 시티 서울", label: "독점" },
+  "pkg-kbeauty": { title: "서울 뷰티 투어", label: "인기" },
+};
+
+/** Get tour meta with locale-aware title and label */
+export function getTourMeta(id: string, locale: string) {
+  const base = TOUR_META[id];
+  if (!base) return undefined;
+  if (locale === "ko") {
+    const ko = TOUR_META_KO[id];
+    return ko ? { ...base, title: ko.title, label: ko.label } : base;
+  }
+  return base;
 };
 
 const CART_TTL_MS = 15 * 60 * 1000;
@@ -199,6 +283,8 @@ export function usePromoCheckout() {
 // ── Provider ───────────────────────────────────────────────────────────────────
 
 export function PromoCheckoutProvider({ children }: { children: React.ReactNode }) {
+  const locale = useLocale();
+
   // Cart
   const [cartItems, setCartItems] = useState<PromoCartItem[]>([]);
   const [cartExpiresAt, setCartExpiresAt] = useState<number | null>(null);
@@ -513,13 +599,15 @@ export function PromoCheckoutProvider({ children }: { children: React.ReactNode 
     const { name, email, phone, agreedToTerms } = contactForm;
     if (!name || !email || !phone) { alert("Please fill in all required fields"); return false; }
     if (!agreedToTerms) { alert("Please agree to the Terms & Conditions"); return false; }
-    const tp = TOUR_PRICES[selectedTourId] ?? TOUR_PRICES["tour01"]!;
+    const allPrices = getTourPrices(locale);
+    const tp = allPrices[selectedTourId] ?? allPrices["tour01"]!;
+    const localeTag = locale === "ko" ? "ko-KR" : "en-US";
     setOrderData({
-      tourName: TOUR_NAMES[selectedTourId] ?? TOUR_NAMES["tour01"]!,
+      tourName: getTourName(selectedTourId, locale),
       tourValue: selectedTourId,
       tourDate: tourSkipped || !selectedDate
         ? ""
-        : selectedDate.toLocaleDateString("en-US", { weekday: "short", year: "numeric", month: "short", day: "numeric" }),
+        : selectedDate.toLocaleDateString(localeTag, { weekday: "short", year: "numeric", month: "short", day: "numeric" }),
       adultQty,
       adultPrice: tp.adult,
       adultOrigPrice: tp.adultOrig,
@@ -529,7 +617,7 @@ export function PromoCheckoutProvider({ children }: { children: React.ReactNode 
     });
     setStep("payment");
     return true;
-  }, [contactForm, selectedTourId, selectedDate, tourSkipped, adultQty, childQty]);
+  }, [contactForm, selectedTourId, selectedDate, tourSkipped, adultQty, childQty, locale]);
 
   const setContactField = useCallback(
     (field: keyof ContactFormData, value: string | boolean) =>
