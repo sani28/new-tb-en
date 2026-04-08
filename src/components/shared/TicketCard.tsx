@@ -58,7 +58,7 @@ export default function TicketCard({ id, product, onBook, bgColor, compact = fal
         <div className={`flex-1 ${compact ? "p-4" : "p-6"} max-md:p-4 flex flex-col relative`}>
           <div className="absolute top-4 bottom-4 right-0 border-r-2 border-dashed border-black/10 max-md:hidden" />
           <div className={`${compact ? "text-[9px]" : "text-[10px]"} uppercase tracking-[0.15em] text-[#FF0000] font-bold mb-1`}>Seoul Tiger Bus</div>
-          <h4 className={`${compact ? (isKo ? "text-[15px]" : "text-[13px]") : (isKo ? "text-[20px]" : "text-[18px]")} font-bold text-black mb-1`}>{productName}</h4>
+          <h4 className={`${compact ? (isKo ? "text-[15px]" : "text-[13px]") : (isKo ? "text-[20px] ko-scale-ipad-lg" : "text-[18px]")} font-bold text-black mb-1`}>{productName}</h4>
           <div className="w-8 h-0.5 bg-[#FF0000] mb-2" />
           <p className={`${compact ? (isKo ? "text-[12px]" : "text-[10px]") : (isKo ? "text-[13px]" : "text-[11px]")} font-bold uppercase tracking-wide text-black/40 mb-1`}>{t("includes")}</p>
           <p className={`${compact ? (isKo ? "text-[13px] mb-2" : "text-[11px] mb-2") : (isKo ? "text-[14px] mb-4" : "text-[12px] mb-4")} text-black/60 leading-[1.6] flex-1`}>{productDescription}</p>
@@ -68,7 +68,7 @@ export default function TicketCard({ id, product, onBook, bgColor, compact = fal
         {/* Right — pricing stub */}
         <div className={`${stubW} max-md:w-full shrink-0 ${compact ? "p-3" : "p-5"} max-md:p-4 flex flex-col items-center justify-center text-center bg-[#FAFAFA]`}>
           <div className={`${compact ? "text-[9px]" : "text-[10px]"} uppercase tracking-[0.15em] text-black/40 font-bold mb-2`}>{t("ticketPrice")}</div>
-          <div className={`${compact ? "text-[16px]" : "text-[24px]"} font-bold text-black leading-none mb-0.5`}>{formatPrice(getAddonPrice(id, "price", product.price, locale), locale)}</div>
+          <div className={`${compact ? "text-[16px]" : "text-[24px]"} font-bold text-black leading-none mb-0.5 ko-scale-ipad-2xl`}>{formatPrice(getAddonPrice(id, "price", product.price, locale), locale)}</div>
           {product.originalPrice > product.price && (
             <div className="text-[13px] text-black/30 line-through mb-1">{formatPrice(getAddonPrice(id, "originalPrice", product.originalPrice, locale), locale)}</div>
           )}
@@ -79,7 +79,7 @@ export default function TicketCard({ id, product, onBook, bgColor, compact = fal
           )}
           <button
             type="button"
-            className={`w-full flex items-center justify-center gap-2 bg-[#FF0000] py-3 ${isKo ? "text-[13px]" : "text-[12px]"} font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#E00000]`}
+            className={`w-full flex items-center justify-center gap-2 bg-[#FF0000] py-3 ${isKo ? "text-[13px] ko-scale-ipad-btn" : "text-[12px]"} font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#E00000]`}
             style={{ borderRadius: "2px" }}
             onClick={() => onBook(id)}
           >

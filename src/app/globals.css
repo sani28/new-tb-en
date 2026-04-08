@@ -4537,6 +4537,21 @@ body.promo-hero-modal-open {
 
 /* Discovery section — migrated to Tailwind in HomepageDiscoverySection.tsx */
 
+/* === iPad Korean font scaling (1.5×) ===
+   When locale is "ko", <html lang="ko"> is set — use :lang(ko) to target.
+   iPad range: 768px–1199px (matching project tablet breakpoints).
+   Targets elements marked with .ko-scale-ipad by their components.
+*/
+@media (min-width: 768px) and (max-width: 1199px) {
+    :lang(ko) .ko-scale-ipad-sm  { font-size: 15px !important; }  /* 10px × 1.5 */
+    :lang(ko) .ko-scale-ipad-xs  { font-size: 18px !important; }  /* 12px × 1.5 */
+    :lang(ko) .ko-scale-ipad-md  { font-size: 21px !important; }  /* 14px × 1.5 */
+    :lang(ko) .ko-scale-ipad-lg  { font-size: 27px !important; }  /* 18px × 1.5 */
+    :lang(ko) .ko-scale-ipad-xl  { font-size: 39px !important; }  /* 26px × 1.5 */
+    :lang(ko) .ko-scale-ipad-2xl { font-size: 36px !important; }  /* 24px × 1.5 */
+    :lang(ko) .ko-scale-ipad-btn { font-size: 20px !important; }  /* 13px × 1.5 */
+}
+
 /* Add-on cards: override desktop-only card-section sizing/grid that breaks mobile */
 @media (max-width: 768px) {
     .index-page .courses .card-section {

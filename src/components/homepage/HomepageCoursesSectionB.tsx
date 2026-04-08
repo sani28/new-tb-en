@@ -186,12 +186,12 @@ function ClassicTourCard({
       >
       <div className={`relative ${isKo ? "h-[200px]" : "h-[150px]"} shrink-0 overflow-hidden`}>
         <img src={meta.image} alt={title} className="size-full object-cover" />
-        <span className={`absolute left-2.5 top-2.5 rounded-full px-2.5 py-0.5 text-[10px] font-extrabold tracking-wide ${meta.labelColor === "#FFD700" ? "text-black" : "text-white"}`} style={{ background: meta.labelColor }}>
+        <span className={`absolute left-2.5 top-2.5 rounded-full px-2.5 py-0.5 text-[13px] font-extrabold tracking-wide ${meta.labelColor === "#FFD700" ? "text-black" : "text-white"}`} style={{ background: meta.labelColor }}>
           {meta.label}
         </span>
       </div>
       <div className="flex flex-1 flex-col p-3">
-        <h4 className="mb-1.5 text-[18px] text-black leading-tight" style={{ fontFamily: "'SUIT-Heavy', sans-serif", textWrap: "balance" }}>{title}</h4>
+        <h4 className="mb-1.5 text-[18px] text-black leading-tight ko-scale-ipad-lg" style={{ fontFamily: "'SUIT-Heavy', sans-serif", textWrap: "balance" }}>{title}</h4>
         {details && (
           <>
             <p className="mb-2 text-[14px] text-[#666] leading-[1.4]">{tt(`${tourKey}.description`)}</p>
@@ -213,29 +213,29 @@ function ClassicTourCard({
             <span className="text-[12px] text-[#666]">{tc("adult")}</span>
             <div className="flex items-baseline gap-1.5">
               <span className="text-[11px] text-[#999] italic">{tc("from")}</span>
-              <span className="text-[10px] text-[#999] line-through">{formatPrice(prices.adultOrig, locale)}</span>
-              <span className="text-[14px] font-bold text-[#FF0000]">{formatPrice(prices.adult, locale)}</span>
+              <span className="text-[10px] text-[#999] line-through ko-scale-ipad-sm">{formatPrice(prices.adultOrig, locale)}</span>
+              <span className="text-[14px] font-bold text-[#FF0000] ko-scale-ipad-md">{formatPrice(prices.adult, locale)}</span>
             </div>
           </div>
           <div className="mb-3 flex items-baseline justify-between">
             <span className="text-[12px] text-[#666]">{tc("child")}</span>
             <div className="flex items-baseline gap-1.5">
               <span className="text-[11px] text-[#999] italic">{tc("from")}</span>
-              <span className="text-[10px] text-[#999] line-through">{formatPrice(prices.childOrig, locale)}</span>
-              <span className="text-[14px] font-bold text-[#FF0000]">{formatPrice(prices.child, locale)}</span>
+              <span className="text-[10px] text-[#999] line-through ko-scale-ipad-sm">{formatPrice(prices.childOrig, locale)}</span>
+              <span className="text-[14px] font-bold text-[#FF0000] ko-scale-ipad-md">{formatPrice(prices.child, locale)}</span>
             </div>
           </div>
           <div className="flex gap-2">
             <button
               type="button"
-              className="flex-1 border border-brand-red bg-white py-2 text-[12px] font-semibold text-brand-red transition-colors hover:bg-brand-red/5"
+              className="flex-1 border border-brand-red bg-white py-2 text-[12px] font-semibold text-brand-red transition-colors hover:bg-brand-red/5 ko-scale-ipad-xs"
               onClick={(e) => { e.stopPropagation(); }}
             >
               {tc("viewMore")}
             </button>
             <button
               type="button"
-              className="flex-1 flex items-center justify-center gap-2 bg-[#FF0000] py-2 text-[12px] font-semibold text-white transition-colors hover:bg-[#E00000]"
+              className="flex-1 flex items-center justify-center gap-2 bg-[#FF0000] py-2 text-[12px] font-semibold text-white transition-colors hover:bg-[#E00000] ko-scale-ipad-xs"
               onClick={(e) => { e.stopPropagation(); onSelect(); }}
             >
               {tc("book")} <span className="text-[14px]">&rarr;</span>
@@ -272,10 +272,10 @@ function ExclusivePackageCard({
     >
       <div className="relative h-[200px] overflow-hidden">
         <img src={pkg.image} alt={name} className="size-full object-cover" />
-        <span className="absolute left-2.5 top-2.5 rounded-full bg-brand-red px-2.5 py-0.5 text-[10px] font-extrabold text-white">{th(pkg.badgeKey)}</span>
+        <span className="absolute left-2.5 top-2.5 rounded-full bg-brand-red px-2.5 py-0.5 text-[13px] font-extrabold text-white">{th(pkg.badgeKey)}</span>
       </div>
       <div className="flex flex-1 flex-col p-3">
-        <div className="mb-0.5 text-[18px] text-text-dark leading-tight" style={{ fontFamily: "'SUIT-Heavy', sans-serif", textWrap: "balance" }}>{name}</div>
+        <div className="mb-0.5 text-[18px] text-text-dark leading-tight ko-scale-ipad-lg" style={{ fontFamily: "'SUIT-Heavy', sans-serif", textWrap: "balance" }}>{name}</div>
         <div className="mb-2 text-[14px] italic text-[#666]">{tagline}</div>
         <div className="mb-2 text-[13px] text-[#999]">{baseRoute}</div>
         <ul className="mb-2.5 space-y-1.5">
@@ -290,29 +290,29 @@ function ExclusivePackageCard({
             <span className="text-[12px] text-[#666]">{tc("adult")}</span>
             <div className="flex items-baseline gap-1.5">
               <span className="text-[11px] text-[#999] italic">{tc("from")}</span>
-              <span className="text-[10px] text-[#999] line-through">{formatPrice(prices.adultOrig, locale)}</span>
-              <span className="text-[14px] font-bold text-[#FF0000]">{formatPrice(prices.adult, locale)}</span>
+              <span className="text-[10px] text-[#999] line-through ko-scale-ipad-sm">{formatPrice(prices.adultOrig, locale)}</span>
+              <span className="text-[14px] font-bold text-[#FF0000] ko-scale-ipad-md">{formatPrice(prices.adult, locale)}</span>
             </div>
           </div>
           <div className="mb-3 flex items-baseline justify-between">
             <span className="text-[12px] text-[#666]">{tc("child")}</span>
             <div className="flex items-baseline gap-1.5">
               <span className="text-[11px] text-[#999] italic">{tc("from")}</span>
-              <span className="text-[10px] text-[#999] line-through">{formatPrice(prices.childOrig, locale)}</span>
-              <span className="text-[14px] font-bold text-[#FF0000]">{formatPrice(prices.child, locale)}</span>
+              <span className="text-[10px] text-[#999] line-through ko-scale-ipad-sm">{formatPrice(prices.childOrig, locale)}</span>
+              <span className="text-[14px] font-bold text-[#FF0000] ko-scale-ipad-md">{formatPrice(prices.child, locale)}</span>
             </div>
           </div>
           <div className="flex gap-2">
             <button
               type="button"
-              className="flex-1 border border-brand-red bg-white py-2 text-[12px] font-semibold text-brand-red transition-colors hover:bg-brand-red/5"
+              className="flex-1 border border-brand-red bg-white py-2 text-[12px] font-semibold text-brand-red transition-colors hover:bg-brand-red/5 ko-scale-ipad-xs"
               onClick={(e) => { e.stopPropagation(); }}
             >
               {tc("viewMore")}
             </button>
             <button
               type="button"
-              className="flex-1 flex items-center justify-center gap-2 bg-[#FF0000] py-2 text-[12px] font-semibold text-white transition-colors hover:bg-[#E00000]"
+              className="flex-1 flex items-center justify-center gap-2 bg-[#FF0000] py-2 text-[12px] font-semibold text-white transition-colors hover:bg-[#E00000] ko-scale-ipad-xs"
               onClick={(e) => { e.stopPropagation(); onSelect(); }}
             >
               {tc("book")} <span className="text-[14px]">&rarr;</span>
@@ -331,7 +331,7 @@ function SectionHeader({ titleKey }: { titleKey: string }) {
     <div className="mb-4">
       <div className="h-px bg-white/30" />
       <h3
-        className={`py-2.5 text-center ${isKo ? "text-[26px]" : "text-[18px]"} uppercase tracking-[0.2em] text-white`}
+        className={`py-2.5 text-center ${isKo ? "text-[26px] ko-scale-ipad-xl" : "text-[18px]"} uppercase tracking-[0.2em] text-white`}
         style={{ fontFamily: isKo ? "'SUIT-SemiBold', sans-serif" : "'SUIT-Heavy', sans-serif" }}
       >
         {t(titleKey)}
@@ -343,10 +343,13 @@ function SectionHeader({ titleKey }: { titleKey: string }) {
 
 // ─── Design C layout ─────────────────────────────────────────────────────────
 
-function DesignCTours({ selectedTourId, onSelect }: {
+function DesignCTours({ selectedTourId, onSelect, variant }: {
   selectedTourId: string;
   onSelect: (tourId: string) => void;
+  variant: "A" | "B";
 }) {
+  const locale = useLocale();
+  const isKo = locale === "ko";
   const classicSlides = chunk(CLASSIC_TOUR_IDS, 2);
   const classicDesktopCarousel = useCarousel(classicSlides.length);
   const exclusiveDesktopCarousel = useCarousel(EXCLUSIVE_PACKAGES.length);
@@ -367,74 +370,116 @@ function DesignCTours({ selectedTourId, onSelect }: {
     el.scrollBy({ left: dir === "next" ? amount : -amount, behavior: "smooth" });
   };
 
-  return (
+  // Shared sub-components for desktop columns
+  const exclusiveColumn = (
     <div>
-      {/* Desktop: asymmetric 1:2 */}
-      <div className="hidden lg:grid lg:grid-cols-[1fr_auto_2fr] lg:gap-6">
-        <div>
-          <SectionHeader titleKey="exclusive" />
-          <div className="relative">
-            <ExclusivePackageCard
-              pkg={EXCLUSIVE_PACKAGES[exclusiveDesktopCarousel.index]}
-              onSelect={() => onSelect(EXCLUSIVE_PACKAGES[exclusiveDesktopCarousel.index].tourId)}
-            />
-            {exclusiveDesktopCarousel.index > 0 && (
-              <button
-                type="button"
-                className="absolute -left-5 top-1/2 z-10 flex size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-lg"
-                onClick={exclusiveDesktopCarousel.prev}
-                aria-label="Previous"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="15 18 9 12 15 6" /></svg>
-              </button>
-            )}
-            {exclusiveDesktopCarousel.index < EXCLUSIVE_PACKAGES.length - 1 && (
-              <button
-                type="button"
-                className="absolute -right-5 top-1/2 z-10 flex size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-lg"
-                onClick={exclusiveDesktopCarousel.next}
-                aria-label="Next"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6" /></svg>
-              </button>
-            )}
-            <CarouselDots total={EXCLUSIVE_PACKAGES.length} active={exclusiveDesktopCarousel.index} />
-          </div>
-        </div>
-        <div className="w-px self-stretch bg-white/20" />
-        <div className="relative">
-          {classicScrolled && (
-            <button
-              type="button"
-              className="absolute left-0 top-1/2 z-10 flex size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-lg"
-              onClick={() => scrollClassic("prev")}
-              aria-label="Previous"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="15 18 9 12 15 6" /></svg>
-            </button>
-          )}
-          <div className={`overflow-hidden pr-14 ${classicScrolled ? "pl-14" : ""}`}>
-            <SectionHeader titleKey="classic" />
-            <div ref={classicScrollRef} onScroll={onClassicScroll} className="flex items-stretch gap-3 overflow-x-auto scrollbar-hide" style={{ scrollSnapType: "x mandatory" }}>
-              {CLASSIC_TOUR_IDS.map((id) => (
-                <div key={id} className="w-[calc(45%-6px)] shrink-0 self-stretch" style={{ scrollSnapAlign: "start" }}>
-                  <ClassicTourCard tourId={id} isSelected={selectedTourId === id} onSelect={() => onSelect(id)} />
-                </div>
-              ))}
-            </div>
-          </div>
+      <SectionHeader titleKey="exclusive" />
+      <div className="relative">
+        <ExclusivePackageCard
+          pkg={EXCLUSIVE_PACKAGES[exclusiveDesktopCarousel.index]}
+          onSelect={() => onSelect(EXCLUSIVE_PACKAGES[exclusiveDesktopCarousel.index].tourId)}
+        />
+        {exclusiveDesktopCarousel.index > 0 && (
           <button
             type="button"
-            className="absolute right-0 top-1/2 z-10 flex size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-lg"
-            onClick={() => scrollClassic("next")}
+            className="absolute -left-5 top-1/2 z-10 flex size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-lg"
+            onClick={exclusiveDesktopCarousel.prev}
+            aria-label="Previous"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="15 18 9 12 15 6" /></svg>
+          </button>
+        )}
+        {exclusiveDesktopCarousel.index < EXCLUSIVE_PACKAGES.length - 1 && (
+          <button
+            type="button"
+            className="absolute -right-5 top-1/2 z-10 flex size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-lg"
+            onClick={exclusiveDesktopCarousel.next}
             aria-label="Next"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6" /></svg>
           </button>
+        )}
+        <CarouselDots total={EXCLUSIVE_PACKAGES.length} active={exclusiveDesktopCarousel.index} />
+      </div>
+    </div>
+  );
+
+  const classicColumn = (
+    <div className="relative">
+      {classicScrolled && (
+        <button
+          type="button"
+          className="absolute left-0 top-1/2 z-10 flex size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-lg"
+          onClick={() => scrollClassic("prev")}
+          aria-label="Previous"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="15 18 9 12 15 6" /></svg>
+        </button>
+      )}
+      <div className={`overflow-hidden pr-14 ${classicScrolled ? "pl-14" : ""}`}>
+        <SectionHeader titleKey="classic" />
+        <div ref={classicScrollRef} onScroll={onClassicScroll} className="flex items-stretch gap-3 overflow-x-auto scrollbar-hide" style={{ scrollSnapType: "x mandatory" }}>
+          {CLASSIC_TOUR_IDS.map((id) => (
+            <div key={id} className="w-[calc(45%-6px)] shrink-0 self-stretch" style={{ scrollSnapAlign: "start" }}>
+              <ClassicTourCard tourId={id} isSelected={selectedTourId === id} onSelect={() => onSelect(id)} />
+            </div>
+          ))}
         </div>
       </div>
+      <button
+        type="button"
+        className="absolute right-0 top-1/2 z-10 flex size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-lg"
+        onClick={() => scrollClassic("next")}
+        aria-label="Next"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6" /></svg>
+      </button>
+    </div>
+  );
 
-      {/* Mobile: stacked carousels */}
+  // Korean: Classic (2fr) left, Exclusive (1fr) right
+  // English: Exclusive (1fr) left, Classic (2fr) right
+  const leftColumn = isKo ? classicColumn : exclusiveColumn;
+  const rightColumn = isKo ? exclusiveColumn : classicColumn;
+  const gridCols = isKo ? "lg:grid-cols-[2fr_auto_1fr]" : "lg:grid-cols-[1fr_auto_2fr]";
+
+  // Variant B: Classic tours only, full width grid
+  if (variant === "B") {
+    return (
+      <div>
+        <SectionHeader titleKey="classic" />
+        {/* Desktop: all classic cards in a row */}
+        <div className="hidden lg:grid lg:grid-cols-3 lg:gap-4">
+          {CLASSIC_TOUR_IDS.map((id) => (
+            <ClassicTourCard key={id} tourId={id} isSelected={selectedTourId === id} onSelect={() => onSelect(id)} />
+          ))}
+        </div>
+        {/* Mobile: single card carousel */}
+        <div className="lg:hidden">
+          <div className="relative px-4">
+            <ClassicTourCard
+              tourId={CLASSIC_TOUR_IDS[classicMobileCarousel.index]}
+              isSelected={selectedTourId === CLASSIC_TOUR_IDS[classicMobileCarousel.index]}
+              onSelect={() => onSelect(CLASSIC_TOUR_IDS[classicMobileCarousel.index])}
+            />
+            <CarouselArrows onPrev={classicMobileCarousel.prev} onNext={classicMobileCarousel.next} prevDisabled={classicMobileCarousel.index === 0} nextDisabled={classicMobileCarousel.index === CLASSIC_TOUR_IDS.length - 1} />
+            <CarouselDots total={CLASSIC_TOUR_IDS.length} active={classicMobileCarousel.index} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {/* Desktop: asymmetric layout — order flipped for Korean */}
+      <div className={`hidden lg:grid ${gridCols} lg:gap-6`}>
+        {leftColumn}
+        <div className="w-px self-stretch bg-white/20" />
+        {rightColumn}
+      </div>
+
+      {/* Mobile: stacked carousels — Classic first for both locales */}
       <div className="space-y-6 lg:hidden">
         <div>
           <SectionHeader titleKey="classic" />
@@ -469,10 +514,12 @@ function DesignCTours({ selectedTourId, onSelect }: {
 export default function HomepageCoursesSectionB() {
   const { selectedTourId, setSelectedTourId, openTourSelection, openAddonModal } = usePromoCheckout();
   const [addonVariant, setAddonVariant] = useState<"A" | "B">("A");
+  const [coursesVariant, setCoursesVariant] = useState<"A" | "B">("A");
   const [ticketIndex, setTicketIndex] = useState(0);
   const addonEntries = Object.entries(promoProductData);
   const t = useTranslations("Homepage");
   const locale = useLocale();
+  const isKo = locale === "ko";
 
   const handleTourSelect = (tourId: string) => {
     setSelectedTourId(tourId);
@@ -483,10 +530,31 @@ export default function HomepageCoursesSectionB() {
     <div style={{ fontFamily: "'SUIT-Bold', sans-serif" }}>
       <section className="courses">
         <div className="courses-inner" style={{ backgroundColor: "#001e53" }}>
+          {/* Korean-only courses layout toggle — pinned top-right of the section */}
+          {isKo && (
+            <div className="mx-auto flex max-w-[1100px] justify-end px-6 pt-3 max-md:px-4 max-md:pt-2">
+              <div className="flex overflow-hidden rounded-lg border border-white/20 shadow-sm">
+                {([["A", t("withExclusive")], ["B", t("classicOnly")]] as const).map(([v, label]) => (
+                  <button
+                    key={v}
+                    type="button"
+                    className={`px-3 py-1.5 text-xs font-semibold transition-colors ${
+                      coursesVariant === v
+                        ? "bg-brand-red text-white"
+                        : "bg-white/10 text-white/50 hover:bg-white/20 hover:text-white"
+                    }`}
+                    onClick={() => setCoursesVariant(v)}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="mx-auto max-w-[1100px] px-6 pt-4 pb-12 max-md:px-4 max-md:pt-0 max-md:pb-8">
 
-            {/* Design C tour layout */}
-            <DesignCTours selectedTourId={selectedTourId} onSelect={handleTourSelect} />
+            <DesignCTours selectedTourId={selectedTourId} onSelect={handleTourSelect} variant={isKo ? coursesVariant : "A"} />
 
           </div>
         </div>
@@ -513,7 +581,7 @@ export default function HomepageCoursesSectionB() {
         </div>
 
         <h3
-          className={`mb-8 text-center ${locale === "ko" ? "text-[26px]" : "text-[18px]"} uppercase tracking-[0.2em] text-black`}
+          className={`mb-8 text-center ${locale === "ko" ? "text-[26px] ko-scale-ipad-xl" : "text-[18px]"} uppercase tracking-[0.2em] text-black`}
           style={{ fontFamily: locale === "ko" ? "'SUIT-SemiBold', sans-serif" : "'SUIT-Heavy', sans-serif" }}
         >
           {t("enhanceExperience")}

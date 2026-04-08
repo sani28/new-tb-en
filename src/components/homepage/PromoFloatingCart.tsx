@@ -71,8 +71,8 @@ export default function PromoFloatingCart() {
                 </div>
               )}
               <div className="min-w-0">
-                <div className="truncate text-[14px] font-bold">{barTitle}</div>
-                <div className="flex flex-wrap items-center gap-2 text-[12px] text-white/70">
+                <div className="truncate text-[14px] font-bold ko-scale-ipad-md">{barTitle}</div>
+                <div className="flex flex-wrap items-center gap-2 text-[12px] text-white/70 ko-scale-ipad-xs">
                   {reservationDateLabel && <span>{reservationDateLabel}</span>}
                   {reservationVisible && adultQty > 0 && <span>{adultQty} {adultQty > 1 ? tc("adults") : tc("adult")}</span>}
                   {reservationVisible && childQty > 0 && <span>{childQty} {childQty > 1 ? tc("children") : tc("child")}</span>}
@@ -95,14 +95,14 @@ export default function PromoFloatingCart() {
                 <>
                   <button
                     type="button"
-                    className="rounded-lg border border-white/30 bg-transparent px-4 py-2 text-[13px] font-semibold text-white/80 hover:bg-white/10 transition-colors"
+                    className="rounded-lg border border-white/30 bg-transparent px-4 py-2 text-[13px] font-semibold text-white/80 hover:bg-white/10 transition-colors ko-scale-ipad-btn"
                     onClick={cancelReservation}
                   >
                     {locale === "ko" ? "취소" : "Cancel"}
                   </button>
                   <button
                     type="button"
-                    className="rounded-lg bg-brand-red px-5 py-2 text-[13px] font-bold text-white hover:bg-[#C4001C] transition-colors"
+                    className="rounded-lg bg-brand-red px-5 py-2 text-[13px] font-bold text-white hover:bg-[#C4001C] transition-colors ko-scale-ipad-btn"
                     onClick={resumeFromReservation}
                   >
                     {locale === "ko" ? "예약 계속하기 →" : "Continue Booking →"}
@@ -112,7 +112,7 @@ export default function PromoFloatingCart() {
                 <>
                   <button
                     type="button"
-                    className="rounded-lg border border-white/30 bg-transparent px-4 py-2 text-[13px] font-semibold text-white/80 hover:bg-white/10 transition-colors"
+                    className="rounded-lg border border-white/30 bg-transparent px-4 py-2 text-[13px] font-semibold text-white/80 hover:bg-white/10 transition-colors ko-scale-ipad-btn"
                     onClick={() => setCartExpanded(!cartExpanded)}
                   >
                     {cartExpanded
@@ -121,7 +121,7 @@ export default function PromoFloatingCart() {
                   </button>
                   <button
                     type="button"
-                    className="rounded-lg bg-brand-red px-5 py-2 text-[13px] font-bold text-white hover:bg-[#C4001C] transition-colors"
+                    className="rounded-lg bg-brand-red px-5 py-2 text-[13px] font-bold text-white hover:bg-[#C4001C] transition-colors ko-scale-ipad-btn"
                     onClick={() => {
                       setCartExpanded(false);
                       openTourSelection({ tourOptional: true, pendingItems: [] });
@@ -148,10 +148,10 @@ export default function PromoFloatingCart() {
                         }
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="text-[13px] font-semibold text-white truncate">{item.name}</div>
+                        <div className="text-[13px] font-semibold text-white truncate ko-scale-ipad-btn">{item.name}</div>
                         {metaInfo && <div className="text-[11px] text-white/50">{metaInfo}</div>}
                       </div>
-                      <div className="text-[14px] font-bold text-white">{formatPrice(linePrice, locale)}</div>
+                      <div className="text-[14px] font-bold text-white ko-scale-ipad-md">{formatPrice(linePrice, locale)}</div>
                       <button
                         type="button"
                         className="shrink-0 size-7 flex items-center justify-center rounded-full bg-white/10 text-white/60 hover:bg-white/20 hover:text-white text-sm"
