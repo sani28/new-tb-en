@@ -191,17 +191,17 @@ function ClassicTourCard({
         </span>
       </div>
       <div className="flex flex-1 flex-col p-3">
-        <h4 className="mb-1.5 text-[18px] text-black leading-tight ko-scale-ipad-lg" style={{ fontFamily: "'SUIT-Heavy', sans-serif", textWrap: "balance" }}>{title}</h4>
+        <h4 className={`mb-1.5 text-black leading-tight ${isKo ? "text-[28px]" : "text-[18px] ko-scale-ipad-lg"}`} style={{ fontFamily: "'SUIT-Heavy', sans-serif", textWrap: "balance" }}>{title}</h4>
         {details && (
           <>
-            <p className="mb-2 text-[14px] text-[#666] leading-[1.4]">{tt(`${tourKey}.description`)}</p>
-            <div className="mb-2 flex gap-3 text-[14px] text-[#999]">
+            <p className={`mb-2 text-[#666] leading-[1.4] ${isKo ? "text-[18px]" : "text-[14px]"}`}>{tt(`${tourKey}.description`)}</p>
+            <div className={`mb-2 flex gap-3 text-[#999] ${isKo ? "text-[17px]" : "text-[14px]"}`}>
               <span>{tt("stopsCount", { count: details.stops })}</span>
               <span>{tt("routeDuration", { hours: details.durationHours })}</span>
             </div>
             <ul className="mb-2.5 space-y-1.5">
               {highlightKeys.map((i) => (
-                <li key={i} className="flex items-center gap-1.5 text-[14px] text-text-dark">
+                <li key={i} className={`flex items-center gap-1.5 text-text-dark ${isKo ? "text-[18px]" : "text-[14px]"}`}>
                   <span className="text-brand-red">{"\u2713"}</span> {tt(`${tourKey}.highlights.${i}`)}
                 </li>
               ))}
@@ -209,20 +209,20 @@ function ClassicTourCard({
           </>
         )}
         <div className="mt-auto border-t border-[#eee] pt-2">
-          <div className="mb-1.5 flex items-baseline justify-between">
-            <span className="text-[12px] text-[#666]">{tc("adult")}</span>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-[11px] text-[#999] italic">{tc("from")}</span>
-              <span className="text-[10px] text-[#999] line-through ko-scale-ipad-sm">{formatPrice(prices.adultOrig, locale)}</span>
-              <span className="text-[14px] font-bold text-[#FF0000] ko-scale-ipad-md">{formatPrice(prices.adult, locale)}</span>
+          <div className="mb-1.5 flex items-baseline justify-between gap-1.5">
+            <span className={`whitespace-nowrap text-[#666] ${isKo ? "text-[14px]" : "text-[12px]"}`}>{tc("adult")}</span>
+            <div className="flex items-baseline gap-1 whitespace-nowrap">
+              <span className={`text-[#999] italic ${isKo ? "text-[12px]" : "text-[11px]"}`}>{tc("from")}</span>
+              <span className={`text-[#999] line-through ${isKo ? "text-[12px]" : "text-[10px] ko-scale-ipad-sm"}`}>{formatPrice(prices.adultOrig, locale)}</span>
+              <span className={`font-bold text-[#FF0000] ${isKo ? "text-[20px]" : "text-[14px] ko-scale-ipad-md"}`}>{formatPrice(prices.adult, locale)}</span>
             </div>
           </div>
-          <div className="mb-3 flex items-baseline justify-between">
-            <span className="text-[12px] text-[#666]">{tc("child")}</span>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-[11px] text-[#999] italic">{tc("from")}</span>
-              <span className="text-[10px] text-[#999] line-through ko-scale-ipad-sm">{formatPrice(prices.childOrig, locale)}</span>
-              <span className="text-[14px] font-bold text-[#FF0000] ko-scale-ipad-md">{formatPrice(prices.child, locale)}</span>
+          <div className="mb-3 flex items-baseline justify-between gap-1.5">
+            <span className={`whitespace-nowrap text-[#666] ${isKo ? "text-[14px]" : "text-[12px]"}`}>{tc("child")}</span>
+            <div className="flex items-baseline gap-1 whitespace-nowrap">
+              <span className={`text-[#999] italic ${isKo ? "text-[12px]" : "text-[11px]"}`}>{tc("from")}</span>
+              <span className={`text-[#999] line-through ${isKo ? "text-[12px]" : "text-[10px] ko-scale-ipad-sm"}`}>{formatPrice(prices.childOrig, locale)}</span>
+              <span className={`font-bold text-[#FF0000] ${isKo ? "text-[20px]" : "text-[14px] ko-scale-ipad-md"}`}>{formatPrice(prices.child, locale)}</span>
             </div>
           </div>
           <div className="flex gap-2">
@@ -255,6 +255,7 @@ function ExclusivePackageCard({
   const tt = useTranslations("Tours");
   const th = useTranslations("Homepage");
   const locale = useLocale();
+  const isKo = locale === "ko";
 
   const name = tt(pkg.nameKey);
   const tagline = tt(pkg.taglineKey);
@@ -275,31 +276,31 @@ function ExclusivePackageCard({
         <span className="absolute left-2.5 top-2.5 rounded-full bg-brand-red px-2.5 py-0.5 text-[13px] font-extrabold text-white">{th(pkg.badgeKey)}</span>
       </div>
       <div className="flex flex-1 flex-col p-3">
-        <div className="mb-0.5 text-[18px] text-text-dark leading-tight ko-scale-ipad-lg" style={{ fontFamily: "'SUIT-Heavy', sans-serif", textWrap: "balance" }}>{name}</div>
-        <div className="mb-2 text-[14px] italic text-[#666]">{tagline}</div>
-        <div className="mb-2 text-[13px] text-[#999]">{baseRoute}</div>
+        <div className={`mb-0.5 text-text-dark leading-tight ${isKo ? "text-[28px]" : "text-[18px] ko-scale-ipad-lg"}`} style={{ fontFamily: "'SUIT-Heavy', sans-serif", textWrap: "balance" }}>{name}</div>
+        <div className={`mb-2 italic text-[#666] ${isKo ? "text-[18px]" : "text-[14px]"}`}>{tagline}</div>
+        <div className={`mb-2 text-[#999] ${isKo ? "text-[17px]" : "text-[13px]"}`}>{baseRoute}</div>
         <ul className="mb-2.5 space-y-1.5">
           {highlightKeys.map((i) => (
-            <li key={i} className="flex items-center gap-1.5 text-[14px] text-text-dark">
+            <li key={i} className={`flex items-center gap-1.5 text-text-dark ${isKo ? "text-[18px]" : "text-[14px]"}`}>
               <span className="text-brand-red">{"\u2605"}</span> {tt(`${pkg.highlightsKey}.${i}`)}
             </li>
           ))}
         </ul>
         <div className="mt-auto border-t border-[#eee] pt-2">
-          <div className="mb-1.5 flex items-baseline justify-between">
-            <span className="text-[12px] text-[#666]">{tc("adult")}</span>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-[11px] text-[#999] italic">{tc("from")}</span>
-              <span className="text-[10px] text-[#999] line-through ko-scale-ipad-sm">{formatPrice(prices.adultOrig, locale)}</span>
-              <span className="text-[14px] font-bold text-[#FF0000] ko-scale-ipad-md">{formatPrice(prices.adult, locale)}</span>
+          <div className="mb-1.5 flex items-baseline justify-between gap-1.5">
+            <span className={`whitespace-nowrap text-[#666] ${isKo ? "text-[14px]" : "text-[12px]"}`}>{tc("adult")}</span>
+            <div className="flex items-baseline gap-1 whitespace-nowrap">
+              <span className={`text-[#999] italic ${isKo ? "text-[12px]" : "text-[11px]"}`}>{tc("from")}</span>
+              <span className={`text-[#999] line-through ${isKo ? "text-[12px]" : "text-[10px] ko-scale-ipad-sm"}`}>{formatPrice(prices.adultOrig, locale)}</span>
+              <span className={`font-bold text-[#FF0000] ${isKo ? "text-[20px]" : "text-[14px] ko-scale-ipad-md"}`}>{formatPrice(prices.adult, locale)}</span>
             </div>
           </div>
-          <div className="mb-3 flex items-baseline justify-between">
-            <span className="text-[12px] text-[#666]">{tc("child")}</span>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-[11px] text-[#999] italic">{tc("from")}</span>
-              <span className="text-[10px] text-[#999] line-through ko-scale-ipad-sm">{formatPrice(prices.childOrig, locale)}</span>
-              <span className="text-[14px] font-bold text-[#FF0000] ko-scale-ipad-md">{formatPrice(prices.child, locale)}</span>
+          <div className="mb-3 flex items-baseline justify-between gap-1.5">
+            <span className={`whitespace-nowrap text-[#666] ${isKo ? "text-[14px]" : "text-[12px]"}`}>{tc("child")}</span>
+            <div className="flex items-baseline gap-1 whitespace-nowrap">
+              <span className={`text-[#999] italic ${isKo ? "text-[12px]" : "text-[11px]"}`}>{tc("from")}</span>
+              <span className={`text-[#999] line-through ${isKo ? "text-[12px]" : "text-[10px] ko-scale-ipad-sm"}`}>{formatPrice(prices.childOrig, locale)}</span>
+              <span className={`font-bold text-[#FF0000] ${isKo ? "text-[20px]" : "text-[14px] ko-scale-ipad-md"}`}>{formatPrice(prices.child, locale)}</span>
             </div>
           </div>
           <div className="flex gap-2">
@@ -441,7 +442,7 @@ function DesignCTours({ selectedTourId, onSelect, variant }: {
   // English: Exclusive (1fr) left, Classic (2fr) right
   const leftColumn = isKo ? classicColumn : exclusiveColumn;
   const rightColumn = isKo ? exclusiveColumn : classicColumn;
-  const gridCols = isKo ? "lg:grid-cols-[2fr_auto_1fr]" : "lg:grid-cols-[1fr_auto_2fr]";
+  const gridCols = isKo ? "lg:grid-cols-[minmax(0,7fr)_auto_minmax(0,3fr)]" : "lg:grid-cols-[1fr_auto_2fr]";
 
   // Variant B: Classic tours only, full width grid
   if (variant === "B") {

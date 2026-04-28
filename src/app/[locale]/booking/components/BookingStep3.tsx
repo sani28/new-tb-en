@@ -49,6 +49,8 @@ export default function BookingStep3({ isSubmitting, error, selectedTour, onBack
   const t = useTranslations("BookingStep4");
   const tc = useTranslations("Common");
 
+  const isKo = locale === "ko";
+  const priceCls = isKo ? "text-[29px] font-semibold text-brand-red" : "text-base font-semibold text-brand-red";
   const adultPrice = selectedTour?.adultPrice ?? 0;
   const childPrice = selectedTour?.childPrice ?? 0;
   const adultLineTotal = step1.adultCount * adultPrice;
@@ -95,7 +97,7 @@ export default function BookingStep3({ isSubmitting, error, selectedTour, onBack
                 <div className="flex items-center gap-4">
                   <span className="text-sm text-text-gray">× {step1.adultCount}</span>
                   <div className="text-right">
-                    <span className="text-base font-semibold text-brand-red">{formatUsd(adultLineTotal)}</span>
+                    <span className={priceCls}>{formatUsd(adultLineTotal)}</span>
                   </div>
                 </div>
               </div>
@@ -112,7 +114,7 @@ export default function BookingStep3({ isSubmitting, error, selectedTour, onBack
                 <div className="flex items-center gap-4">
                   <span className="text-sm text-text-gray">× {step1.childCount}</span>
                   <div className="text-right">
-                    <span className="text-base font-semibold text-brand-red">{formatUsd(childLineTotal)}</span>
+                    <span className={priceCls}>{formatUsd(childLineTotal)}</span>
                   </div>
                 </div>
               </div>
@@ -143,7 +145,7 @@ export default function BookingStep3({ isSubmitting, error, selectedTour, onBack
                     <div className="flex items-center gap-4">
                       <span className="text-sm text-text-gray">× {item.quantity}</span>
                       <div className="text-right">
-                        <span className="text-base font-semibold text-brand-red">{formatUsd(itemTotal)}</span>
+                        <span className={priceCls}>{formatUsd(itemTotal)}</span>
                       </div>
                     </div>
                   </div>

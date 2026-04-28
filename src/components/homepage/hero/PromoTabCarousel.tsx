@@ -103,7 +103,7 @@ export default function PromoTabCarousel() {
     <div
       ref={containerRef}
       className={
-        "w-full relative z-[101] md:absolute md:bottom-[115px] md:left-1/2 md:-translate-x-1/2 md:z-[50] md:w-[45%] max-[1200px]:md:w-[55%] max-[992px]:md:w-[65%]"
+        "w-full relative z-[101] md:hidden md:absolute md:bottom-[115px] md:left-1/2 md:-translate-x-1/2 md:z-[50] md:w-[45%] max-[1200px]:md:w-[55%] max-[992px]:md:w-[65%]"
       }
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}

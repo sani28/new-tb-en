@@ -59,6 +59,8 @@ export default function BookingStep2({ contact, onContactChange, selectedTour, o
   const t = useTranslations("BookingStep3");
   const tc = useTranslations("Common");
 
+  const isKo = locale === "ko";
+  const priceCls = isKo ? "text-[29px] font-semibold text-brand-red" : "text-base font-semibold text-brand-red";
   const adultPrice = selectedTour?.adultPrice ?? 0;
   const childPrice = selectedTour?.childPrice ?? 0;
   const adultLineTotal = step1.adultCount * adultPrice;
@@ -115,7 +117,7 @@ export default function BookingStep2({ contact, onContactChange, selectedTour, o
                     <button className="flex size-7 cursor-pointer items-center justify-center rounded border border-[#ddd] bg-white" onClick={() => bookingStep1Store.inc("adult")}>+</button>
                   </div>
                   <div className="text-right">
-                    <span className="text-base font-semibold text-brand-red">{formatUsd(adultLineTotal)}</span>
+                    <span className={priceCls}>{formatUsd(adultLineTotal)}</span>
                   </div>
                 </div>
               </div>
@@ -136,7 +138,7 @@ export default function BookingStep2({ contact, onContactChange, selectedTour, o
                     <button className="flex size-7 cursor-pointer items-center justify-center rounded border border-[#ddd] bg-white" onClick={() => bookingStep1Store.inc("child")}>+</button>
                   </div>
                   <div className="text-right">
-                    <span className="text-base font-semibold text-brand-red">{formatUsd(childLineTotal)}</span>
+                    <span className={priceCls}>{formatUsd(childLineTotal)}</span>
                   </div>
                 </div>
               </div>
@@ -177,7 +179,7 @@ export default function BookingStep2({ contact, onContactChange, selectedTour, o
                         >+</button>
                       </div>
                       <div className="text-right">
-                        <span className="text-base font-semibold text-brand-red">{formatUsd(itemTotal)}</span>
+                        <span className={priceCls}>{formatUsd(itemTotal)}</span>
                       </div>
                       <button
                         className="ml-2 rounded border-none bg-transparent px-2 py-1 text-lg text-[#999] transition-all hover:bg-brand-red/10 hover:text-brand-red"

@@ -132,11 +132,14 @@ export default function BookingWidget() {
             type="button"
             className={
               "flex w-full min-w-0 min-h-11 items-center justify-between gap-2 rounded-full border-2 border-[#E8E8E8] " +
-              "bg-gradient-to-b from-white to-[#FAFAFA] px-4 py-3.5 text-left text-[14px] font-[var(--font-sans-medium)] " +
+              "bg-gradient-to-b from-white to-[#FAFAFA] px-4 py-3.5 text-left font-[var(--font-sans-medium)] " +
               "text-[var(--color-text-dark)] shadow-sm transition-colors hover:border-[#D40004] " +
               "focus:border-[#D40004] focus:outline-none focus:ring-4 focus:ring-[#D40004]/15 " +
-              "max-md:px-3 max-md:py-3 max-md:text-[13px] " +
-              "max-[400px]:min-h-10 max-[400px]:px-2 max-[400px]:py-2 max-[400px]:text-[12px] " +
+              (isKo
+                ? "text-[25px] max-md:px-3 max-md:py-3 max-md:text-[23px] "
+                : "text-[14px] max-md:px-3 max-md:py-3 max-md:text-[13px] ") +
+              "max-[400px]:min-h-10 max-[400px]:px-2 max-[400px]:py-2 " +
+              (isKo ? "max-[400px]:text-[20px] " : "max-[400px]:text-[12px] ") +
               "max-[400px]:justify-start max-[400px]:gap-1.5"
             }
           >
@@ -271,12 +274,14 @@ export default function BookingWidget() {
           count={adultCount}
           onDecrement={() => setAdultCount((c) => clamp(c - 1))}
           onIncrement={() => setAdultCount((c) => clamp(c + 1))}
+          isKo={isKo}
         />
         <CounterGroup
           label={tc("child")}
           count={childCount}
           onDecrement={() => setChildCount((c) => clamp(c - 1))}
           onIncrement={() => setChildCount((c) => clamp(c + 1))}
+          isKo={isKo}
         />
       </div>
 
@@ -286,7 +291,7 @@ export default function BookingWidget() {
           "font-bold uppercase tracking-[0.3px] text-white transition-colors " +
           "hover:bg-[#C4001C] " +
           (isKo
-            ? "text-[18px] font-[var(--font-sans-bold)] md:text-[19px] "
+            ? "text-[32px] font-[var(--font-sans-bold)] md:text-[34px] "
             : "text-[14px] font-[var(--font-copperplate)] md:text-[15px] ") +
           "md:basis-auto md:flex-none md:shrink-0 md:min-w-[140px] md:self-stretch md:px-8 md:py-3 md:tracking-[0.2px]"
         }
@@ -306,9 +311,10 @@ interface CounterGroupProps {
   count: number;
   onDecrement: () => void;
   onIncrement: () => void;
+  isKo?: boolean;
 }
 
-function CounterGroup({ label, count, onDecrement, onIncrement }: CounterGroupProps) {
+function CounterGroup({ label, count, onDecrement, onIncrement, isKo = false }: CounterGroupProps) {
   return (
     <div
       className={
@@ -316,7 +322,12 @@ function CounterGroup({ label, count, onDecrement, onIncrement }: CounterGroupPr
         "md:flex-[0_1_auto] md:gap-2 md:px-[12px] md:py-2.5 md:shadow-[0_2px_6px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.6)] md:hover:bg-[#C4001C] md:transition-colors"
       }
     >
-      <label className="text-[9px] font-bold uppercase tracking-[0.5px] text-white/90 md:text-[11px] md:font-semibold md:tracking-[0.5px]">
+      <label
+        className={
+          "font-bold uppercase tracking-[0.5px] text-white/90 md:font-semibold md:tracking-[0.5px] " +
+          (isKo ? "text-[16px] md:text-[20px]" : "text-[9px] md:text-[11px]")
+        }
+      >
         {label}
       </label>
       <div
@@ -326,10 +337,12 @@ function CounterGroup({ label, count, onDecrement, onIncrement }: CounterGroupPr
       >
         <button
           className={
-            "grid h-[18px] w-[18px] place-items-center rounded-[4px] bg-white/95 text-[12px] font-semibold text-[var(--color-text-dark)] " +
+            "grid place-items-center rounded-[4px] bg-white/95 font-semibold text-[var(--color-text-dark)] " +
             "transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-30 " +
-            "md:h-6 md:w-6 md:rounded-[6px] md:text-[15px] md:hover:scale-110 md:transition-transform " +
-            "max-[400px]:!text-[11px]"
+            "md:rounded-[6px] md:hover:scale-110 md:transition-transform " +
+            (isKo
+              ? "h-[26px] w-[26px] text-[18px] md:h-[34px] md:w-[34px] md:text-[22px] max-[400px]:!text-[16px] "
+              : "h-[18px] w-[18px] text-[12px] md:h-6 md:w-6 md:text-[15px] max-[400px]:!text-[11px] ")
           }
           onClick={onDecrement}
           aria-label={`Decrease ${label.toLowerCase()} count`}
@@ -339,17 +352,24 @@ function CounterGroup({ label, count, onDecrement, onIncrement }: CounterGroupPr
           -
         </button>
         <span
-          className="min-w-[10px] text-center text-[11px] font-bold md:min-w-5 md:text-[14px]"
+          className={
+            "text-center font-bold " +
+            (isKo
+              ? "min-w-[18px] text-[20px] md:min-w-9 md:text-[25px]"
+              : "min-w-[10px] text-[11px] md:min-w-5 md:text-[14px]")
+          }
           aria-live="polite"
         >
           {count}
         </span>
         <button
           className={
-            "grid h-[18px] w-[18px] place-items-center rounded-[4px] bg-white/95 text-[12px] font-semibold text-[var(--color-text-dark)] " +
+            "grid place-items-center rounded-[4px] bg-white/95 font-semibold text-[var(--color-text-dark)] " +
             "transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-30 " +
-            "md:h-6 md:w-6 md:rounded-[6px] md:text-[15px] md:hover:scale-110 md:transition-transform " +
-            "max-[400px]:!text-[11px]"
+            "md:rounded-[6px] md:hover:scale-110 md:transition-transform " +
+            (isKo
+              ? "h-[26px] w-[26px] text-[18px] md:h-[34px] md:w-[34px] md:text-[22px] max-[400px]:!text-[16px] "
+              : "h-[18px] w-[18px] text-[12px] md:h-6 md:w-6 md:text-[15px] max-[400px]:!text-[11px] ")
           }
           onClick={onIncrement}
           aria-label={`Increase ${label.toLowerCase()} count`}
