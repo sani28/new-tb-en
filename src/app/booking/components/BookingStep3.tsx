@@ -1,7 +1,6 @@
 "use client";
 
-import { useBookingStep1 } from "@/app/booking/step1/store";
-import { bookingStep1Store } from "@/app/booking/step1/store";
+import { useBookingStep1, bookingStep1Store } from "@/app/booking/step1/store";
 import { useBookingCart } from "@/app/booking/cart/useBookingCart";
 import {
   getBookingCartOriginalTotal,
@@ -144,7 +143,7 @@ export default function BookingStep3({ isSubmitting, error, onBack, onMakePaymen
                         <img src={item.image} alt={item.name} className="order-item-image" />
                       ) : (
                         <div
-                          className="order-item-image flex items-center justify-center rounded-lg bg-[#f5f5f5] text-2xl"
+                          className="order-item-image flex items-center justify-center bg-[#f5f5f5] text-2xl"
                         >
                           {item.placeholder || "📦"}
                         </div>

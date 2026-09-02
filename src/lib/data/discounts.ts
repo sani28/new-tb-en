@@ -19,7 +19,7 @@ function slugify(name: string) {
     .replace(/^-+|-+$/g, "");
 }
 
-/** Seed / prototype data — mirrors the legacy discounts.html cards. */
+/** Seed / prototype data. */
 export const SEED_AFFILIATES: AffiliateDiscount[] = [
   {
     id: "1", slug: "bangtae-makguksu", name: "Bangtae Makguksu",

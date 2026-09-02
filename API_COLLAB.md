@@ -9,11 +9,10 @@ Goal: make it easy for a Python backend dev to understand:
 - what JSON payloads we plan to send
 - how we count “one tour purchase” (tickets + add-ons)
 
-The booking experience is currently a **hybrid**:
+The booking experience is built in React:
 
-- `public/booking.html` provides most of the HTML/CSS + some legacy JS
-- React “bridges” (in `src/app/booking/*`) attach to the legacy DOM and keep state in React stores
-- We have an API helper layer already (`src/lib/api/*`) that calls `NEXT_PUBLIC_API_BASE_URL`
+- React components (in `src/app/booking/*`) manage state via React stores
+- We have an API helper layer (`src/lib/api/*`) that calls `NEXT_PUBLIC_API_BASE_URL`
 
 ## Environment
 

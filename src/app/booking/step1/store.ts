@@ -23,10 +23,8 @@ type TourPricing = {
   child: { current: number; original: number };
 };
 
-// Mirrors legacy booking.html pricing (and fills tour02 to avoid crashes).
 const TOUR_PRICING: Record<Step1TourId, TourPricing> = {
   tour01: { adult: { current: 20, original: 25 }, child: { current: 15, original: 20 } },
-  // booking.html doesn't define tour02 pricing yet; keep same as tour01 for now.
   tour02: { adult: { current: 20, original: 25 }, child: { current: 15, original: 20 } },
   tour04: { adult: { current: 18, original: 22 }, child: { current: 12, original: 15 } },
 };
